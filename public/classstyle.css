@@ -5,11 +5,12 @@ body {
     text-align: center;
 }
 #classes {
-    width: 90%;
-    height: 90%;
-    background-color: #f1f1f1;
-    margin : 0 auto;
+    width: 80%;
+    height: 80vh;
+    background: linear-gradient(180deg,rgb(0, 136, 255),rgb(0, 0, 0));
+    margin : auto;
     text-align: center;
+    border-radius: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -23,10 +24,11 @@ body {
     width  :50vh;
     height : 20%;
     border-radius: 10px;
-    background-color: lightsteelblue;
+    background-color: rgb(255, 255, 255);
     padding : 10px;
     margin : 10px;
     text-align: center;
+    color:rgb(0, 0, 0);
     
 }
 

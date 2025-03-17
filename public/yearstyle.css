@@ -8,6 +8,11 @@ body {
 #main1 {
     min-width : 100%;
     min-height: 100%;
+    background-image: url(college.png);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background:rgb(255, 255, 255);
     width : auto;
     height : auto;
     text-align: center;
@@ -28,11 +33,11 @@ body {
     width : auto;
     height : auto;
     border-radius: 10px;
-    background-color: lightsteelblue;
+    background-color: rgb(141, 153, 215);
     padding : 10px;
     margin : 10px;
     text-align: center;
-    margin-top: 30px;
+
     padding : 10px;
 }
 
@@ -77,9 +82,9 @@ body {
     border : none;
     border-radius : 10px;
     cursor : pointer;
-    color : white;
+    color : rgb(0, 0, 0);
     margin-top : 10px; 
-    background-color: aqua;
+    background-color: rgb(79, 255, 255);
 }
 
 #addDiv {
@@ -175,13 +180,13 @@ body {
 
 #shortCut {
     font-size: 1.2em;
-    background-color:hsl(309, 100%, 51%);
-    color:white;
+    background-color:hsl(130, 100%, 50%);
+    color:rgb(0, 0, 0);
     text-align: center;
     padding:8px;
     border:none;
     margin:auto;
     border-radius: 10px;
-    margin-top:5%;
+    padding:10px;
     font-weight: bold;
 }
