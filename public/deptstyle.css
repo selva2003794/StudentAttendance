@@ -19,10 +19,11 @@ body {
     align-items: center;;
     padding: 20px;
     margin:30px;
+    overflow: hidden;
 }
 
 #depts .dept {
-    width  :50vh;
+    width  :80%;
     height : 20%;
     border-radius: 10px;
     background-color:white;

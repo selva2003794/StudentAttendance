@@ -16,12 +16,12 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 5%;
-    padding : 10px
-    
+    padding : 10px;
+    overflow:hidden;
 }
 
 #classes .class {
-    width  :50vh;
+    width  :80%;
     height : 20%;
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
