@@ -990,7 +990,7 @@
                                     let percentage = ((students[i].attendance / TWKDYS) * 100).toFixed(2);
                                     //console.log(percentage);
                                     Newh4.style.color = "blue";
-                                    Newh4.innerHTML = `${students[i].name} Attendance Percentage = ${percentage}%`;
+                                    Newh4.innerHTML = `${students[i].name} \nAttendance Percentage = ${percentage}%`;
                                     allStudents[i].append(Newh4);
                                     //console.log(Newdiv.textContent);
                                     let RollNo = event.target.parentElement.getElementsByClassName("student")[i].getElementsByClassName("rollNo")[0].textContent.split(":")[1];
