@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 
-app.use('https://studentattendance-5jge.onrender.com/api/students', attendanceRoutes); // Ensure this path is correct
+app.use('https://studentattendance-1-krzr.onrender.com/api/students', attendanceRoutes); // Ensure this path is correct
 setTimeout(() => {
     app.listen(PORT, () => console.log(`Server running on http://127.0.0.1:${PORT}`));
 
