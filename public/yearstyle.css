@@ -18,6 +18,18 @@ body {
     text-align: center;
 
 }
+#Back {
+    padding : 10px;
+    margin:10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border : none;
+    border-radius : 10px;
+    cursor : pointer;
+    color : rgb(255, 255, 255);
+    margin-left:8%;
+    background-color: rgb(255, 0, 0);
+}
 #students {
     text-align: center;
     display: flex;
@@ -110,11 +122,11 @@ body {
 
 #mainpopup {
     min-width: 100%;
-    min-height :1000vh;
+    min-height :600vh;
     width : auto;
     height : auto;
     position: absolute;
-    opacity : .9;
+    opacity : 1;
     text-align: center;
     background-color: black;
     z-index: 5;
@@ -126,28 +138,84 @@ body {
 
 #popup {
     text-align: center;
-    width : 300px;
-    height: 240px;
+    width : 100%;
+    height: auto;
     background-color: white;
     position: sticky;
-    top:100px;
     margin: auto;
-    border-radius: 10px;
+
     font-size: 1.3em;
     font-weight: bolder;
-
-
 }
 
-#popup input {
-    padding: 5px;
-    font-weight: bold;
-    border-radius: 5px;
-    margin : 10px; 
-    border:2px solid black;
-    text-align: center;
-    width : 80%;
 
+#popup table {
+    margin-top:40px;
+    margin: auto;
+    padding: 8px;
+    width: 80%;
+}
+
+
+#popup table th {
+
+    font-size: 1.1em;
+    background-color: rgb(6, 6, 8);
+    color : rgb(255, 255, 255);
+    margin:10px;
+    padding:8px;
+}
+#popup table td {
+    margin:10px;
+    padding:8px;
+
+}
+#closeTable {
+    padding : 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border : none;
+    border-radius : 10px;
+    cursor : pointer;
+    color : rgb(255, 255, 255);
+    margin: 10px; 
+    margin:auto;
+    background-color: rgb(255, 0, 0);
+}
+
+#Processing {
+    background-color: rgb(0, 255, 0);
+    width:200px;
+    text-align: center;
+    padding:10px;
+    height: 100px;
+    margin: auto;
+    border-radius: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    z-index: 4;
+    color:rgb(255, 255, 255);
+    position: sticky;
+    top:20px;
+    display: none;
+}
+
+@media screen  and (max-width: 700px) {
+    #popup table {
+        width: 100%;
+
+    }
+    #popup table th {
+        font-size: .8em;
+        margin:0px;
+        padding:0px;
+    }
+    #popup table td {
+        margin:0px;
+        font-size: .7em;
+        padding:0px;
+    }
+    
 }
 
 .PBtn {

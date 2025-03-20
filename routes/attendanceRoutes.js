@@ -43,14 +43,29 @@ router.post('/', async (req, res) => {
 });
 
 // Route to update attendance
+// Route to update attendance
 router.put('/:rollno', async (req, res) => {
     try {
         const attendance = await Attendance.findOne({ rollno: req.params.rollno });
         if (!attendance) {
             return res.status(404).json({ message: 'Student not found' });
         }
-        attendance.attendance = req.body.attendance;
-        attendance.history.push(req.body.historyEntry);
+
+        attendance.attendance += req.body.attendance;
+
+        const historyDecision = req.body.historyDecision || ""; // Default to an empty string if undefined
+        console.log(req.body.attendance);
+        console.log(historyDecision);
+
+        if (historyDecision === "") {
+            // No action needed
+        } else if (historyDecision === "Reset") {
+            attendance.history = [];
+            attendance.attendance = 0;
+        } else {
+            attendance.history.push(historyDecision);
+        }
+
         const updatedAttendance = await attendance.save();
         res.json(updatedAttendance);
     } catch (error) {

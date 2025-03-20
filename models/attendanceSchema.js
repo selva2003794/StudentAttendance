@@ -11,7 +11,7 @@ const attendanceSchema = new mongoose.Schema({
         unique: true
     },
     attendance: {
-        type: String,
+        type: Number,
         required: true
     },
     history: {
