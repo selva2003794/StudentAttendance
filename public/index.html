@@ -987,12 +987,33 @@
                                         else {
                                             await buttonArray[i].querySelector(".present").click();
                                         }
-
                                     }
-
                                 }
                                 presentFun();
+                                async function sendWhatsAppPresent() {
+                                    
+                                    function checkFunc() {
+                                        
+                                        if (whatsappDatas.length == 0) {
+                                            let partTime1 = '';
+                                            partTime1 += "All students are present on " + `${date}/${month + 1}/${year} %0a ${hours}:${minutes}`;
+    
+                                            async function whatsAppMessage()  {
+                                                let phone = '+919486500899';
+                                                let url = "https://wa.me/" + phone + "?text="
+                                                    + partTime1;
+                                                await window.open(url, "_blank");
+                                                partTime1 = "";
+                                            }
+                                            whatsAppMessage();
+                                                
+    
+                                        }
+                                    }
+                                    Batch1();
+                                }
                             }
+
                         }
 
                         catch (err) {
