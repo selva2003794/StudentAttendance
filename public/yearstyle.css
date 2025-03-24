@@ -120,7 +120,7 @@ body {
 
 }
 
-#mainpopup {
+#mainPopup {
     min-width: 100%;
     min-height :600vh;
     width : auto;
@@ -130,46 +130,83 @@ body {
     text-align: center;
     background-color: black;
     z-index: 5;
-    display: none;
+    display: block;
+    margin:0;
+    padding:0;
+    top:0;
+    display:none;
 }
 .display {
     display: block;
 }
 
 #popup {
-    text-align: center;
-    width : 100%;
+    width:40%;
     height: auto;
     background-color: white;
-    position: sticky;
+    text-align: center;
+    padding:10px;
+    border-radius: 10px;
     margin: auto;
-
-    font-size: 1.3em;
-    font-weight: bolder;
+    margin-top: 8%;
+    z-index:6;
+    position :sticky;
+    top:8%;
 }
 
-
-#popup table {
-    margin-top:40px;
-    margin: auto;
-    padding: 8px;
-    width: 80%;
-}
-
-
-#popup table th {
-
-    font-size: 1.1em;
-    background-color: rgb(6, 6, 8);
+#popup table button {
+    padding : 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border : none;
+    border-radius : 10px;
+    cursor : pointer;
     color : rgb(255, 255, 255);
-    margin:10px;
-    padding:8px;
+
+    margin:20px;
+    background-color: rgb(0, 255, 0);
 }
-#popup table td {
-    margin:10px;
-    padding:8px;
+#popup table #selectReasons {
+    width: 80%;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 5px;
 
 }
+
+#popup table #cancelPopup {
+    background-color: red;
+}
+
+#popup table #collegeName {
+    visibility: visible;
+}
+#popup table #OTHERS {
+    visibility: hidden;
+}
+
+@media screen and (max-width: 700px) {
+    #popup {
+        width: 80%;
+    }
+    
+}
+
+#popup table label {
+    font-size: 1.2em;
+    font-weight: bold;
+
+}
+#popup table input {
+    padding: 8px;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 1em;
+    width: 70%;
+    text-align: center;
+}
+
 #closeTable {
     padding : 10px;
     font-size: 1.2em;
