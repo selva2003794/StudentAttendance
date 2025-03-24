@@ -453,7 +453,7 @@
             document.getElementById("bodyDiv").innerHTML = `
 
         <div id="main1">
-        <div id="mainpopup">
+        <div style="display:none;" id="mainpopupTable">
             <div id="popup">
                 <button id="closeTable">Close</button>
                 <table id="table" border="1">
@@ -1401,9 +1401,9 @@
                                 await markAttendance(RollNo, "Reset");
                             }
                             document.getElementById("Processing").style.display = "none";
-                            document.getElementById("mainpopup").style.display = "block";
+                            document.getElementById("mainpopupTable").style.display = "block";
                             document.getElementById("closeTable").onclick = () => {
-                                document.getElementById("mainpopup").style.display = "none";
+                                document.getElementById("mainpopupTable").style.display = "none";
                             }
 
                             if (lowPercentage.length > 0) {

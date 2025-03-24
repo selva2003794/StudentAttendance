@@ -120,7 +120,7 @@ body {
 
 }
 
-#mainPopup {
+#mainPopup , #mainpopupTable{
     min-width: 100%;
     min-height :600vh;
     width : auto;
