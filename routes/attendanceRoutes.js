@@ -42,6 +42,30 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.get(`/:rollno`, async (req, res) => {
+    try {
+        const Student = await Attendance.findOne({ rollno: req.params.rollno });
+        if (!Student) return res.status(404).json({ error: 'Student not found' });
+        res.status(200).json(Student);
+        console.log(Student);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//   router.get('/:_id', async (req, res) => {
+//     try {
+//       const TotalWorkDays = await Attendance.findOne({_id : "4321"});
+//       if (!TotalWorkDays) return res.status(404).json({ error: 'Total Working days not found' });
+//       res.status(200).json(TotalWorkDays);
+//       console.log(TotalWorkDays);
+//     } catch (error) {
+//       res.status(500).json({ error: error.message });
+//     }
+//   });
+
+
+
 // Route to update attendance
 // Route to update attendance
 router.put('/:rollno', async (req, res) => {
@@ -51,19 +75,31 @@ router.put('/:rollno', async (req, res) => {
             return res.status(404).json({ message: 'Student not found' });
         }
 
-        attendance.attendance += req.body.attendance;
-
-        const historyDecision = req.body.historyDecision || ""; // Default to an empty string if undefined
-        console.log(req.body.attendance);
-        console.log(historyDecision);
-
-        if (historyDecision === "") {
-            // No action needed
-        } else if (historyDecision === "Reset") {
-            attendance.history = [];
-            attendance.attendance = 0;
+        console.log(req.params.rollno);
+        console.log(req.body.TotalWorkingDays);
+        console.log(attendance.count);
+        console.log(attendance);
+        console.log(attendance.TotalWorkDays);
+        if (req.params.rollno == 951323) {
+            // Update TotalWorkDays and ensure attendance is set
+            attendance.TotalWorkDays += req.body.TotalWorkingDays || 0;
+            attendance.attendance = attendance.attendance || 0; // Ensure attendance is set
         } else {
-            attendance.history.push(historyDecision);
+            // Update attendance and history
+            attendance.attendance += req.body.attendance || 0;
+
+            const historyDecision = req.body.historyDecision || ""; // Default to an empty string if undefined
+            console.log(req.body.attendance);
+            console.log(historyDecision);
+
+            if (historyDecision === "") {
+                // No action needed
+            } else if (historyDecision === "Reset") {
+                attendance.history = [];
+                attendance.attendance = 0;
+            } else {
+                attendance.history.push(historyDecision);
+            }
         }
 
         const updatedAttendance = await attendance.save();

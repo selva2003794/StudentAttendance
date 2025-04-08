@@ -17,7 +17,12 @@ const attendanceSchema = new mongoose.Schema({
     history: {
         type: Array,
         default: []
-    }
+    },
+    TotalWorkDays: {
+        type:Number,
+        default : 0,
+        
+    },
 });
 
 module.exports = mongoose.model('students', attendanceSchema);
