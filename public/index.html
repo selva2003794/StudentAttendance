@@ -16,22 +16,23 @@
 <body>
     <div id="bodyDiv">
         <div>
-            <h1>MarkIt Easy</h1>
+            <h1>Attendance</h1>
             <div id="firstmain">
 
                 <div id="staff">
                     <i class="fa-solid fa-person-chalkboard fonts"></i>
                     <h1>Staff</h1>
-                    <button id="loginStaff">Login</button>
+                    <button id="loginStaff" onclick="loginStaff()">Login</button>
                 </div>
                 <div id="students1">
                     <i class="fa-solid fa-graduation-cap fonts"></i>
                     <h1>Students</h1>
-                    <button id="loginStudents">Login</button>
+                    <button id="loginStudents" onclick="loginStudents()">Login</button>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
         const time = new Date();
         const year = time.getFullYear();
@@ -45,7 +46,7 @@
         const GoodTime = meritiam == "AM" ? "Good Morning" : "Good Afternoon";
 
 
-        document.getElementById("loginStudents").onclick = () => {
+        const loginStudents = () => {
             document.getElementById("bodyDiv").innerHTML = "";
             document.getElementById("bodyDiv").innerHTML = `<div id="main">
             <div id="loginBox">
@@ -71,7 +72,7 @@
         </div>`;
         }
 
-        document.getElementById("loginStaff").onclick = () => {
+        const loginStaff = () => {
             document.getElementById("bodyDiv").innerHTML = "";
             document.getElementById("bodyDiv").innerHTML = `<div id="main">
             <div id="loginBox">
@@ -115,65 +116,65 @@
         const Abinaya = new studentsLogin("Abinaya", 23104003);
         const Abirami = new studentsLogin("Abirami", 23104004);
         const Abisha = new studentsLogin("Abisha", 23104005);
-        const AbishaMary = new studentsLogin("AbishaMary", 23104006);
+        const Abishamary = new studentsLogin("Abishamary", 23104006);
         const Abisheka = new studentsLogin("Abisheka", 23104007);
-        const AkshayaLakshmi = new studentsLogin("AkshayaLakshmi", 23104008);
+        const Akshayalakshmi = new studentsLogin("Akshayalakshmi", 23104008);
         const Arumugavel = new studentsLogin("Arumugavel", 23104009);
-        const ArunKumar = new studentsLogin("ArunKumar", 23104010);
+        const Arunkumar = new studentsLogin("ArunKumar", 23104010);
         const Ashokraja = new studentsLogin("Ashokraja", 23104011);
         const Baras = new studentsLogin("Baras", 23104012);
         const BavaniC = new studentsLogin("BavaniC", 23104013);
         const BavaniS = new studentsLogin("BavaniS", 23104014);
         const Bern = new studentsLogin("Bern", 23104015);
-        const ChinnaThambi = new studentsLogin("ChinnaThambi", 23104016);
-        const EsakkiSorna = new studentsLogin("EsakkiSorna", 23104017);
-        const GiftyHepzipal = new studentsLogin("GiftyHepzipal", 23104018);
-        const HeavencyRose = new studentsLogin("HeavencyRose", 23104019);
-        const IrudayaJency = new studentsLogin("IrudayaJency", 23104020);
+        const Chinnathambi = new studentsLogin("Chinnathambi", 23104016);
+        const Esakkisorna = new studentsLogin("Esakkisorna", 23104017);
+        const Giftyhepzipal = new studentsLogin("Giftyhepzipal", 23104018);
+        const Heavencyrose = new studentsLogin("Heavencyrose", 23104019);
+        const Irudayajency = new studentsLogin("Irudayajency", 23104020);
         const Jensha = new studentsLogin("Jensha", 23104021);
-        const JesuAgnel = new studentsLogin("JesuAgnel", 23104022);
-        const JohnImmanuel = new studentsLogin("JohnImmanuel", 23104023);
-        const JohnRabeender = new studentsLogin("JohnRabeender", 23104024);
+        const Jesuagnel = new studentsLogin("Jesuagnel", 23104022);
+        const Johnimmanuel = new studentsLogin("Johnimmanuel", 23104023);
+        const Johnrabeender = new studentsLogin("Johnrabeender", 23104024);
         const Kamalieswari = new studentsLogin("Kamalieswari", 23104026);
         const Karthiga = new studentsLogin("Karthiga", 23104027);
         const Keerthana = new studentsLogin("Keerthana", 23104028);
-        const LingaPabitha = new studentsLogin("LingaPabitha", 23104029);
+        const Lingapabitha = new studentsLogin("Lingapabitha", 23104029);
         const Mariyappan = new studentsLogin("Mariyappan", 23104030);
-        const MeehaEbanesar = new studentsLogin("MeehaEbanesar", 23104031);
-        const MohamedBahrudeen = new studentsLogin("MohamedBahrudeen", 23104032);
-        const MuthuEsakkiammal = new studentsLogin("MuthuEsakkiammal", 23104033);
+        const Meehaebanesar = new studentsLogin("Meehaebanesar", 23104031);
+        const Mohamedbahrudeen = new studentsLogin("Mohamedbahrudeen", 23104032);
+        const Muthuesakkiammal = new studentsLogin("Muthuesakkiammal", 23104033);
         const Muthukrishnan = new studentsLogin("Muthukrishnan", 23104034);
         const Pattuperumal = new studentsLogin("Pattuperumal", 23104035);
         const Pooja = new studentsLogin("Pooja", 23104036);
         const Priya = new studentsLogin("Priya", 23104037);
         const Priyadharshini = new studentsLogin("Priyadharshini", 23104038);
-        const RajeshKumar = new studentsLogin("RajeshKumar", 23104039);
-        const RakeshPraveen = new studentsLogin("RakeshPraveen", 23104040);
+        const RajeshKumar = new studentsLogin("Rajeshkumar", 23104039);
+        const Rakeshpraveen = new studentsLogin("Rakeshpraveen", 23104040);
         const Sampeter = new studentsLogin("Sampeter", 23104041);
-        const SanthiyaguSabin = new studentsLogin("SanthiyaguSabin", 23104042);
-        const SelvaAllsiya = new studentsLogin("SelvaAllsiya", 23104043);
+        const Santhiyagusabin = new studentsLogin("Santhiyagusabin", 23104042);
+        const Selvaallsiya = new studentsLogin("Selvaallsiya", 23104043);
         const Selvakumar = new studentsLogin("Selvakumar", 23104044);
-        const SelvaPriya = new studentsLogin("SelvaPriya", 23104045);
-        const SelvaRathiAkshal = new studentsLogin("SelvaRathiAkshal", 23104046);
-        const SherinSamika = new studentsLogin("SherinSamika", 23104047);
+        const Selvapriya = new studentsLogin("Selvapriya", 23104045);
+        const Selvarathiakshal = new studentsLogin("Selvarathiakshal", 23104046);
+        const Sherinsamika = new studentsLogin("Sherinsamika", 23104047);
         const Sipi = new studentsLogin("Sipi", 23104048);
-        const SriMithuna = new studentsLogin("SriMithuna", 23104050);
-        const SubashRackshan = new studentsLogin("SubashRackshan", 23104051);
+        const Srimithuna = new studentsLogin("Srimithuna", 23104050);
+        const Subashrackshan = new studentsLogin("Subashrackshan", 23104051);
         const Suganthi = new studentsLogin("Suganthi", 23104052);
-        const SuryaKala = new studentsLogin("SuryaKala", 23104053);
+        const Suryakala = new studentsLogin("Suryakala", 23104053);
         const Sushmitha = new studentsLogin("Sushmitha", 23104054);
-        const SuviseshGiftson = new studentsLogin("SuviseshGiftson", 23104055);
+        const Suviseshgiftson = new studentsLogin("Suviseshgiftson", 23104055);
         const Swathi = new studentsLogin("Swathi", 23104056);
-        const SweetyEsther = new studentsLogin("SweetyEsther", 23104057);
+        const Sweetyesther = new studentsLogin("Sweetyesther", 23104057);
         const Udhayakumar = new studentsLogin("Udhayakumar", 23104058);
         const Vignesh = new studentsLogin("Vignesh", 23104059);
         const Willingsraja = new studentsLogin("Willingsraja", 23104060);
         const Artheeswari = new studentsLogin("Artheeswari", 23104301);
         const Balakrishnan = new studentsLogin("Balakrishnan", 23104302);
         const Chinnadurai = new studentsLogin("Chinnadurai", 23104303);
-        const MohammedMunaf = new studentsLogin("MohammedMunaf", 23104304);
-        const StellaPersiya = new studentsLogin("StellaPersiya", 23104305);
-        const ObedRajaSingh = new studentsLogin("ObedRajaSingh", 23104701);
+        const Mohammedmunaf = new studentsLogin("Mohammedmunaf", 23104304);
+        const Stellapersiya = new studentsLogin("Stellapersiya", 23104305);
+        const Obedrajasingh = new studentsLogin("Obedrajasingh", 23104701);
 
         //console.log(studentsLogin.allObjects);
 
@@ -209,6 +210,7 @@
                             </div>
 
                         </div>
+                        <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
                         <h1>Welcome to JACSICE</h1>
                         <h2>${studentsLogin.allObjects[i].UserName}</h2>                 
                         <div id="studentsPage">
@@ -233,8 +235,8 @@
         }
 
         async function TotalWorkedDays(rollno) {
-            const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; 
-            //const APIURL = `/api/students`;
+            //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; 
+            const APIURL = `/api/students`;
             try {
                 const response = await fetch(`${APIURL}/${rollno}`, {
                     method: "PUT",
@@ -260,7 +262,7 @@
         function getPercentage(username, rollno) {
             document.getElementById("waitPopup").style.display = "block";
             document.getElementById("close").onclick = () => {
-                document.getElementById("mainPopup").style.display = "none";
+            document.getElementById("mainPopup").style.display = "none";
             }
 
             const APIURL = `/api/students`;
@@ -310,7 +312,6 @@
         }
 
         function showLoginStaff() {
-
             const _UserName = "JACSICE";
             const _Password = "12345";
             const userName = document.getElementById("username");
@@ -323,7 +324,9 @@
                 document.getElementById("bodyDiv").innerHTML = "";
                 //console.log(document.getElementById("bodyDiv"));
 
-                document.getElementById("bodyDiv").innerHTML = `<div id="depts">
+                document.getElementById("bodyDiv").innerHTML = `
+                <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+                <div id="depts">
         <a ><div id="cse" class="dept" onclick="showCse()"><h1>CSE</h1></div></a>
         <a href="ececlass.html"><div id="ece" class="dept"><h1>ECE</h1></div></a>
         <a href="/mechclass.html"><div id="mech" class="dept"><h1>MECH</h1></div></a>
@@ -339,24 +342,47 @@
             }
 
         }
+        function homePage() {
+            document.getElementById("bodyDiv").innerHTML = "";
+            document.getElementById("bodyDiv").innerHTML = `
+            <div>
+            <h1>MarkIt Easy</h1>
+            <div id="firstmain">
+
+                <div id="staff">
+                    <i class="fa-solid fa-person-chalkboard fonts"></i>
+                    <h1>Staff</h1>
+                    <button id="loginStaff" onclick="loginStaff()">Login</button>
+                </div>
+                <div id="students1">
+                    <i class="fa-solid fa-graduation-cap fonts"></i>
+                    <h1>Students</h1>
+                    <button id="loginStudents" onclick="loginStudents()">Login</button>
+                </div>
+            </div>
+        </div>
+            `;
+        }
         function showDept() {
             document.getElementById("bodyDiv").innerHTML = "";
             //console.log(document.getElementById("bodyDiv"));
 
-            document.getElementById("bodyDiv").innerHTML = `<div id="depts">
+            document.getElementById("bodyDiv").innerHTML = `
+            <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+            <div id="depts">
     <a ><div id="cse" class="dept" onclick="showCse()"><h1>CSE</h1></div></a>
     <a href="ececlass.html"><div id="ece" class="dept"><h1>ECE</h1></div></a>
     <a href="mechclass.html"><div id="mech" class="dept"><h1>MECH</h1></div></a>
     <a href="aiclass.html"><div id="ai" class="dept"><h1>AI</h1></div></a>
     <a href="itclass.html"> <div id="id" class="dept"><h1>IT</h1></div></a>
     </div>`;
-            document.title = "departments";
+            document.title = "Departments";
         }
 
         function showCse() {
             document.getElementById("bodyDiv").innerHTML = "";
             document.getElementById("bodyDiv").innerHTML = `
-                <button id="Back" onclick="showDept()">Back</button>
+                <button id="Back" onclick="showDept()"><i class="fa-solid fa-chevron-left"></i></i></button>
                 <div id="classes">
         <a ><div id="1year" class="class" onclick="showCse1()"><h1>1 year</h1></div></a>
         <a ><div id="2year" class="class" onclick="showCse2()"><h1>2 year</h1></div></a>
@@ -518,7 +544,7 @@
         <div id="Processing">
             <h2>Waiting for Processing...</h2>
         </div>
-        <button id="Back" onclick="showCse()">Back</button>
+        <button id="Back" onclick="showCse()"><i class="fa-solid fa-chevron-left"></i></button>
         <button id="shortCut">Put Attendance</button>
         <button id="reviewBtn">Get Percentage</button>
         <div id="students" class="allStudents">
@@ -595,7 +621,7 @@
                 <button class="absent">Absent</button>
                 <p class="result"></p>
             </div>
-                <div class="student">
+            <div class="student">
                 <img src="male.jpg" alt="Arunkumar" width="200" height="200">
                 <h2>Name: ArunKumar</h2>
                 <p class="rollNo">Roll No: 23104010</p>
@@ -1107,8 +1133,8 @@
                 });
             });
 
-            const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; // If running on the same domain
-            //const APIURL = `/api/students`;
+            //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; // If running on the same domain
+            const APIURL = `/api/students`;
             shortCut.onclick = async (event) => {
                 var format;
                 var find;
@@ -1318,7 +1344,8 @@
 
                                     async function whatsAppMessage() {
                                         let phone = '+919486500899';
-                                        let url = "https://wa.me/" + phone + "?text=" + partTime1;
+                                        let url = "https://wa.me/" + phone + "?text="
+                                            + partTime1;
                                         await window.open(url, "_blank");
                                         partTime1 = "";
                                     }
@@ -1333,6 +1360,7 @@
                     }
                 }
             }
+            let totalReset = true;
             reviewBtn.onclick = async (event) => {
 
                 async function fetchTotalWorkDays(rollno) {
@@ -1486,6 +1514,10 @@
                                 let RollNo = event.target.parentElement.getElementsByClassName("student")[i].getElementsByClassName("rollNo")[0].textContent.split(":")[1];
                                 //console.log(RollNo);
                                 await markAttendance(RollNo, "Reset");
+                                if(totalReset) {
+                                    await markAttendance(951323 , "Reset");
+                                    totalReset = false;
+                                }
                             }
                             document.getElementById("Processing").style.display = "none";
 
@@ -1512,7 +1544,6 @@
                                             partTime1 = "";
                                         }
                                         whatsAppPercentage();
-
                                     }
                                 }
                                 lowPercentageinform();
@@ -1545,7 +1576,6 @@
                 }
             }
 
-
             // Function to mark attendance (Present/Absent)
             async function markAttendance(rollno, status) {
                 try {
@@ -1563,7 +1593,7 @@
                         decision = 0;
                         historyDecision = "Reset";
                     }
-
+                    
                     const response = await fetch(`${APIURL}/${rollno}`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },

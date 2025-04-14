@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Attendance = require('../models/attendanceSchema');
 
-
 // Route to get all attendance records
 router.get('/', async (req, res) => {
     try {
@@ -14,6 +13,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+
 // Route to get the count of attendance records
 router.get('/count', async (req, res) => {
     try {
@@ -24,6 +24,7 @@ router.get('/count', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 // Route to add a new attendance record
 router.post('/', async (req, res) => {
@@ -42,6 +43,7 @@ router.post('/', async (req, res) => {
     }
 });
 
+
 router.get(`/:rollno`, async (req, res) => {
     try {
         const Student = await Attendance.findOne({ rollno: req.params.rollno });
@@ -52,6 +54,7 @@ router.get(`/:rollno`, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 //   router.get('/:_id', async (req, res) => {
 //     try {
@@ -65,8 +68,6 @@ router.get(`/:rollno`, async (req, res) => {
 //   });
 
 
-
-// Route to update attendance
 // Route to update attendance
 router.put('/:rollno', async (req, res) => {
     try {
@@ -74,16 +75,19 @@ router.put('/:rollno', async (req, res) => {
         if (!attendance) {
             return res.status(404).json({ message: 'Student not found' });
         }
-
         console.log(req.params.rollno);
         console.log(req.body.TotalWorkingDays);
         console.log(attendance.count);
         console.log(attendance);
         console.log(attendance.TotalWorkDays);
+        if(req.params.rollno == 951323 && req.body.historyDecision == "Reset") {
+            attendance.TotalWorkDays = 0;
+        }
         if (req.params.rollno == 951323) {
             // Update TotalWorkDays and ensure attendance is set
             attendance.TotalWorkDays += req.body.TotalWorkingDays || 0;
             attendance.attendance = attendance.attendance || 0; // Ensure attendance is set
+
         } else {
             // Update attendance and history
             attendance.attendance += req.body.attendance || 0;
@@ -97,6 +101,8 @@ router.put('/:rollno', async (req, res) => {
             } else if (historyDecision === "Reset") {
                 attendance.history = [];
                 attendance.attendance = 0;
+                attendance.TotalWorkDays = 0;
+
             } else {
                 attendance.history.push(historyDecision);
             }
