@@ -34,6 +34,7 @@ body {
     
 }
 
+
 #depts a {
     text-decoration: none;
     color: black;
@@ -44,6 +45,7 @@ body {
         background:linear-gradient(180deg,rgb(0, 0, 0),rgb(255, 0, 162),rgb(0, 0, 0));
     }
     #depts .dept {
-        width:40vh;
+        width:30vh;
+        height: 20%;
     }
 }

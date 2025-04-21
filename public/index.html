@@ -13,6 +13,7 @@
 </head>
 <script src="https://kit.fontawesome.com/3830fc4322.js" crossorigin="anonymous"></script>
 
+
 <body>
     <div id="bodyDiv">
         <div>
@@ -346,7 +347,7 @@
             document.getElementById("bodyDiv").innerHTML = "";
             document.getElementById("bodyDiv").innerHTML = `
             <div>
-            <h1>MarkIt Easy</h1>
+            <h1>Attendance</h1>
             <div id="firstmain">
 
                 <div id="staff">
@@ -1304,7 +1305,6 @@
                             async function sendWhatsAppPresent() {
 
                                 function checkFunc() {
-
                                     if (whatsappDatas.length == 0) {
                                         let partTime1 = '';
                                         partTime1 += "All students are present on " + `${date}/${month + 1}/${year} %0a ${hours}:${minutes} ${ampm}`;
@@ -1318,6 +1318,7 @@
                                         }
                                         whatsAppMessage();
                                     }
+
                                 }
                                 checkFunc();
                             }
@@ -1373,15 +1374,15 @@
                     catch (error) {
                         console.error('Error fetching TotalWorkDays:', error);
                     }
-                    console.log(TotalWorkingDays);
+                    //console.log(TotalWorkingDays);
                 }
                 await fetchTotalWorkDays(951323);
-                console.log(TotalWorkingDays);
+                //console.log(TotalWorkingDays);
                 let TWKDYS = TotalWorkingDays;
                 const mainPopup = document.getElementById("mainPopup");
                 const popup = document.getElementById("altPopup");
-                console.log(mainPopup);
-                console.log(popup);
+                //console.log(mainPopup);
+                //console.log(popup);
                 popup.innerHTML = ``;
                 popup.innerHTML = `
                 <div>

@@ -40,6 +40,7 @@ body {
 @media screen and (max-width:700px) {
     
     #classes .class {
-        width:40vh;
+        width:30vh;
+        height: 20%;
     }
 }

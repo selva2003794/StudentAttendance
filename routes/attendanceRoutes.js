@@ -49,7 +49,7 @@ router.get(`/:rollno`, async (req, res) => {
         const Student = await Attendance.findOne({ rollno: req.params.rollno });
         if (!Student) return res.status(404).json({ error: 'Student not found' });
         res.status(200).json(Student);
-        console.log(Student);
+        //console.log(Student);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -75,11 +75,11 @@ router.put('/:rollno', async (req, res) => {
         if (!attendance) {
             return res.status(404).json({ message: 'Student not found' });
         }
-        console.log(req.params.rollno);
-        console.log(req.body.TotalWorkingDays);
-        console.log(attendance.count);
-        console.log(attendance);
-        console.log(attendance.TotalWorkDays);
+        //console.log(req.params.rollno);
+        //console.log(req.body.TotalWorkingDays);
+        //console.log(attendance.count);
+        //console.log(attendance);
+        //console.log(attendance.TotalWorkDays);
         if(req.params.rollno == 951323 && req.body.historyDecision == "Reset") {
             attendance.TotalWorkDays = 0;
         }
@@ -93,8 +93,8 @@ router.put('/:rollno', async (req, res) => {
             attendance.attendance += req.body.attendance || 0;
 
             const historyDecision = req.body.historyDecision || ""; // Default to an empty string if undefined
-            console.log(req.body.attendance);
-            console.log(historyDecision);
+            // console.log(req.body.attendance);
+            // console.log(historyDecision);
 
             if (historyDecision === "") {
                 // No action needed
