@@ -263,7 +263,7 @@
         function getPercentage(username, rollno) {
             document.getElementById("waitPopup").style.display = "block";
             document.getElementById("close").onclick = () => {
-            document.getElementById("mainPopup").style.display = "none";
+                document.getElementById("mainPopup").style.display = "none";
             }
 
             const APIURL = `/api/students`;
@@ -1122,7 +1122,7 @@
                     const name = event.target.parentElement.getElementsByTagName("h2")[0].textContent.split(":")[1].trim();
 
                     //console.log(String(rollNo).slice(5));
-                    whatsappDatas.push(`Name : ${name} %0a RollNo : ${rollNo} %0a Absent on ${timeDate}%0a%0a`);
+                    whatsappDatas.push(`Name : ${name}  \n RollNo : ${rollNo} \n   Absent on ${timeDate} \n\n  `);
 
                     //console.log(rollNo);
                     //whatsappDate.push(`Name : ${name} %0a RollNo : ${rollNo} %0a Absent on ${timeDate}`);
@@ -1308,7 +1308,7 @@
                                     if (whatsappDatas.length == 0) {
                                         let partTime1 = '';
                                         partTime1 += "All students are present on " + `${date}/${month + 1}/${year} %0a ${hours}:${minutes} ${ampm}`;
-
+                                        let message = "All students are present on " + `${date}/${month + 1}/${year}  ${hours}:${minutes} ${ampm}`;
                                         async function whatsAppMessage() {
                                             let phone = '+919486500899';
                                             let url = "https://wa.me/" + phone + "?text="
@@ -1316,7 +1316,34 @@
                                             await window.open(url, "_blank");
                                             partTime1 = "";
                                         }
-                                        whatsAppMessage();
+                                        async function sendTelegram() {
+                                            function sendMessage() {
+                                                //const message = document.getElementById('msg').value;
+
+                                                fetch('/send-to-telegram', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: JSON.stringify({ message })
+                                                })
+                                                    .then((response) => {
+                                                        response.json();
+                                                        console.log(response);
+                                                    })
+                                                    .then(data => {
+                                                        console.log(data);
+                                                        alert('Message sent to Telegram successfully!');
+                                                    })
+                                                    .catch(error => {
+                                                        console.error('Error:', error);
+                                                        alert('An error occurred.');
+                                                    });
+                                            }
+                                            sendMessage();
+                                        }
+                                        sendTelegram();
+                                        //whatsAppMessage();
                                     }
 
                                 }
@@ -1339,8 +1366,10 @@
                                 //console.log(whatsappDatas.length);
                                 if (whatsappDatas.length > 0) {
                                     let partTime1 = '';
+                                    let message = '';
                                     for (let i = 0; i < whatsappDatas.length; i++) {
                                         partTime1 += whatsappDatas[i];
+                                        message += whatsappDatas[i];
                                     }
 
                                     async function whatsAppMessage() {
@@ -1350,8 +1379,36 @@
                                         await window.open(url, "_blank");
                                         partTime1 = "";
                                     }
-                                    whatsAppMessage();
+                                    async function sendTelegram1() {
+                                        function sendMessage2() {
+                                            //const message = document.getElementById('msg').value;
+
+                                            fetch('/send-to-telegram', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                },
+                                                body: JSON.stringify({ message })
+                                            })
+                                                .then((response) => {
+                                                    response.json();
+                                                    console.log(response);
+                                                })
+                                                .then(data => {
+                                                    console.log(data);
+                                                    alert('Message sent to Telegram successfully!');
+                                                })
+                                                .catch(error => {
+                                                    console.error('Error:', error);
+                                                    alert('An error occurred.');
+                                                });
+                                        }
+                                        sendMessage2();
+                                    }
+                                    sendTelegram1();
+                                    //whatsAppMessage();
                                 }
+
                             }
 
                             Batch1();
@@ -1489,7 +1546,7 @@
 
                                 if (Number(percentage) < 76) {
                                     NewTr.style.backgroundColor = "rgb(226, 144, 144)";
-                                    lowPercentage.push(`Name:${students[i].name} %0a RollNo:${students[i].rollno}%0a Percentage:${percentage}% %0a%0a`);
+                                    lowPercentage.push(`Name:${students[i].name} \n RollNo:${students[i].rollno} \n Percentage:${percentage}% \n \n`);
 
                                 }
                                 else {
@@ -1515,8 +1572,8 @@
                                 let RollNo = event.target.parentElement.getElementsByClassName("student")[i].getElementsByClassName("rollNo")[0].textContent.split(":")[1];
                                 //console.log(RollNo);
                                 await markAttendance(RollNo, "Reset");
-                                if(totalReset) {
-                                    await markAttendance(951323 , "Reset");
+                                if (totalReset) {
+                                    await markAttendance(951323, "Reset");
                                     totalReset = false;
                                 }
                             }
@@ -1529,14 +1586,43 @@
                             if (lowPercentage.length > 0) {
 
                                 //console.log("Entered");
-                                function lowPercentageinform() {
+                                function lowPercentageInform() {
                                     //console.log(whatsappDatas.length);
                                     if (lowPercentage.length > 0) {
                                         let partTime1 = '';
+                                        let message = '';
                                         for (i = 0; i < lowPercentage.length; i++) {
                                             partTime1 += lowPercentage[i];
-                                        }
+                                            message += lowPercentage[i];
 
+                                        }
+                                        async function sendTelegram2() {
+                                            function sendMessage1() {
+                                                //const message = document.getElementById('msg').value;
+    
+                                                fetch('/send-to-telegram', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: JSON.stringify({ message })
+                                                })
+                                                    .then((response) => {
+                                                        response.json();
+                                                        console.log(response);
+                                                    })
+                                                    .then(data => {
+                                                        console.log(data);
+                                                        console.log('Message sent to Telegram successfully!');
+                                                    })
+                                                    .catch(error => {
+                                                        console.error('Error:', error);
+                                                        alert('An error occurred.Contact Selva');
+                                                    });
+                                            }
+                                            sendMessage1();
+                                        }
+                                        
                                         async function whatsAppPercentage() {
                                             let phone = '+919486500899';
                                             let url = "https://wa.me/" + phone + "?text="
@@ -1544,10 +1630,11 @@
                                             await window.open(url, "_blank");
                                             partTime1 = "";
                                         }
-                                        whatsAppPercentage();
+                                        sendTelegram2();
+                                        //whatsAppPercentage();
                                     }
                                 }
-                                lowPercentageinform();
+                                lowPercentageInform();
                             }
                         }
                         catch (error) {
@@ -1594,7 +1681,7 @@
                         decision = 0;
                         historyDecision = "Reset";
                     }
-                    
+
                     const response = await fetch(`${APIURL}/${rollno}`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
