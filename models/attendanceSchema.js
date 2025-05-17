@@ -26,3 +26,4 @@ const attendanceSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('students', attendanceSchema);
+//module.exports = mongoose.model("3rd_year",attendanceSchema);

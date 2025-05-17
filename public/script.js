@@ -326,6 +326,8 @@ function homePage() {
     </div>
 </div>
     `;
+    document.title = "Attendance";
+
 }
 function showDept() {
     document.getElementById("bodyDiv").innerHTML = "";
@@ -360,12 +362,14 @@ function showCse1() {
 
     document.getElementById("bodyDiv").innerHTML = "";
     //console.log(document.getElementById("bodyDiv"));
-    document.getElementById("bodyDiv").innerHTML = `<div id="main1">
+    document.getElementById("bodyDiv").innerHTML = `
+    <button id="Back" onclick="showCse()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <div id="main1">
 <button id="reviewBtn">Review</button>
 <div id="students">
 
     <div class="student">
-        <img src="student1.jpeg" alt="Aarthese" width="200" height="200">
+        <img src="male.jpg" alt="Aarthese" width="200" height="200">
         <h2>Name: Aarthese</h2>
         <p class="rollNo">Roll No: 1</p>
         <button class="present">Present</button>
@@ -373,7 +377,7 @@ function showCse1() {
         <p class="result"></p>
     </div>
     <div class="student">
-        <img src="student1.jpeg" alt="Aarav" width="200" height="200">
+        <img src="male.jpg" alt="Aarav" width="200" height="200">
         <h2>Name: Aarav</h2>
         <p class="rollNo">Roll No: 2</p>
         <button class="present">Present</button>
@@ -1138,8 +1142,9 @@ function showCse2() {
                         if (String(format).slice(5).startsWith("0")) {
                             find = String(format).slice(6);
                             if (String(find).startsWith("0")) {
+                                console.log(find);
                                 get = find.slice(1);
-                                //console.log(get);
+                                console.log(get);
 
                                 for (let i = 0; i < buttonArray.length; i++) {
                                     if (buttonArray[i] === buttonArray[get - 1]) {
@@ -1271,7 +1276,7 @@ function showCse2() {
                             if (whatsappDatas.length == 0) {
                                 let partTime1 = '';
                                 partTime1 += "All students are present on " + `${date}/${month + 1}/${year} %0a ${hours}:${minutes} ${ampm}`;
-                                let message = "All students are present on " + `${date}/${month + 1}/${year}  ${hours}:${minutes} ${ampm}`;
+                                let message = "All students are present on " + `${correntTime}`;
                                 async function whatsAppMessage() {
                                     let phone = '+919486500899';
                                     let url = "https://wa.me/" + phone + "?text="
@@ -1333,12 +1338,14 @@ function showCse2() {
                             for (let i = 0; i < whatsappDatas.length; i++) {
                                 partTime1 += whatsappDatas[i];
                                 message += whatsappDatas[i];
+
                             }
+                            message += `\n\n${correntTime}`;
 
                             async function whatsAppMessage() {
                                 let phone = '+919486500899';
                                 let url = "https://wa.me/" + phone + "?text="
-                                    + partTime1;
+                                    + partTime1 + `${correntTime}`;
                                 await window.open(url, "_blank");
                                 partTime1 = "";
                             }
@@ -1358,7 +1365,7 @@ function showCse2() {
                                             console.log(response);
                                         })
                                         .then(data => {
-                                            console.log(data);
+                                            //console.log(data);
                                             alert('Message sent to Telegram successfully!');
                                         })
                                         .catch(error => {
@@ -1585,7 +1592,7 @@ function showCse2() {
                                     }
                                     sendMessage1();
                                 }
-                                
+
                                 async function whatsAppPercentage() {
                                     let phone = '+919486500899';
                                     let url = "https://wa.me/" + phone + "?text="
@@ -1669,10 +1676,34 @@ function showCse3() {
 
     document.getElementById("bodyDiv").innerHTML = "";
     //console.log(document.getElementById("bodyDiv"));
-    document.getElementById("bodyDiv").innerHTML = `<div id="main1">
-<button id="reviewBtn">Review</button>
-<div id="students">
+    document.getElementById("bodyDiv").innerHTML = `
+<div id="mainPopup">
+    <div id="altPopup">
+                    
+    </div>
+</div>
+    <div id="main1">
+<div style="display:none;" id="mainpopupTable">
+    <div id="popup">
+        <button id="closeTable">Close</button>
+        <table id="table" border="1">
+            <tr>
+            <th>S.No</th>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Percentage</th>
+            </tr>
 
+        </table>
+    </div>
+</div>
+<div id="Processing">
+    <h2>Waiting for Processing...</h2>
+</div>
+    <button id="Back" onclick="showCse()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <button id="shortCut">Put Attendance</button>
+<button id="reviewBtn">Get Percentage</button>
+<div id="students" class="allStudents">
     <div class="student">
         <img src="female.jpg" alt="Ahishajeslin" width="200" height="200">
         <h2>Name: Ahishajeslin</h2>
@@ -2165,6 +2196,34 @@ function showCse3() {
 </div>
 </div>`;
 
+    async function TotalWorkedDay(rollno) {
+        //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; 
+        const APIURL = '/api/3rd_year';
+        try {
+            const response = await fetch(`${APIURL}/${rollno}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ TotalWorkingDays: 1 })
+            });
+
+            //console.log(response.ok);
+
+            const data = await response.json();
+
+            if (response.ok) {
+                //console.log("TotalworkDays updated:", data);
+                //fetchStudents();
+            } else {
+                console.error("Error updating TotalworkDay:", data.message);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    document.title = "CSE 3-Year";
+    const reviewBtn = document.getElementById("reviewBtn");
+    const shortCut = document.getElementById("shortCut");
+
     const presentBtn = document.getElementsByClassName("present");
     const absentBtn = document.getElementsByClassName("absent");
 
@@ -2173,9 +2232,14 @@ function showCse3() {
     const date = time.getDate();
     const month = time.getMonth();
     let hours = time.getHours();
+    let ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;
-    const minutes = time.getMinutes();
+    hours = hours.toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const correntTime = time.toLocaleString();
 
+    let TotalDays = true;
+    let whatsappDatas = [];
     Array.from(presentBtn).forEach(button => {
         button.addEventListener("click", (event) => {
             //event.target.parentElement.getElementsByClassName("absent")[0].innerHTML = "<del>Absent</del>";
@@ -2188,9 +2252,13 @@ function showCse3() {
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
             //console.log(rollNo);
-            //markAttendance(rollNo, "present");
+            markAttendance(rollNo, "Present");
             //saveAttendance(name, rollNo.value, "Present", timeDate);
             fetchStudentsCount();
+            if (TotalDays) {
+                TotalWorkedDay(951322);
+                TotalDays = false;
+            }
         });
     });
 
@@ -2204,28 +2272,424 @@ function showCse3() {
             let timeDate = `${date}/${month + 1}/${year} %0a ${hours}:${minutes}`;
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
+            const name = event.target.parentElement.getElementsByTagName("h2")[0].textContent.split(":")[1].trim();
+
+            whatsappDatas.push(`Name : ${name}  \n RollNo : ${rollNo} \n   Absent on ${correntTime} \n\n  `);
             markAttendance(rollNo, "Absent");
             //saveAttendance(name, rollNo.value, "Absent", timeDate);
             fetchStudentsCount();
         });
     });
+    const APIURL = '/api/3rd_year';
+    //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; // If running on the same domain
+    shortCut.addEventListener("click", async (event) => {
+        var allButtons = event.target.parentElement.querySelector(".allStudents").children;
 
-    const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; // If running on the same domain
+        buttonArray = [];
+        for (let i = 0; i < allButtons.length; i++) {
+            buttonArray.push(allButtons[i]);
+        }
+        //console.log(buttonArray);
+        //console.log(buttonArray[0].querySelector(".rollNo").textContent.split(":")[1].trim());
+        const AbsentIs = window.prompt("Enter the number of Students Absent");
+
+        if (AbsentIs == "" || AbsentIs == null) {
+            alert("Please enter the number of students absent");
+            return;
+        }
+        if(AbsentIs.includes("@#$%^&*(abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ)){")) {
+            alert("invaild data");
+            return;
+        }
+        else {
+            try {
+                if (AbsentIs > 0) {
+                    for (let i = 0; i < AbsentIs; i++) {
+                        const getAbsentIsNumber = window.prompt("Enter the Absent Students Number one-by-one(23104---):");
+
+                        if (getAbsentIsNumber == "" || getAbsentIsNumber == null) {
+                            alert("invalid input");
+                        }
+                        else if (getAbsentIsNumber.startsWith("0")) {
+                            format = Number(`22104${getAbsentIsNumber}`);
+                            for (let i = 0; i < buttonArray.length; i++) {
+                                if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
+                                    //console.log(buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim())
+                                    buttonArray[i].querySelector(".absent").click();
+                                    buttonArray[i].querySelector(".absent").style.display = "none";
+                                    buttonArray[i].querySelector(".present").style.display = "none";
+                                    buttonArray[i].querySelector(".result").textContent = "Absent";
+                                    buttonArray[i].querySelector(".result").style.color = "red";
+                                    buttonArray[i] = "";
+                                    break;
+                                }
+
+                            }
+                        }
+                        else if (getAbsentIsNumber.startsWith("22104")) {
+                            format = Number(getAbsentIsNumber);
+                            for (let i = 0; i < buttonArray.length; i++) {
+                                if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
+                                    buttonArray[i].querySelector(".absent").click();
+                                    buttonArray[i].querySelector(".absent").style.display = "none";
+                                    buttonArray[i].querySelector(".present").style.display = "none";
+                                    buttonArray[i].querySelector(".result").textContent = "Absent";
+                                    buttonArray[i].querySelector(".result").style.color = "red";
+                                    buttonArray[i] = "";
+                                    break;
+                                }
+
+                            }
+
+                        }
+                        else if (getAbsentIsNumber.startsWith("30")) {
+                            format = Number(`22104${getAbsentIsNumber}`);
+                            for (let i = 0; i < buttonArray.length; i++) {
+                                if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
+                                    buttonArray[i].querySelector(".absent").click();
+                                    buttonArray[i].querySelector(".absent").style.display = "none";
+                                    buttonArray[i].querySelector(".present").style.display = "none";
+                                    buttonArray[i].querySelector(".result").textContent = "Absent";
+                                    buttonArray[i].querySelector(".result").style.color = "red";
+                                    buttonArray[i] = "";
+                                    break;
+                                }
+
+                            }
+                        }
+                        else if (getAbsentIsNumber.startsWith("70")) {
+                            format = Number(`22104${getAbsentIsNumber}`);
+                            for (let i = 0; i < buttonArray.length; i++) {
+                                if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == getAbsentIsNumber) {
+                                    buttonArray[i].querySelector(".absent").click();
+                                    buttonArray[i].querySelector(".absent").style.display = "none";
+                                    buttonArray[i].querySelector(".present").style.display = "none";
+                                    buttonArray[i].querySelector(".result").textContent = "Absent";
+                                    buttonArray[i].querySelector(".result").style.color = "red";
+                                    buttonArray[i] = "";
+                                    break;
+                                }
+                            }
+
+                        }
+                        setTimeout(() => {
+                            presentFunction();
+                        }, 3000);
+
+                        presentFunction = async () => {
+                            for (i = 0; i < buttonArray.length; i++) {
+                                if (buttonArray[i] == "") {
+
+                                }
+                                else {
+                                    await buttonArray[i].querySelector(".present").click();
+                                }
+                            }
+                        }
+                    }
+                    if (whatsappDatas.length > 0) {
+                        let message = '';
+                        for (let i = 0; i < whatsappDatas.length; i++) {
+                            message += whatsappDatas[i];
+                        }
+                        async function sendTelegram() {
+                            function sendMessage() {
+                                //const message = document.getElementById('msg').value;
+
+                                fetch('/send-to-telegram-3rd-year', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({ message })
+                                })
+                                    .then((response) => {
+                                        response.json();
+                                        //console.log(response);
+                                        console.log(response.ok);
+                                    })
+                                    .then(data => {
+                                        //console.log(data);
+                                        window.alert('Message sent to Telegram successfully!');
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        alert('An error occurred.');
+                                    });
+                            }
+                            sendMessage();
+                        }
+                        sendTelegram();
+                    }
+                }
+                else {
+                    for (i = 0; i < buttonArray.length; i++) {
+                        buttonArray[i].querySelector(".present").style.display = "none";
+                        buttonArray[i].querySelector(".absent").style.display = "none";
+                        buttonArray[i].querySelector(".result").textContent = "Present";
+                        buttonArray[i].querySelector(".result").style.color = "green";
+                        buttonArray[i].querySelector(".present").click();
+                    }
+                    let message = "All students are present on " + `${correntTime}`;
+                    async function sendTelegram() {
+                        function sendMessage() {
+                            //const message = document.getElementById('msg').value;
+
+                            fetch('/send-to-telegram-3rd-year', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ message })
+                            })
+                                .then((response) => {
+                                    response.json();
+                                    //console.log(response);
+                                })
+                                .then(data => {
+                                    //console.log(data);
+                                    alert('Message sent to Telegram successfully!');
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('An error occurred.');
+                                });
+                        }
+                        sendMessage();
+                    }
+                    sendTelegram();
+
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+
+    });
+    let totalReset = true;
+    reviewBtn.onclick = async (event) => {
+        let TotalWorkingDays
+        async function fetchTotalWorkDays(rollno) {
+
+            try {
+                const response = await fetch(`${APIURL}/${rollno}`);
+                const TotalWorkDays = await response.json();
+                TotalWorkingDays = TotalWorkDays.TotalWorkDays;
+                console.log(TotalWorkingDays);
+                console.log(response);
+            }
+            catch (error) {
+                console.error('Error fetching TotalWorkDays:', error);
+            }
+            //console.log(TotalWorkingDays);
+        }
+        await fetchTotalWorkDays(951322);
+        //console.log(TotalWorkingDays);
+        let TWKDYS = TotalWorkingDays;
+        const mainPopup = document.getElementById("mainPopup");
+        const popup = document.getElementById("altPopup");
+        //console.log(mainPopup);
+        //console.log(popup);
+        popup.innerHTML = ``;
+        popup.innerHTML = `
+        <div>
+            <h2><i class="fa-solid fa-triangle-exclamation"></i>Warning</h2>
+            <p>This will reset the attendance of all students. Are you sure you want to proceed?</p>
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>`;
+        mainPopup.style.display = "block";
+
+        document.getElementById("noBtn").onclick = () => {
+            mainPopup.style.display = "none";
+        }
+        document.getElementById("yesBtn").onclick = () => {
+
+            mainPopup.style.display = "none";
+            document.getElementById("Processing").style.display = "block";
+            async function fetchStudentsCount() {
+                try {
+                    const response = await fetch(`${APIURL}/count`);
+                    console.log(response);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const data = await response.json();
+                    COunt = data.count;
+                    console.log(`Total students: ${data.count}`);
+                } catch (error) {
+                    console.error('Error fetching student count:', error);
+                }
+            }
+
+            async function fetchStudents() {
+
+                try {
+                    const response = await fetch(APIURL);
+                    const students = await response.json();
+
+                    //console.log(students);
+                    //console.log(COunt);
+
+                    //console.log(event.target.parentElement.querySelector(".allStudents").children);
+                    //console.log(event.target.parentElement.querySelectorAll(".student"));
+                    const allStudents = event.target.parentElement.querySelector(".allStudents").children;
+
+                    //console.log(allStudents);
+                    const table = document.getElementById("table");
+                    //console.log(students);
+
+                    let lowPercentage = [];
+                    document.getElementById("mainpopupTable").style.display = "block";
+                    for (let i = 0; i < COunt - 1; i++) {
+
+                        let percentage = ((students[i].attendance / TWKDYS) * 100).toFixed(2);
+
+                        //console.log(typeof percentage);
+                        const NewTr = document.createElement("tr");
+                        const NewTd = document.createElement("td");
+                        const NewTd3 = document.createElement("td");
+                        const NewTd1 = document.createElement("td");
+                        const NewTd2 = document.createElement("td");
 
 
+                        if (Number(percentage) < 76) {
+                            NewTr.style.backgroundColor = "rgb(226, 144, 144)";
+                            lowPercentage.push(`Name:${students[i].name} \n RollNo:${students[i].rollno} \n Percentage:${percentage}% \n \n`);
+
+                        }
+                        else {
+                            NewTr.style.backgroundColor = "rgb(117, 184, 122)";
+                        }
+
+                        NewTd3.textContent = i + 1;
+                        NewTd.textContent = students[i].name;
+                        NewTd1.textContent = students[i].rollno;
+                        NewTd2.textContent = `${percentage}%`;
+
+                        NewTr.append(NewTd3, NewTd, NewTd1, NewTd2);
+                        table.append(NewTr);
+
+                        /*console.log(allStudents[i]);
+                        Newh4 = document.createElement("h4");
+                        let percentage = ((students[i].attendance / TWKDYS) * 100).toFixed(2);
+                        //console.log(percentage);
+                        Newh4.style.color = "blue";
+                        Newh4.innerHTML = `${students[i].name} Attendance Percentage = ${percentage}%`;
+                        allStudents[i].append(Newh4);*/
+                        //console.log(Newdiv.textContent);
+                        let RollNo = event.target.parentElement.getElementsByClassName("student")[i].getElementsByClassName("rollNo")[0].textContent.split(":")[1];
+                        //console.log(RollNo);
+                        await markAttendance(RollNo, "Reset");
+                        if (totalReset) {
+                            await markAttendance(951322, "Reset");
+                            totalReset = false;
+                        }
+                    }
+                    document.getElementById("Processing").style.display = "none";
+
+                    document.getElementById("closeTable").onclick = () => {
+                        document.getElementById("mainpopupTable").style.display = "none";
+                    }
+
+                    if (lowPercentage.length > 0) {
+
+                        //console.log("Entered");
+                        function lowPercentageInform() {
+                            //console.log(whatsappDatas.length);
+                            if (lowPercentage.length > 0) {
+                                let partTime1 = '';
+                                let message = '';
+                                for (i = 0; i < lowPercentage.length; i++) {
+                                    partTime1 += lowPercentage[i];
+                                    message += lowPercentage[i];
+
+
+                                }
+                                message += `\n${correntTime}`;
+                                async function sendTelegram2() {
+                                    function sendMessage1() {
+                                        //const message = document.getElementById('msg').value;
+
+                                        fetch('/send-to-telegram-3rd-year', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify({ message })
+                                        })
+                                            .then((response) => {
+                                                response.json();
+                                                console.log(response);
+                                            })
+                                            .then(data => {
+                                                console.log(data);
+                                                console.log('Message sent to Telegram successfully!');
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                                alert('An error occurred.Contact Selva');
+                                            });
+                                    }
+                                    sendMessage1();
+                                }
+
+                                async function whatsAppPercentage() {
+                                    let phone = '+919486500899';
+                                    let url = "https://wa.me/" + phone + "?text="
+                                        + partTime1;
+                                    await window.open(url, "_blank");
+                                    partTime1 = "";
+                                }
+                                sendTelegram2();
+                                //whatsAppPercentage();
+                            }
+                        }
+                        lowPercentageInform();
+                    }
+                }
+                catch (error) {
+                    console.error('Error fetching students:', error);
+                }
+            }
+            fetchStudentsCount();
+            setTimeout(() => {
+                fetchStudents();
+            }, 2000);
+        }
+    }
+    fetchStudents();
     // Fetch and display the count of students
     async function fetchStudentsCount() {
         try {
             const response = await fetch(`${APIURL}/count`);
-            console.log(response);
+            //console.log(response);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
             count = data.count;
-            console.log(`Total students: ${data.count}`);
+            //console.log(`Total students: ${data.count}`);
         } catch (error) {
             console.error('Error fetching student count:', error);
+        }
+    }
+    async function fetchStudents() {
+        const APIURL = '/api/3rd_year'; // Replace with your backend API endpoint
+        try {
+            // Fetch student data from the backend
+            const response = await fetch(APIURL);
+            if (!response.ok) {
+                throw new Error('Failed to fetch students');
+            }
+
+            const students = await response.json(); // Parse the JSON response
+            //console.log('Fetched Students:', students);
+
+        } catch (error) {
+            console.error('Error fetching students:', error);
+            alert('Failed to load students. Please try again later.');
         }
     }
 
@@ -2235,21 +2699,33 @@ function showCse3() {
         const date = new Date().toLocaleString();
         const historyEntry = `${status} on ${date}`;
         const check = await fetch(APIURL);
-        console.log(check);
+        //console.log(check);
         try {
-            const response = await fetch(`${APIURL}/${3}`, {
+            const date = new Date().toLocaleString();
+            let decision = 0;
+            let historyDecision = "";
+
+            if (status === "Absent") {
+                decision = 0;
+                historyDecision = `${status} on ${date}`;
+            } else if (status === "Present") {
+                decision = 1;
+                historyDecision = ""; // No history entry for "Present"
+            } else if (status === "Reset") {
+                decision = 0;
+                historyDecision = "Reset";
+            }
+
+            const response = await fetch(`${APIURL}/${rollno}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ attendance: status, historyEntry })
+                body: JSON.stringify({ attendance: decision, historyDecision }) // Include historyDecision
             });
-
-            console.log(response.ok);
 
             const data = await response.json();
 
             if (response.ok) {
-                console.log("Attendance updated:", data);
-                //fetchStudents();
+                //console.log("Attendance updated:", data);
             } else {
                 console.error("Error updating attendance:", data.message);
             }
@@ -2257,6 +2733,7 @@ function showCse3() {
             console.error("Error:", error);
         }
     }
+
 }
 
 //SHOW CSE4
@@ -2264,12 +2741,14 @@ function showCse4() {
 
     document.getElementById("bodyDiv").innerHTML = "";
     //console.log(document.getElementById("bodyDiv"));
-    document.getElementById("bodyDiv").innerHTML = `<div id="main1">
+    document.getElementById("bodyDiv").innerHTML = `
+    <button id="Back" onclick="showCse()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <div id="main1">
 <button id="reviewBtn">Review</button>
 <div id="students">
 
     <div class="student">
-        <img src="student1.jpeg" alt="Aarthese" width="200" height="200">
+        <img src="male.jpg" alt="Aarthese" width="200" height="200">
         <h2>Name: Aarthese</h2>
         <p class="rollNo">Roll No: 1</p>
         <button class="present">Present</button>
@@ -2277,7 +2756,7 @@ function showCse4() {
         <p class="result"></p>
     </div>
     <div class="student">
-        <img src="student1.jpeg" alt="Aarav" width="200" height="200">
+        <img src="male.jpg" alt="Aarav" width="200" height="200">
         <h2>Name: Aarav</h2>
         <p class="rollNo">Roll No: 2</p>
         <button class="present">Present</button>
