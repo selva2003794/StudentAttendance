@@ -1089,7 +1089,7 @@ function showCse2() {
             const name = event.target.parentElement.getElementsByTagName("h2")[0].textContent.split(":")[1].trim();
 
             //console.log(String(rollNo).slice(5));
-            whatsappDatas.push(`Name : ${name}  \n RollNo : ${rollNo} \n   Absent on ${timeDate} \n\n  `);
+            whatsappDatas.push(`Name : ${name}  \n RollNo : ${rollNo} \n   Absent on ${correntTime} \n  `);
 
             //console.log(rollNo);
             //whatsappDate.push(`Name : ${name} %0a RollNo : ${rollNo} %0a Absent on ${timeDate}`);
