@@ -1514,7 +1514,7 @@ function showCse2() {
                         const NewTd2 = document.createElement("td");
 
 
-                        if (Number(percentage) < 76) {
+                        if (Number(percentage) < 75) {
                             NewTr.style.backgroundColor = "rgb(226, 144, 144)";
                             lowPercentage.push(`Name:${students[i].name} \n RollNo:${students[i].rollno} \n Percentage:${percentage}% \n \n`);
 
@@ -2311,17 +2311,26 @@ function showCse3() {
                             alert("invalid input");
                         }
                         else if (getAbsentIsNumber.startsWith("0")) {
+                            //console.log("Worked");
                             format = Number(`22104${getAbsentIsNumber}`);
                             for (let i = 0; i < buttonArray.length; i++) {
-                                if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
-                                    //console.log(buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim())
+                                if( buttonArray[i] == "") {
+
+                                }
+                                else if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
+
+                                    //console.log(buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim());
+                                    //console.log(format);
+                                    //console.log(i);
+
                                     buttonArray[i].querySelector(".absent").click();
                                     buttonArray[i].querySelector(".absent").style.display = "none";
                                     buttonArray[i].querySelector(".present").style.display = "none";
                                     buttonArray[i].querySelector(".result").textContent = "Absent";
                                     buttonArray[i].querySelector(".result").style.color = "red";
                                     buttonArray[i] = "";
-                                    break;
+
+                                    
                                 }
 
                             }
@@ -2336,7 +2345,7 @@ function showCse3() {
                                     buttonArray[i].querySelector(".result").textContent = "Absent";
                                     buttonArray[i].querySelector(".result").style.color = "red";
                                     buttonArray[i] = "";
-                                    break;
+                                    
                                 }
 
                             }
@@ -2352,7 +2361,7 @@ function showCse3() {
                                     buttonArray[i].querySelector(".result").textContent = "Absent";
                                     buttonArray[i].querySelector(".result").style.color = "red";
                                     buttonArray[i] = "";
-                                    break;
+                                    
                                 }
 
                             }
@@ -2367,14 +2376,14 @@ function showCse3() {
                                     buttonArray[i].querySelector(".result").textContent = "Absent";
                                     buttonArray[i].querySelector(".result").style.color = "red";
                                     buttonArray[i] = "";
-                                    break;
+                                    
                                 }
                             }
 
                         }
                         setTimeout(() => {
                             presentFunction();
-                        }, 3000);
+                        }, 2000);
 
                         presentFunction = async () => {
                             for (i = 0; i < buttonArray.length; i++) {
@@ -2554,7 +2563,7 @@ function showCse3() {
                         const NewTd2 = document.createElement("td");
 
 
-                        if (Number(percentage) < 76) {
+                        if (Number(percentage) < 75) {
                             NewTr.style.backgroundColor = "rgb(226, 144, 144)";
                             lowPercentage.push(`Name:${students[i].name} \n RollNo:${students[i].rollno} \n Percentage:${percentage}% \n \n`);
 
