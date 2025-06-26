@@ -1709,8 +1709,8 @@ async function showCse2() {
         document.querySelector("#StaffLoginBtn").onclick = async () => {
             let data = await getAllStaff();
             //console.log(data);
-            const staffName = document.getElementById("staffName").value;
-            const staffId = document.getElementById("staffId").value;
+            const staffName = document.getElementById("staffName").value.trim();
+            const staffId = document.getElementById("staffId").value.trim();
 
             if (staffName === "" || staffId === "" || staffName == null || staffId == null) {
                 window.alert("Enter the Staff Name and Staff ID");
