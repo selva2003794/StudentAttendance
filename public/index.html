@@ -12,10 +12,16 @@
     <link rel="icon" href="icon.png">
 </head>
 <script src="https://kit.fontawesome.com/3830fc4322.js" crossorigin="anonymous"></script>
+
 <body>
+    <div id="wait" style="display:none;">
+        <h2 id="waitMeg"></h2>
+    </div>
     <div id="bodyDiv">
         <div>
             <h1>Attendance</h1>
+            <h2 id="Time"></h2>
+            <h2 id="Date"></h2>
             <div id="firstmain">
 
                 <div id="staff">
@@ -27,6 +33,11 @@
                     <i class="fa-solid fa-graduation-cap fonts"></i>
                     <h1>Students</h1>
                     <button id="loginStudents" onclick="loginStudents()">Login</button>
+                </div>
+                <div id="Admin">
+                    <i class="fa-solid fa-user-shield fonts"></i>
+                    <h1>Admin</h1>
+                    <button id="loginAdmin" onclick="loginAdmin()">Login</button>
                 </div>
             </div>
         </div>

@@ -12,7 +12,8 @@ const attendanceSchema = new mongoose.Schema({
     },
     attendance: {
         type: Number,
-        required: true
+        required: true,
+        
     },
     history: {
         type: Array,

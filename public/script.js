@@ -4,15 +4,55 @@ const date = time.getDate();
 const month = time.getMonth();
 let hours = time.getHours();
 const meritiam = hours >= 12 ? "PM" : "AM";
-hours = hours % 12 || 12;
-const minutes = time.getMinutes();
-let timeDate = `${date}/${month + 1}/${year}`;
-const GoodTime = meritiam == "AM" ? "Good Morning" : "Good Afternoon";
 
+hours = hours.toString().padStart(2, "0");
+const minutes = time.getMinutes().toString().padStart(2, "0");
+
+RailTime = `${hours}:${minutes}`;
+hours = hours % 12 || 12;
+let timeDate = `${date}/${month + 1}/${year}`;
+let Time = `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${meritiam}`;
+
+const GoodTime = meritiam == "AM" ? "Good Morning🌅" : "Good Afternoon☀️" || RailTime >= "16:00" ? "Good Evening🌇" : "Good Afternoon☀️";
+document.getElementById("Time").textContent = `${GoodTime}`;
+document.getElementById("Date").textContent = `Today is ${timeDate}`;
+
+
+const loginAdmin = () => {
+    document.getElementById("bodyDiv").innerHTML = "";
+    document.getElementById("bodyDiv").innerHTML = `
+    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <h1>Login for Admin</h1>
+    <div id="main">
+   
+    <div id="loginBox">
+        <table>
+            <tr>
+                <td colspan="2">
+                    <h2>Login for Admin</h2>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="username">UserName:</label></td>
+                <td><input type="text" id="username"></td>
+            </tr>
+            <tr>
+                <td><label for="password">Password:</label></td>
+                <td><input type="password" id="password"></td>
+            </tr>
+            <tr>
+                <td><button id="loginBtn" onclick="showLoginAdmin()">Login</button></td>
+            </tr>
+        </table>
+    </div>`
+}
 
 const loginStudents = () => {
     document.getElementById("bodyDiv").innerHTML = "";
-    document.getElementById("bodyDiv").innerHTML = `<div id="main">
+    document.getElementById("bodyDiv").innerHTML = `
+    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <h1>Login for Students</h1>
+    <div id="main">
     <div id="loginBox">
         <table>
             <tr>
@@ -38,7 +78,10 @@ const loginStudents = () => {
 
 const loginStaff = () => {
     document.getElementById("bodyDiv").innerHTML = "";
-    document.getElementById("bodyDiv").innerHTML = `<div id="main">
+    document.getElementById("bodyDiv").innerHTML = `
+    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <h1>Login for Staff</h1>
+    <div id="main">
     <div id="loginBox">
         <table>
             <tr>
@@ -198,6 +241,664 @@ function showLoginStudents() {
     }
 }
 
+const showLoginAdmin = () => {
+
+    const userName = document.getElementById("username");
+    const password = document.getElementById("password");
+    if (userName.value == "" || userName.value == null || password.value == "" || password.value == null) {
+        window.alert("Enter UserName and Password");
+    }
+
+    else if (userName.value.trim() == "Admin" && password.value == "12345") {
+        showloginAdmin = () => {
+            document.getElementById("bodyDiv").innerHTML = "";
+            document.getElementById("bodyDiv").innerHTML = `
+        <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+        <h1>Welcome to JACSICE</h1>
+        <div id="AdminMain">
+            <h2>${GoodTime}</h2>
+            <h2>Today is ${timeDate}</h2>
+            <div id="adminPage">
+                <div id="Access">
+                    <div>
+                        <i class="fa-solid fa-users fonts"></i>
+                        <h2>Students</h2>
+                        <button class="LoginBtn" onclick="AdminDept()">Show Students</button>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-user-shield fonts"></i>
+                        <h2>Staff</h2>
+                        <button class="LoginBtn" onclick="showAllStaff()">Show Staff</button>
+                    </div>
+                </div>
+            </div>`;
+            document.title = "Admin";
+        }
+        showloginAdmin();
+    }
+    else {
+        window.alert("invalid username or password");
+    }
+}
+
+function AdminDept() {
+    document.getElementById("bodyDiv").innerHTML = "";
+    //console.log(document.getElementById("bodyDiv"));
+
+    document.getElementById("bodyDiv").innerHTML = `
+    <button id="Back" onclick="showloginAdmin()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <div id="depts">
+<a ><div id="cse" class="dept" onclick="AdminCse()"><h1>CSE</h1></div></a>
+<a href="ececlass.html"><div id="ece" class="dept"><h1>ECE</h1></div></a>
+<a href="mechclass.html"><div id="mech" class="dept"><h1>MECH</h1></div></a>
+<a href="aiclass.html"><div id="ai" class="dept"><h1>AI</h1></div></a>
+<a href="itclass.html"> <div id="id" class="dept"><h1>IT</h1></div></a>
+</div>`;
+    document.title = "Departments";
+}
+
+function AdminCse() {
+    document.getElementById("bodyDiv").innerHTML = "";
+    document.getElementById("bodyDiv").innerHTML = `
+        <button id="Back" onclick="AdminDept()"><i class="fa-solid fa-chevron-left"></i></i></button>
+        <div id="classes">
+<a ><div id="1year" class="class" onclick=""><h1>1 year</h1></div></a>
+<a ><div id="2year" class="class" onclick="AdminCse2()"><h1>2 year</h1></div></a>
+<a ><div id="3year" class="class" onclick=""><h1>3 year</h1></div></a>
+<a><div id="4year" class="class" onclick=""><h1>4 year</h1></div></a>
+</div>`;
+    document.title = "CSE Classes";
+}
+
+async function AdminCse2() {
+    let data = await getAllStudent();
+    //console.log(data);
+    document.getElementById("bodyDiv").innerHTML = "";
+    //console.log(document.getElementById("bodyDiv"));
+    document.getElementById("bodyDiv").innerHTML = `
+
+<button id="Back" onclick="AdminCse()"><i class="fa-solid fa-chevron-left"></i></button>
+    <div style="display:none;" id="mainAddPopup">
+        <button id="Back" class="StaffBack"><i class="fa-solid fa-chevron-left"></i></button>
+    <div id="popup">
+    <form>
+        <h1 id="Title">Add Students</h1>
+        <table>
+            <tr>
+                <td><label for="StudentName">Student Name: </label></td><td><input type="text" placeholder="Student Name" required id="StudentName"></td>
+            </tr>
+            <tr>
+                <td><label for="rollno">Roll No: </label></td><td><input type="number" placeholder="Roll No" required id="rollno"></td>
+            </tr>
+
+
+            <tr>
+                <td colspan="2"><button type="button" id="LoginBtn" onclick="AddStudent()">Add Student</button></td>
+
+            </tr>
+            <tr>
+                <td colspan="2"><button type="button" id="UpdateStudentBtn" style="display:none"  onclick="UpdateStudentInBase()">Update Student</button></td>            
+            </tr>
+        </table>
+    </form>
+</div>
+</div>
+<h1>CSE 2-YEAR</h1>
+<div id="students" class="allStudents">
+    <button id="AddStaff" onclick="ShowStudentPOPUP()">+</button>
+</div>`;
+    document.title = "CSE 2-YEAR";
+    const AllStudents = document.querySelector(".allStudents");
+    data.forEach(student => {
+        if (student.name == "TWD") {
+        }
+        else {
+            StudentDiv = document.createElement("div");
+            StudentDiv.classList = "student";
+            StudentDiv.innerHTML = `
+        <img src="male.jpg" alt="${student.name}" width="200px" height="200px" >
+        <h2><strong>Name: </strong> ${student.name}</h2>
+        <p><strong>Roll No: </strong> ${student.rollno}</p>
+        <h3>History</h3>
+        <button id="updateBtn" onclick="updateStudentPOPUP(event)">update</button>
+        <button id="deleteBtn" onclick="deleteStudent('${student.rollno}')">Delete</button>
+
+        `;
+            AllStudents.appendChild(StudentDiv);
+        }
+    })
+}
+
+ShowStudentPOPUP = () => {
+    document.getElementById("mainAddPopup").style.display = "block";
+    document.querySelector(".StaffBack").onclick = () => {
+        document.getElementById("mainAddPopup").style.display = "none";
+    }
+    document.getElementById("UpdateStudentBtn").style.display = "none";
+    document.getElementById("LoginBtn").style.display = "block";
+
+}
+
+updateStudentPOPUP = (event) => {
+    document.getElementById("mainAddPopup").style.display = "block";
+    document.getElementById("Title").textContent = "Update Staff";
+    document.querySelector(".StaffBack").onclick = () => {
+        document.getElementById("mainAddPopup").style.display = "none";
+    }
+    document.getElementById("UpdateStudentBtn").style.display = "block";
+    document.getElementById("LoginBtn").style.display = "none";
+
+    const StudentName = document.getElementById("StudentName");
+    const RollNo = document.getElementById("rollno");
+    event.target.parentElement.querySelectorAll("p").forEach(p => {
+        studentRollNo = p.textContent;
+        console.log(studentRollNo);
+        if (studentRollNo.startsWith("Roll No")) {
+            RollNo.value = studentRollNo.split(":")[1].trim();
+        }
+    });
+    event.target.parentElement.querySelectorAll("h2").forEach(h2 => {
+        studentName = h2.textContent;
+        console.log(studentName);
+        if (studentName.startsWith("Name")) {
+            StudentName.value = studentName.split(":")[1].trim();
+        }
+    })
+}
+
+function UpdateStudentInBase() {
+    const StudentName = document.getElementById("StudentName");
+    const RollNo = document.getElementById("rollno");
+    console.log(StudentName.value, RollNo.value);
+    let datas = {
+        name: StudentName.value,
+        rollno: RollNo.value,
+    }
+    updateStudent(RollNo.value, datas);
+
+}
+
+async function updateStudent(rollno, updatedData) {
+    const APIURL = `/api/students/${rollno} `;
+    try {
+        const response = await fetch(APIURL, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log("Student updated:", data);
+
+        document.getElementById("mainAddPopup").style.display = "none";
+        document.getElementById("waitMeg").textContent = "Student Updated Successfully";
+        document.getElementById("wait").style.backgroundColor = "rgb(0, 255, 0)";
+        document.getElementById("wait").style.display = "block";
+        await AdminCse2();
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+        }, 4000);
+        // Optionally, you can refresh the staff list or show a success message
+    } catch (error) {
+        document.getElementById("waitMeg").textContent = 'Error updating Student:', error;
+        document.getElementById("wait").style.backgroundColor = "rgb(255, 0, 0)";
+        document.getElementById("wait").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+        }, 4000);
+        console.error('Error updating Student:', error);
+    }
+}
+
+async function deleteStudent(rollno) {
+    const APIURL = `/api/students/${rollno} `;
+    try {
+        const response = await fetch(APIURL, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log("Student deleted:", data);
+        document.getElementById("waitMeg").textContent = "Student Deleted";
+        document.getElementById("wait").style.display = "block";
+        document.getElementById("wait").style.backgroundColor = "red";
+        await AdminCse2();
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+            document.getElementById("wait").style.backgroundColor = "rgb(0, 255, 0);";
+
+        }, 4000);
+        // Optionally, you can refresh the staff list or show a success message
+    } catch (error) {
+        console.error('Error deleting Student:', error);
+    }
+}
+
+function AddStudent() {
+    const StudentName = document.getElementById("StudentName");
+    const RollNo = document.getElementById("rollno");
+
+
+    if (StudentName.value == "" || RollNo.value == "") {
+        window.alert("Enter all the fields");
+    }
+    else {
+        //console.log(StudentName.value, RollNo.value);
+        // Add code to save staff details
+        AddNewStudent(StudentName.value.trim(), RollNo.value.trim());
+        // After saving, you can close the popup
+        document.getElementById("mainAddPopup").style.display = "none";
+
+    }
+}
+
+async function AddNewStudent(name, rollno) {
+
+    if (name === "" || rollno === "") {
+        window.alert("Please fill all fields");
+        return;
+    }
+    attendance = 0;
+    history = [];
+    TotalWorkDays = 0;
+
+    const APIURL = '/api/students';
+    try {
+        const response = await fetch('/api/students', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, rollno, attendance, history, TotalWorkDays })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        //console.log("New Student added:", data);
+        document.getElementById("waitMeg").textContent = "Student Added Successfully";
+        document.getElementById("wait").style.backgroundColor = "rgb(0, 255, 0)";
+        document.getElementById("wait").style.display = "block";
+        AdminCse2();
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+
+        }, 4000);
+        // Optionally, you can refresh the staff list or show a success message
+    } catch (error) {
+        document.getElementById("waitMeg").textContent = "Error adding new Student";
+        document.getElementById("wait").style.backgroundColor = "red";
+        document.getElementById("wait").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+
+        }, 4000);
+        console.error('Error adding new Student:', error);
+    }
+}
+
+async function getAllStudent() {
+    const APIURL = '/api/students';
+    try {
+        const response = await fetch(APIURL);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        data = await response.json();
+        //console.log(data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching Students:', error);
+        document.getElementById("waitMeg").textContent = "Internal Server Error";
+        document.getElementById("wait").style.backgroundColor = "red";
+        document.getElementById("wait").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+        }, 4000)
+    }
+}
+
+async function showAllStaff() {
+    await getAllStaff();
+    //console.log(data);
+
+    document.getElementById("bodyDiv").innerHTML = "";
+    document.getElementById("bodyDiv").innerHTML = `
+        <div id="wait" style = "display:none;">
+            <h2 id="waitMeg"></h2>
+    </div >
+        <button id="Back" onclick="showloginAdmin()"><i class="fa-solid fa-chevron-left"></i></i></button >
+    <div style="display:none;" id="mainAddPopup">
+        <button id="Back" class="StaffBack" ><i class="fa-solid fa-chevron-left"></i></button>
+    <div id="popup">
+    <form>
+        <h1 id="Title">Add Staff</h1>
+        <table>
+            <tr>
+                <td><label for="StaffName">Staff Name: </label></td><td><input type="text" placeholder="Staff Name" required id="StaffName"></td>
+            </tr>
+            <tr>
+                <td><label for="StaffID">Staff ID: </label></td><td><input type="text" placeholder="Staff ID" required id="StaffID"></td>
+            </tr>
+            <tr>
+                <td><label for="Email">Staff Email: </label></td><td><input type="email" placeholder="Staff mail" required id="Email"></td>
+            </tr>
+            <tr>
+                <td><label for="Department">Department: </label></td>
+                <td>
+                    <select id="Department" required>
+                        <option value="" disabled selected>Select Department</option>
+                        <option value="CSE">CSE</option>
+                        <option value="ECE">ECE</option>
+                        <option value="IT">IT</option>
+                        <option value="MECH">MECH</option>
+                        <option value="AI">AI</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Designation">Designation: </label></td>
+                <td>
+                    <select id="Designation" required>
+                        <option value="" disabled selected>Select Designation</option>
+                        <option value="Professor">Professor</option>
+                        <option value="Assistant Professor">Assistant Professor</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="button" id="LoginBtn" onclick="AddStaff()">Add Staff</button></td>
+
+            </tr>
+            <tr>
+                <td colspan="2"><button type="button" id="UpdateStaffBtn" style="display:none"  onclick="UpdateStaffInBase()">Update Staff</button></td>            
+            </tr>
+        </table>
+    </form>
+
+    </div>
+</div>
+    <h1>All Staffs🧑‍🏫</h1>
+    <div id="AllStaff">
+        <div id="staffs">
+        </div>
+        <button id="AddStaff" onclick="ShowPOPUP()">+</button>
+
+    </div>`;
+
+    document.title = "All Staffs";
+    const staffs = document.getElementById("staffs");
+    data.forEach(staff => {
+        staffDiv = document.createElement("div");
+        staffDiv.id = "staffMember";
+        staffDiv.innerHTML = `
+        <img src="male.jpg" alt="${staff.staffName}" width="200px" height="200px" >
+        <p><strong>Staff Name:</strong> ${staff.staffName}</p>
+        <p><strong>Staff ID:</strong> ${staff.staffId}</p>
+        <p><strong>Email:</strong><br> ${staff.Email}</p>        
+        <p><strong>Department:</strong> ${staff.Department}</p>
+        <p><strong>Designation:</strong> ${staff.Designation}</p>
+        <button id="updateBtn" onclick="UpdateStaffPOPUP(event)">update</button>
+        <button id="deleteBtn" onclick="deleteStaff('${staff.staffId}')">Delete</button>
+
+    `;
+        staffs.appendChild(staffDiv);
+    })
+}
+
+UpdateStaffPOPUP = (event) => {
+
+    document.getElementById("mainAddPopup").style.display = "block";
+    document.getElementById("Title").textContent = "Update Staff";
+    document.querySelector(".StaffBack").onclick = () => {
+        document.getElementById("mainAddPopup").style.display = "none";
+    }
+    document.getElementById("UpdateStaffBtn").style.display = "block";
+    document.getElementById("LoginBtn").style.display = "none";
+
+    const StaffName = document.getElementById("StaffName");
+    const StaffID = document.getElementById("StaffID");
+    const Email = document.getElementById("Email");
+    const Department = document.getElementById("Department");
+    const Designation = document.getElementById("Designation");
+    event.target.parentElement.querySelectorAll("p").forEach((p) => {
+        p = p.textContent;
+        console.log(p);
+        if (p.startsWith("Staff Name:")) {
+            StaffName.value = p.split(":")[1].trim();
+        } else if (p.startsWith("Staff ID:")) {
+            StaffID.value = p.split(":")[1].trim();
+        } else if (p.startsWith("Email:")) {
+            Email.value = p.split(":")[1].trim();
+        } else if (p.startsWith("Department:")) {
+            Department.value = p.split(":")[1].trim();
+        } else if (p.startsWith("Designation:")) {
+            Designation.value = p.split(":")[1].trim();
+        }
+
+    })
+
+}
+
+function UpdateStaffInBase() {
+    let datas = {
+        staffName: StaffName.value,
+        staffId: StaffID.value,
+        Email: Email.value,
+        Department: Department.value,
+        Designation: Designation.value
+    }
+    console.log(datas, StaffID.value);
+    updateStaff(StaffID.value, datas);
+
+}
+
+ShowPOPUP = () => {
+    document.getElementById("mainAddPopup").style.display = "block";
+    document.querySelector(".StaffBack").onclick = () => {
+        document.getElementById("mainAddPopup").style.display = "none";
+    }
+    document.getElementById("UpdateStaffBtn").style.display = "none";
+    document.getElementById("LoginBtn").style.display = "block";
+
+}
+
+function AddStaff() {
+
+    const StaffName = document.getElementById("StaffName");
+    const StaffID = document.getElementById("StaffID");
+    const Email = document.getElementById("Email");
+    const Department = document.getElementById("Department");
+    const Designation = document.getElementById("Designation");
+
+    if (StaffName.value == "" || StaffID.value == "" || Email.value == "" || Department.value == "" || Designation.value == "") {
+        window.alert("Enter all the fields");
+    }
+    else {
+        console.log(StaffName.value, StaffID.value, Email.value, Department.value, Designation.value);
+        // Add code to save staff details
+        AddNewStaff(StaffName.value.trim(), StaffID.value.trim(), Email.value.trim(), Department.value, Designation.value);
+        // After saving, you can close the popup
+        document.getElementById("mainAddPopup").style.display = "none";
+
+    }
+}
+
+async function getAllStaff() {
+    const APIURL = `/api/staff`;
+    try {
+        const response = await fetch(APIURL);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        data = await response.json();
+        //console.log(data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching staff:', error);
+        document.getElementById("waitMeg").textContent = "Internal Server Error";
+        document.getElementById("wait").style.backgroundColor = "red";
+        document.getElementById("wait").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+        }, 4000)
+    }
+}
+
+async function AddNewStaff(staffName, staffId, Email, Department, Designation) {
+
+    if (staffName === "" || staffId === "" || Email === "" || Department === "" || Designation === "") {
+        window.alert("Please fill all fields");
+        return;
+    }
+
+    const APIURL = `/api/staff`;
+    try {
+        const response = await fetch('/api/staff', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ staffName, staffId, Email, Department, Designation })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log("New staff added:", data);
+        document.getElementById("waitMeg").textContent = "Staff Added Successfully";
+        document.getElementById("wait").style.backgroundColor = "rgb(0, 255, 0)";
+        document.getElementById("wait").style.display = "block";
+        showAllStaff();
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+
+        }, 4000);
+        // Optionally, you can refresh the staff list or show a success message
+    } catch (error) {
+        document.getElementById("waitMeg").textContent = "ERROR";
+        document.getElementById("wait").style.backgroundColor = "red";
+        document.getElementById("wait").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+
+        }, 4000);
+        console.error('Error adding new staff:', error);
+    }
+}
+
+async function deleteStaff(staffID) {
+    const APIURL = `/api/staff/${staffID} `;
+    try {
+        const response = await fetch(APIURL, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log("Staff deleted:", data);
+        document.getElementById("waitMeg").textContent = "Staff Deleted";
+        document.getElementById("wait").style.display = "block";
+        document.getElementById("wait").style.backgroundColor = "red";
+        showAllStaff();
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+            document.getElementById("wait").style.backgroundColor = "rgb(0, 255, 0);";
+
+        }, 4000);
+        // Optionally, you can refresh the staff list or show a success message
+    } catch (error) {
+        console.error('Error deleting staff:', error);
+    }
+}
+
+async function findSingleStaff(staffID) {
+    const APIURL = `/api/staff/${staffID} `;
+    try {
+        const response = await fetch(APIURL, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch staff');
+        }
+        staff = await response.json();
+        //console.log('Fetched staff:', staff);
+        // You can now use the staff object to update the UI as needed
+        //return staff;
+    }
+    catch (error) {
+        console.error('Error fetching staff:', error);
+        alert('Failed to fetch staff details.');
+        return null;
+    }
+}
+async function updateStaff(staffID, updatedData) {
+    const APIURL = `/api/staff/${staffID} `;
+    try {
+        const response = await fetch(APIURL, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log("Staff updated:", data);
+
+        document.getElementById("mainAddPopup").style.display = "none";
+        document.getElementById("waitMeg").textContent = "Staff Updated Successfully";
+        document.getElementById("wait").style.backgroundColor = "rgb(0, 255, 0)";
+        document.getElementById("wait").style.display = "block";
+        await showAllStaff();
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+        }, 4000);
+        // Optionally, you can refresh the staff list or show a success message
+    } catch (error) {
+        document.getElementById("waitMeg").textContent = 'Error updating staff:', error;
+        document.getElementById("wait").style.backgroundColor = "rgb(255, 0, 0)";
+        document.getElementById("wait").style.display = "block";
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+        }, 4000);
+        console.error('Error updating staff:', error);
+    }
+}
+
+// Example usage: pushPerformance('STAFF123', { date: '2025-06-25', score: 98, remarks: 'Great job' })
+async function pushPerformance(staffId, performanceObj) {
+    try {
+        const response = await fetch(`/api/staff/${staffId}/performance`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(performanceObj)
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to update performance');
+        }
+        const updatedStaff = await response.json();
+        console.log('Performance updated:', updatedStaff);
+        return updatedStaff;
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to update performance: ' + error.message);
+    }
+}
+
 async function TotalWorkedDays(rollno) {
     //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; 
     const APIURL = `/api/students`;
@@ -265,8 +966,8 @@ function getPercentage(username, rollno) {
     fetchTotalWorkDays(951323);
     setTimeout(() => {
         document.getElementById("waitPopup").style.display = "none";
-        console.log(`attendance:${StudentAttendance} , ${TotalWorkingDays}`);
-        console.log(StudentAttendance);
+        // console.log(`attendance:${StudentAttendance} , ${TotalWorkingDays}`);
+        //console.log(StudentAttendance);
         document.getElementById("percentage").textContent = `Your Percentage: ${((StudentAttendance / TotalWorkingDays) * 100).toFixed(2)}%`;
         document.getElementById("mainPopup").style.display = "block";
     }, 3000);
@@ -286,18 +987,40 @@ function showLoginStaff() {
 
     else if (userName.value.trim() == _UserName && password.value == _Password) {
         document.getElementById("bodyDiv").innerHTML = "";
-        //console.log(document.getElementById("bodyDiv"));
+        document.getElementById("bodyDiv").innerHTML =
+            `<div style="display:none;" id="mainpopupTable">
+    <button id="Back" onclick="NonestaffPerformPOPUP()"><i class="fa-solid fa-chevron-left"></i></button>
+    <div id="popup">
+        <table id="table" border="0">
+            <tr>
+                <td><label for="StaffName">Staff Name: </label></td><td><input type="text" placeholder="Staff Name" required id="StaffName"></td>
+            </tr>
+            <tr>
+                <td><label for="StaffID">Staff ID: </label></td><td><input type="text" placeholder="Staff ID" required id="StaffID"></td>
+            </tr>
+            <tr>
+                <td><button class="LoginBtn" onclick="CheckStaffLogin()">Login</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <h1>Staff Details</h1>
+    <div id="StaffChoice">
+        <div class="Choice">
+        <i class="fa-regular fa-clipboard fonts"></i>
+        <h1>Attendance</h1>
+        <button id="StaffChoiceBtn" class="LoginBtn" onclick="showDept()">Login</button>
+        </div>
+        <div class="Choice">
+        <i class="fa-solid fa-user fonts"></i>
+        <h1>My Profile</h1>
+        <button  class="LoginBtn" onclick="ShowstaffPerformPOPUP()">Login</button>
+        </div>
+    </div>
+    `;
+        document.title = "Staff Choice";
 
-        document.getElementById("bodyDiv").innerHTML = `
-        <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
-        <div id="depts">
-<a ><div id="cse" class="dept" onclick="showCse()"><h1>CSE</h1></div></a>
-<a href="ececlass.html"><div id="ece" class="dept"><h1>ECE</h1></div></a>
-<a href="/mechclass.html"><div id="mech" class="dept"><h1>MECH</h1></div></a>
-<a href="aiclass.html"><div id="ai" class="dept"><h1>AI</h1></div></a>
-<a href="itclass.html"> <div id="id" class="dept"><h1>IT</h1></div></a>
-</div>`;
-        document.title = "departments";
 
         //window.open("dept.html", "_self");
     }
@@ -306,11 +1029,16 @@ function showLoginStaff() {
     }
 
 }
+
+
+
 function homePage() {
     document.getElementById("bodyDiv").innerHTML = "";
     document.getElementById("bodyDiv").innerHTML = `
     <div>
     <h1>Attendance</h1>
+    <h2 id="Time">${GoodTime}</h2>
+    <h2 id="Date">${timeDate}</h2>
     <div id="firstmain">
 
         <div id="staff">
@@ -323,6 +1051,11 @@ function homePage() {
             <h1>Students</h1>
             <button id="loginStudents" onclick="loginStudents()">Login</button>
         </div>
+        <div id="Admin">
+            <i class="fa-solid fa-user-shield fonts"></i>
+            <h1>Admin</h1>
+            <button id="loginAdmin" onclick="loginAdmin()">Login</button>
+        </div>
     </div>
 </div>
     `;
@@ -334,7 +1067,7 @@ function showDept() {
     //console.log(document.getElementById("bodyDiv"));
 
     document.getElementById("bodyDiv").innerHTML = `
-    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <button id="Back" onclick="showStaffChoice()"><i class="fa-solid fa-chevron-left"></i></i></button>
     <div id="depts">
 <a ><div id="cse" class="dept" onclick="showCse()"><h1>CSE</h1></div></a>
 <a href="ececlass.html"><div id="ece" class="dept"><h1>ECE</h1></div></a>
@@ -343,6 +1076,247 @@ function showDept() {
 <a href="itclass.html"> <div id="id" class="dept"><h1>IT</h1></div></a>
 </div>`;
     document.title = "Departments";
+}
+function showStaffChoice() {
+    document.getElementById("bodyDiv").innerHTML = "";
+    document.getElementById("bodyDiv").innerHTML =
+        `<div style="display:none;" id="mainpopupTable">
+    <button id="Back" onclick="NonestaffPerformPOPUP()"><i class="fa-solid fa-chevron-left"></i></button>
+    <div id="popup">
+        <table id="table" border="0">
+            <tr>
+                <td><label for="StaffName">Staff Name: </label></td><td><input type="text" placeholder="Staff Name" required id="StaffName"></td>
+            </tr>
+            <tr>
+                <td><label for="StaffID">Staff ID: </label></td><td><input type="text" placeholder="Staff ID" required id="StaffID"></td>
+            </tr>
+            <tr>
+                <td><button class="LoginBtn" onclick="CheckStaffLogin()">Login</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <h1>Staff Details</h1>
+    <div id="StaffChoice">
+        <div class="Choice">
+        <i class="fa-regular fa-clipboard fonts"></i>
+        <h1>Attendance</h1>
+        <button id="StaffChoiceBtn" class="LoginBtn" onclick="showDept()">Login</button>
+        </div>
+        <div class="Choice">
+        <i class="fa-solid fa-user fonts"></i>
+        <h1>My Profile</h1>
+        <button  class="LoginBtn" onclick="ShowstaffPerformPOPUP()">Login</button>
+        </div>
+    </div>
+    `;
+    document.title = "Staff Details";
+}
+
+async function CheckStaffLogin() {
+
+    const StaffName = document.getElementById("StaffName");
+    const StaffID = document.getElementById("StaffID");
+    if (StaffName.value == "" || StaffName.value == null || StaffID.value == "" || StaffID.value == null) {
+        window.alert("Enter Staff Name and Staff ID");
+    }
+    else {
+        await getAllStaff();
+        //console.log(data, data[0].staffName);
+        for (i = 0; i < data.length; i++) {
+            if (StaffName.value == data[i].staffName || StaffID.value == data[i].staffId) {
+                await findSingleStaff(StaffID.value);
+                //console.log(staff.Performance);
+                document.title = "My Profile";
+                document.getElementById("bodyDiv").innerHTML = "";
+                document.getElementById("bodyDiv").innerHTML =
+
+                    `<button id="Back" onclick="showStaffChoice()"><i class="fa-solid fa-chevron-left"></i></i></button>
+        <div >
+        <h1 style="text-align:center">My Profile</h1><hr><br>
+
+        <div>
+            <img src="male.jpg" width="100px" height="100px">
+            <h1 id="Name">${staff.staffName}</h1>
+            <h2 id="designation">${staff.Designation}</h2>
+        </div>
+        <hr>
+        <div id="PerformancePage">
+            <table>
+                <tr>
+                    <td><label>Name: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.staffName}"></td>
+                </tr>
+                <tr>
+                    <td><label>ID: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.staffId}"></td>
+                </tr>
+                <tr>
+                    <td><label>Email: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.Email}"></td>
+                </tr>
+                <tr>
+                    <td><label>Department: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.Department}"></td>
+                </tr>
+                <tr>
+                    <td><label>Designation: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.Designation}"></td>
+                </tr>
+                <tr>
+                    <td><label>TotalTeachingHours: </label></td>
+                    <td><input type="number" disabled readonly value="${staff.TotalTeachingHours}"></td>
+                </tr>
+            </table>
+            <hr>
+            <div>
+            <h1 style="text-align:center">Performance</h1>
+            <hr>
+            ${Array.isArray(staff.Performance) && staff.Performance.length > 0
+                        ? staff.Performance.map(perf => `
+        <table border="0" id="PerformanceTable">
+            <tr>
+                <td class="TD">Course Name:</td><td>${perf.courseName}</td>
+            </tr>
+            <tr>
+                <td  class="TD">Semester:</td><td>${perf.semester}</td>
+            </tr>
+            <tr>
+                <td class="TD">hourDuration:</td><td>${perf.hourDuration}</td>
+            </tr>
+            <tr>
+                <td  class="TD">PeriodTiming:</td><td>${perf.periodTiming}</td>
+            </tr>
+            <tr>
+                <td class="TD">Date:</td><td>${perf.date}</td>
+            </tr>
+            <tr>
+                <td class="TD">Time:</td><td>${perf.time}</td>
+            </tr>
+            <tr>
+                <td class="TD">AbsentStudents:</td>
+                <td>
+                    <ul>
+                        ${Array.isArray(perf.absentStudents) && perf.absentStudents.length > 0
+                                ? perf.absentStudents.map(student => `<li>${student}</li>`).join('')
+                                : '<li>None</li>'
+                            }
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="TD">AbsentStudentsCount:</td><td>${perf.AbsentStudentsCount}</td>
+            </tr>
+        </table>
+        <hr>
+        <br>
+    `).join('')
+                        : '<p>No performance records found.</p>'
+                    }
+
+            </div>
+        </div>
+    </div>
+    `;
+
+            }
+        }
+    }
+
+}
+
+function viewPerformancePage(staff) {
+    document.title = "My Profile";
+    document.getElementById("bodyDiv").innerHTML = "";
+    document.getElementById("bodyDiv").innerHTML =
+
+        `<button id="Back" onclick="showStaffChoice()"><i class="fa-solid fa-chevron-left"></i></i></button>
+        <div >
+        <h1 style="text-align:center">My Profile</h1><hr><br>
+
+        <div>
+            <img src="male.jpg" width="100px" height="100px">
+            <h1 id="Name">${staff.staffName}</h1>
+            <h2 id="designation">${staff.Designation}</h2>
+        </div>
+        <hr>
+        <div id="PerformancePage">
+            <table>
+                <tr>
+                    <td><label>Name: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.staffName}"></td>
+                </tr>
+                <tr>
+                    <td><label>ID: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.staffId}"></td>
+                </tr>
+                <tr>
+                    <td><label>Email: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.Email}"></td>
+                </tr>
+                <tr>
+                    <td><label>Department: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.Department}"></td>
+                </tr>
+                <tr>
+                    <td><label>Designation: </label></td>
+                    <td><input type="text" disabled readonly value="${staff.Designation}"></td>
+                </tr>
+                <tr>
+                    <td><label>Performance: </label></td>
+                    <td>
+                        <table border="1" id="PerformanceTable">
+                            <tr>
+                                <td>Course Name:</td><td>${staff.Performance.courseName}</td>
+                            </tr>
+                            <tr>
+                                <td>Semester:</td><td>${staff.Performance.semester}</td>
+                            </tr>
+                            <tr>
+                                <td>hourDuration:</td><td>${staff.Performance.hourDuration}</td>
+                            </tr>
+                            <tr>
+                                <td>PeriodTiming:</td><td>${staff.Performance.periodTiming}</td>
+                            </tr>
+                            <tr>
+                                <td>Date:</td><td>${staff.Performance.date}</td>
+                            </tr>
+                            <tr>
+                                <td>Time:</td><td>${staff.Performance.time}</td>
+                            </tr>
+                            <tr>
+    <td>AbsentStudents:</td>
+    <td>
+        <ul>
+            ${Array.isArray(staff.Performance.absentStudents) && staff.Performance.absentStudents.length > 0
+            ? staff.Performance.absentStudents.map(student => `<li>${student}</li>`).join('')
+            : '<li>None</li>'
+        }
+        </ul>
+    </td>
+</tr>
+                            <tr>
+                                <td>AbsentStudentsCount:</td><td>${staff.Performance.AbsentStudentsCount}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>TotalTeachingHours: </label></td>
+                    <td><input type="number" disabled readonly value="${staff.TotalTeachingHours}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    `;
+}
+ShowstaffPerformPOPUP = () => {
+    document.getElementById("mainpopupTable").style.display = "block";
+}
+NonestaffPerformPOPUP = () => {
+
+    document.getElementById("mainpopupTable").style.display = "none";
 }
 
 function showCse() {
@@ -482,8 +1456,11 @@ function showCse1() {
     }
 }
 
+//Timing 
+
+//console.log(RailTime);
 //SHOW CSE2
-function showCse2() {
+async function showCse2() {
 
     document.getElementById("bodyDiv").innerHTML = "";
     //console.log(document.getElementById("bodyDiv"));
@@ -495,19 +1472,115 @@ function showCse2() {
 </div>
 <div id="main1">
 <div style="display:none;" id="mainpopupTable">
+    <button id="Back" onclick="${() => { document.getElementById("mainpopupTable").style.display = "none" }}"><i class="fa-solid fa-chevron-left"></i></button>
     <div id="popup">
         <button id="closeTable">Close</button>
-        <table id="table" border="1">
+
+        <table id="table" border="0">
             <tr>
             <th>S.No</th>
             <th>Name</th>
             <th>Roll No</th>
             <th>Percentage</th>
             </tr>
-
         </table>
     </div>
 </div>
+<div style="display:none;" id="mainpopupStaff">
+    <button id="Back" onclick="showCse2()"><i class="fa-solid fa-chevron-left"></i></button>
+    <div id="popup">
+        <h1 id="heading">Staff Details</h1>
+        <table id="StaffLogintable" border="0">
+        <tr>
+        <td><label for="staffName">Staff Name:</label></td><td><input type="text" placeholder="Staff Name" id="staffName" style="border:1px solid border-radius:4px"></td>
+        </tr>
+        <tr>
+        <td><label for="staffId">Staff ID:</label></td><td><input type="text" placeholder="Staff ID" id="staffId" style="border:1px solid border-radius:4px" ></td>
+        </tr>
+        <tr>
+        <td><button class="LoginBtn" id="StaffLoginBtn">Login</button></td>
+        </tr>
+        </table>
+
+        <table id="staffTable" style="display:none">
+        <tr>
+            <td><label>Date :</label></td><td>${timeDate}</td>
+        </tr>
+        <tr>
+            <td><label>Time :</label></td><td>${Time}</td>
+        </tr>        
+        <tr>
+            <td><label for="Staffname">Staff Name :</label></td>
+            <td><input id="Staffname" type="text" disabled readonly></td>
+        </tr>
+        <tr>
+            <td><label for="semester">Semester :</label></td>
+            <td>
+                <select id=semester onchange="showSemesterCourses()">
+                    <option value="Selected" disabled selected>Select Semester</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Course Name :</label></td>
+            <td>
+                <select id="thirdSemCourse" style="display:none">
+                    <option value="Selected" disabled selected>Select Course</option>
+                    <option value="DPCO">DPCO</option>
+                    <option value="DM">DM</option>
+                    <option value="FDS">FDS</option>
+                    <option value="OOP">OOP</option>
+                    <option value="DS">DS</option>
+                    <option value="DPCO_Lab">DPCO_Lab</option>
+                    <option value="FDS_Lab">FDS_Lab</option>
+                    <option value="OOP_Lab">OOP_Lab</option>
+                    <option value="DS_Lab">DS_Lab</option>
+                </select>
+                <select id="fourthSemCourse" style="display:none">
+                    <option value="Selected" disabled selected>Select Course</option>
+                    <option value="ESS">ESS</option>
+                    <option value="AIML">AIML</option>
+                    <option value="DBMS">DBMS</option>
+                    <option value="TOC">TOC</option>
+                    <option value="IOS">IOS</option>
+                    <option value="ALGM">ALGM</option>
+                    <option value="DBMS_Lab">DBMS_Lab</option>
+                    <option value="IOS_Lab">IOS_Lab</option>
+                    <option value="ALGM_Lab">ALGM_Lab</option>
+                    <option value="AIML_Lab">AIML_Lab</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="hourDurationSelect">Select Hour Duration :</label></td>
+            <td>
+                <select id="hourDurationSelect" onchange="showPeriodTiming()">
+                    <option value="Selected" disabled selected>Select Hour Duration</option>
+                    <option value="7" style="display : ${RailTime < "10:15" ? "block" : "none"}">7</option>
+                    <option value="6" style="display : ${RailTime < "11:05" ? "block" : "none"}">6</option>
+                    <option value="5" style="display : ${RailTime < "12:10" ? "block" : "none"}">5</option>
+                    <option value="4" style="display : ${RailTime < "13:00" ? "block" : "none"}">4</option>
+                    <option value="3" style="display : ${RailTime < "14:30" ? "block" : "none"}">3</option>
+                    <option value="2" style="display : ${RailTime < "15:20" ? "block" : "none"}">2</option>
+                    <option value="1" style="display : ${RailTime < "16:00" ? "block" : "none"}">1</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Your Period timing:</label></td>
+            <td><input type="text" id="periodTiming" disabled readonly placeholder="Period Timing" style="font-weight:bold"></td>
+        </tr>
+        <tr>
+            <td><button id="SubmitStaffDatas">submit</button></td>
+        </tr>
+
+        </tr>
+    </table>
+    </div>
+</div>
+
 
 <div id="Processing">
     <h2>Waiting for Processing...</h2>
@@ -516,523 +1589,26 @@ function showCse2() {
 <button id="shortCut">Put Attendance</button>
 <button id="reviewBtn">Get Percentage</button>
 <div id="students" class="allStudents">
-
-    <div class="student">
-        <img src="male.jpg" alt="Aarthese" width="200" height="200">
-        <h2>Name: Aarthese</h2>
-        <p class="rollNo">Roll No: 23104001</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Abina" width="200" height="200">
-        <h2>Name: Abina</h2>
-        <p class="rollNo">Roll No: 23104002</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Abinaya" width="200" height="200">
-        <h2>Name: Abinaya</h2>
-        <p class="rollNo">Roll No: 23104003</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Abirami" width="200" height="200">
-        <h2>Name: Abirami</h2>
-        <p class="rollNo">Roll No: 23104004</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Abisha" width="200" height="200">
-        <h2>Name: Abisha</h2>
-        <p class="rollNo">Roll No: 23104005</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="AbishaMary" width="200" height="200">
-        <h2>Name: AbishaMary</h2>
-        <p class="rollNo">Roll No: 23104006</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Abisheka" width="200" height="200">
-        <h2>Name: Abisheka</h2>
-        <p class="rollNo">Roll No: 23104007</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="AkshayaLakshmi" width="200" height="200">
-        <h2>Name: AkshayaLakshmi</h2>
-        <p class="rollNo">Roll No: 23104008</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="Arumugavel" width="200" height="200">
-        <h2>Name: Arumugavel</h2>
-        <p class="rollNo">Roll No: 23104009</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Arunkumar" width="200" height="200">
-        <h2>Name: ArunKumar</h2>
-        <p class="rollNo">Roll No: 23104010</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Ashokraja" width="200" height="200">
-        <h2>Name: Ashokraja</h2>
-        <p class="rollNo">Roll No: 23104011</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Baras" width="200" height="200">
-        <h2>Name: Baras</h2>
-        <p class="rollNo">Roll No: 23104012</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="BavaniC" width="200" height="200">
-        <h2>Name: BavaniC</h2>
-        <p class="rollNo">Roll No: 23104013</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="BavaniS" width="200" height="200">
-        <h2>Name: BavaniS</h2>
-        <p class="rollNo">Roll No: 23104014</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="Bern" width="200" height="200">
-        <h2>Name: Bern</h2>
-        <p class="rollNo">Roll No: 23104015</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="ChinnaThambi" width="200" height="200">
-        <h2>Name: ChinnaThambi</h2>
-        <p class="rollNo">Roll No: 23104016</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="EsakkiSorna" width="200" height="200">
-        <h2>Name: EsakkiSorna</h2>
-        <p class="rollNo">Roll No: 23104017</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="GiftyHepzipal" width="200" height="200">
-        <h2>Name: GiftyHepzipal</h2>
-        <p class="rollNo">Roll No: 23104018</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="HeavencyRose" width="200" height="200">
-        <h2>Name: HeavencyRose</h2>
-        <p class="rollNo">Roll No: 23104019</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="IrudayaJency" width="200" height="200">
-        <h2>Name: IrudayaJency</h2>
-        <p class="rollNo">Roll No: 23104020</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Jensha" width="200" height="200">
-        <h2>Name: Jensha</h2>
-        <p class="rollNo">Roll No: 23104021</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="JesuAgnel" width="200" height="200">
-        <h2>Name: JesuAgnel</h2>
-        <p class="rollNo">Roll No: 23104022</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="JohnImmanuel" width="200" height="200">
-        <h2>Name: JohnImmanuel</h2>
-        <p class="rollNo">Roll No: 23104023</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="JohnRabeeder" width="200" height="200">
-        <h2>Name: JohnRabeender</h2>
-        <p class="rollNo">Roll No: 23104024</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="kamalieswari" width="200" height="200">
-        <h2>Name: Kamalieswari</h2>
-        <p class="rollNo">Roll No: 23104026</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Karthiga" width="200" height="200">
-        <h2>Name: Karthiga</h2>
-        <p class="rollNo">Roll No: 23104027</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Keerthana" width="200" height="200">
-        <h2>Name: Keerthana</h2>
-        <p class="rollNo">Roll No: 23104028</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="LingaPabitha" width="200" height="200">
-        <h2>Name: LingaPabitha</h2>
-        <p class="rollNo">Roll No: 23104029</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="Mariyappan" width="200" height="200">
-        <h2>Name: Mariyappan</h2>
-        <p class="rollNo">Roll No: 23104030</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="MeehaEbaneser" width="200" height="200">
-        <h2>Name: MeehaEbanesar</h2>
-        <p class="rollNo">Roll No: 23104031</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="MohamedBahrudeen" width="200" height="200">
-        <h2>Name: MohamedBahrudeen</h2>
-        <p class="rollNo">Roll No: 23104032</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="MuthuEsakkiammal" width="200" height="200">
-        <h2>Name: MuthuEsakkiammal</h2>
-        <p class="rollNo">Roll No: 23104033</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="Muthukrishnan" width="200" height="200">
-        <h2>Name: Muthukrishnan</h2>
-        <p class="rollNo">Roll No: 23104034</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="Pattuperumal" width="200" height="200">
-        <h2>Name: Pattuperumal</h2>
-        <p class="rollNo">Roll No: 23104035</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Pooja" width="200" height="200">
-        <h2>Name: Pooja</h2>
-        <p class="rollNo">Roll No: 23104036</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Priya" width="200" height="200">
-        <h2>Name: Priya</h2>
-        <p class="rollNo">Roll No: 23104037</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Priyadharshini" width="200" height="200">
-        <h2>Name: Priyadharshini</h2>
-        <p class="rollNo">Roll No: 23104038</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="RajeshKumar" width="200" height="200">
-        <h2>Name: RajeshKumar</h2>
-        <p class="rollNo">Roll No: 23104039</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="RakeshPraveen" width="200" height="200">
-        <h2>Name: RakeshPraveen</h2>
-        <p class="rollNo">Roll No: 23104040</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="Sampeter" width="200" height="200">
-        <h2>Name: Sampeter</h2>
-        <p class="rollNo">Roll No: 23104041</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="SanthiyaguSabin" width="200" height="200">
-        <h2>Name: SanthiyaguSabin</h2>
-        <p class="rollNo">Roll No: 23104042</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="SelvaAllsiya" width="200" height="200">
-        <h2>Name: SelvaAllsiya</h2>
-        <p class="rollNo">Roll No: 23104043</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Selvakumar" width="200" height="200">
-        <h2>Name: Selvakumar</h2>
-        <p class="rollNo">Roll No: 23104044</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Selvapriya" width="200" height="200">
-        <h2>Name: SelvaPriya</h2>
-        <p class="rollNo">Roll No: 23104045</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="SelvaRathiAshal" width="200" height="200">
-        <h2>Name: SelvaRathiAkshal</h2>
-        <p class="rollNo">Roll No: 23104046</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="SherinSamika" width="200" height="200">
-        <h2>Name: SherinSamika</h2>
-        <p class="rollNo">Roll No: 23104047</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Sipi" width="200" height="200">
-        <h2>Name: Sipi</h2>
-        <p class="rollNo">Roll No: 23104048</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="SriMithuna" width="200" height="200">
-        <h2>Name: SriMithuna</h2>
-        <p class="rollNo">Roll No: 23104050</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="SubashRackshan" width="200" height="200">
-        <h2>Name: SubashRackshan</h2>
-        <p class="rollNo">Roll No: 23104051</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Suganthi" width="200" height="200">
-        <h2>Name: Suganthi</h2>
-        <p class="rollNo">Roll No: 23104052</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="SuryaKala" width="200" height="200">
-        <h2>Name: SuryaKala</h2>
-        <p class="rollNo">Roll No: 23104053</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Sushmitha" width="200" height="200">
-        <h2>Name: Sushmitha</h2>
-        <p class="rollNo">Roll No: 23104054</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="SuviseshGiftson" width="200" height="200">
-        <h2>Name: SuviseshGiftson</h2>
-        <p class="rollNo">Roll No: 23104055</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        
-        <div class="student">
-        <img src="female.jpg" alt="Swathi" width="200" height="200">
-        <h2>Name: Swathi</h2>
-        <p class="rollNo">Roll No: 23104056</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="SweetyEsther" width="200" height="200">
-        <h2>Name: SweetyEsther</h2>
-        <p class="rollNo">Roll No: 23104057</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Udhayakumar" width="200" height="200">
-        <h2>Name: Udhayakumar</h2>
-        <p class="rollNo">Roll No: 23104058</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="Vignesh" width="200" height="200">
-        <h2>Name: Vignesh</h2>
-        <p class="rollNo">Roll No: 23104059</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="Willingsraja" width="200" height="200">
-        <h2>Name: Willingsraja</h2>
-        <p class="rollNo">Roll No: 23104060</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="Artheeswari" width="200" height="200">
-        <h2>Name: Artheeswari</h2>
-        <p class="rollNo">Roll No: 23104301</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        
-        <div class="student">
-        <img src="male.jpg" alt="Balakrishnan" width="200" height="200">
-        <h2>Name: Balakrishnan</h2>
-        <p class="rollNo">Roll No: 23104302</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Chinnadurai" width="200" height="200">
-        <h2>Name: Chinnadurai</h2>
-        <p class="rollNo">Roll No: 23104303</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="MohammedMunaf" width="200" height="200">
-        <h2>Name: MohammedMunaf</h2>
-        <p class="rollNo">Roll No: 23104304</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="female.jpg" alt="StellaPersiya" width="200" height="200">
-        <h2>Name: StellaPersiya</h2>
-        <p class="rollNo">Roll No: 23104305</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-        <div class="student">
-        <img src="male.jpg" alt="ObedRajaSingh" width="200" height="200">
-        <h2>Name: ObedRajaSingh</h2>
-        <p class="rollNo">Roll No: 23104701</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
 </div>
-</div>`;
+</div> `;
+    let data = await getAllStudent();
+    const AllStudents = document.querySelector(".allStudents");
+    data.forEach(student => {
+        if (student.name == "TWD") { }
+        else {
+            StudentDiv = document.createElement("div");
+            StudentDiv.classList = "student";
+            StudentDiv.innerHTML = `
+        <img src="male.jpg" alt="${student.name}" width="200px" height="200px" >
+        <h2>Name: ${student.name}</h2>
+        <p class="rollNo">Roll No: ${student.rollno}</p>
+        <button class="present">Present</button>
+        <button class="absent">Absent</button>
+        `;
+            AllStudents.appendChild(StudentDiv);
+        }
+    })
+
     document.title = "CSE 2-Year";
     const reviewBtn = document.getElementById("reviewBtn");
     const shortCut = document.getElementById("shortCut");
@@ -1053,6 +1629,7 @@ function showCse2() {
     //console.log(correntTime);
 
     let whatsappDatas = [];
+    let AbsentTodayName = [];
     let TotalDays = true;
     Array.from(presentBtn).forEach(button => {
         button.addEventListener("click", (event) => {
@@ -1062,7 +1639,7 @@ function showCse2() {
             event.target.parentElement.getElementsByClassName("result")[0].textContent = "Present";
             event.target.parentElement.getElementsByClassName("result")[0].style.color = "green";
 
-            let timeDate = `${date}/${month + 1}/${year} %0a ${hours}:${minutes}`;
+            let timeDate = `${date} /${month + 1}/${year} % 0a ${hours}:${minutes} `;
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
             //console.log(rollNo);
@@ -1083,16 +1660,17 @@ function showCse2() {
             event.target.parentElement.getElementsByClassName("present")[0].style.display = "none";
             event.target.parentElement.getElementsByClassName("result")[0].textContent = "Absent";
             event.target.parentElement.getElementsByClassName("result")[0].style.color = "red";
-            let timeDate = `${date}/${month + 1}/${year}`;
+            let timeDate = `${date} /${month + 1}/${year} `;
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
             const name = event.target.parentElement.getElementsByTagName("h2")[0].textContent.split(":")[1].trim();
 
             //console.log(String(rollNo).slice(5));
-            whatsappDatas.push(`Name : ${name}  \n RollNo : ${rollNo} \n   Absent on ${correntTime} \n  `);
+            whatsappDatas.push(`Name: ${name} \n RollNo: ${rollNo} \n   Absent on ${correntTime} \n  `);
+            AbsentTodayName.push(`Name : ${name} , RollNo: ${rollNo}`);
 
             //console.log(rollNo);
-            //whatsappDate.push(`Name : ${name} %0a RollNo : ${rollNo} %0a Absent on ${timeDate}`);
+            //whatsappDate.push(`Name: ${ name } % 0a RollNo: ${ rollNo } % 0a Absent on ${ timeDate } `);
             //console.log(whatsappDate);
             markAttendance(rollNo, "Absent");
             //saveAttendance(name, rollNo.value, "Absent", timeDate);
@@ -1101,12 +1679,19 @@ function showCse2() {
         });
     });
 
+    const AllButtons = document.querySelectorAll(".allStudents button");
+    //console.log(AllButtons);
+    AllButtons.forEach(button => {
+        button.style.display = "none";
+    });
+
     //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; // If running on the same domain
     const APIURL = `/api/students`;
     shortCut.onclick = async (event) => {
         var format;
         var find;
         var get;
+
         //var presentArray = ['001','002','003','004' , '005' , '006' , '007' , '008','009','010','011','012','013','014','015','016','017','018','019','020','021','022','023','024','025','026','027','028','029','030','031','032','033','034','035','036','037','038','039','040','' ];
         var allButtons = event.target.parentElement.querySelector(".allStudents").children;
         //console.log(allButtons);
@@ -1117,276 +1702,495 @@ function showCse2() {
             //console.log(allButtons[i].querySelector(".present"));
             buttonArray.push(allButtons[i]);
         }
-        //let saveAbsentData = [];
-        const AbsentIs = window.prompt("Enter the  Number of Students Absent:");
 
-        if (AbsentIs == "" || AbsentIs == null) {
-            window.alert("invalid input");
-        }
-        else {
-            try {
-                if (AbsentIs > 0) {
-                    for (i = 0; i < AbsentIs; i++) {
-                        const getAbsentIsNumber = window.prompt("Enter the Absent Students Number one-by-one(23104---):");
+        document.querySelector("#mainpopupStaff").style.display = "block";
 
-                        if (getAbsentIsNumber.startsWith("23104")) {
-                            format = Number(getAbsentIsNumber);
-                            //saveAbsentData.push(format);
-                        }
-                        else {
-                            format = Number(`23104${getAbsentIsNumber}`);
-                            //saveAbsentData.push(format);
-                        }
-                        //console.log(String(format).slice(5));
 
-                        if (String(format).slice(5).startsWith("0")) {
-                            find = String(format).slice(6);
-                            if (String(find).startsWith("0")) {
-                                console.log(find);
-                                get = find.slice(1);
-                                console.log(get);
+        document.querySelector("#StaffLoginBtn").onclick = async () => {
+            let data = await getAllStaff();
+            //console.log(data);
+            const staffName = document.getElementById("staffName").value;
+            const staffId = document.getElementById("staffId").value;
 
-                                for (let i = 0; i < buttonArray.length; i++) {
-                                    if (buttonArray[i] === buttonArray[get - 1]) {
-                                        buttonArray[i] = "";
-                                        break;
-                                    }
-                                }
+            if (staffName === "" || staffId === "" || staffName == null || staffId == null) {
+                window.alert("Enter the Staff Name and Staff ID");
+                return;
+            }
+            else {
+                let checkStaff = true;
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].staffId === staffId && data[i].staffName === staffName) {
+                        checkStaff = false;
+                        //console.log(document.getElementById("staffTable"));
+                        //console.log(document.getElementById("StaffLogintable"));
+                        document.getElementById("StaffLogintable").style.display = "none";
+                        document.querySelector("#mainpopupStaff").style.display = "block";
+                        document.getElementById("staffTable").style.display = "block";
+                        document.getElementById("Staffname").value = data[i].staffName;
 
-                                /*let NewArray = buttonArray.filter(button => {
-                                    console.log(button.querySelector(".rollNo").textContent !== buttonArray[get - 1].querySelector(".rollNo").textContent);
+
+                        document.querySelector("#SubmitStaffDatas").onclick = async () => {
+                            const staffName = document.getElementById("Staffname").value;
+                            const courseName = document.getElementById("thirdSemCourse").value == "Selected" ? document.getElementById("fourthSemCourse").value : document.getElementById("thirdSemCourse").value;
+                            const semester = document.getElementById("semester").value;
+                            const hourDuration = document.getElementById("hourDurationSelect").value;
+                            const periodTiming = document.getElementById("periodTiming").value;
+
+                            if (staffName === "" || courseName === "" || semester === "" || hourDuration === "" || periodTiming === "" || staffName == null || courseName == null || semester == null || hourDuration == null || periodTiming == null) {
+                                window.alert("Please fill all the fields");
+                                return;
+                            }
+                            else {
+                                AllButtons.forEach(async button => {
+                                    button.style.display = "block";
                                 });
-                                console.log(NewArray);*/
+                                //console.log(staffName, staffId, subject, semester, hourDuration, periodTiming);
+                                //await saveAttendance(staffName, staffId, subject, semester, hourDuration, periodTiming);
+                                document.querySelector("#mainpopupStaff").style.display = "none";
+                                setTimeout(async () => {
 
-                                await allButtons[get - 1].querySelector(".absent").click();
+                                    const AbsentIs = window.prompt("Enter the  Number of Students Absent:");
 
-                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get - 1]);
-                            }
-                            else if (String(find) >= 10 && String(find) <= 24) {
-                                console.log(find);
-                                get = find - 1;
-                                //console.log(get);
-                                for (let i = 0; i < buttonArray.length; i++) {
-                                    if (buttonArray[i] === buttonArray[get]) {
-                                        buttonArray[i] = "";
-                                        break;
+                                    if (AbsentIs == "" || AbsentIs == null) {
+                                        window.alert("invalid input");
                                     }
-                                }
+                                    else {
+                                        try {
+                                            if (AbsentIs > 0) {
+                                                for (i = 0; i < AbsentIs; i++) {
+                                                    const getAbsentIsNumber = window.prompt("Enter the Absent Students Number one-by-one(23104---):");
 
-                                await allButtons[get].querySelector(".absent").click();
+                                                    if (getAbsentIsNumber.startsWith("23104")) {
+                                                        format = Number(getAbsentIsNumber);
+                                                        //saveAbsentData.push(format);
+                                                    }
+                                                    else {
+                                                        format = Number(`23104${getAbsentIsNumber} `);
+                                                        //saveAbsentData.push(format);
+                                                    }
+                                                    //console.log(String(format).slice(5));
 
-                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                            }
-                            else if (String(find) >= 26 && String(find) <= 48) {
-                                //console.log(find);
-                                get = find - 2;
-                                //console.log(get);
-                                for (let i = 0; i < buttonArray.length; i++) {
-                                    if (buttonArray[i] === buttonArray[get]) {
-                                        buttonArray[i] = "";
-                                        break;
+                                                    if (String(format).slice(5).startsWith("0")) {
+                                                        find = String(format).slice(6);
+                                                        if (String(find).startsWith("0")) {
+                                                            console.log(find);
+                                                            get = find.slice(1);
+                                                            console.log(get);
+
+                                                            for (let i = 0; i < buttonArray.length; i++) {
+                                                                if (buttonArray[i] === buttonArray[get - 1]) {
+                                                                    buttonArray[i] = "";
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            /*let NewArray = buttonArray.filter(button => {
+                                                                console.log(button.querySelector(".rollNo").textContent !== buttonArray[get - 1].querySelector(".rollNo").textContent);
+                                                            });
+                                                            console.log(NewArray);*/
+
+                                                            await allButtons[get - 1].querySelector(".absent").click();
+
+                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get - 1]);
+                                                        }
+                                                        else if (String(find) >= 10 && String(find) <= 24) {
+                                                            console.log(find);
+                                                            get = find - 1;
+                                                            //console.log(get);
+                                                            for (let i = 0; i < buttonArray.length; i++) {
+                                                                if (buttonArray[i] === buttonArray[get]) {
+                                                                    buttonArray[i] = "";
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            await allButtons[get].querySelector(".absent").click();
+
+                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                        }
+                                                        else if (String(find) >= 26 && String(find) <= 48) {
+                                                            //console.log(find);
+                                                            get = find - 2;
+                                                            //console.log(get);
+                                                            for (let i = 0; i < buttonArray.length; i++) {
+                                                                if (buttonArray[i] === buttonArray[get]) {
+                                                                    buttonArray[i] = "";
+                                                                    break;
+                                                                }
+                                                            }
+                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                            await allButtons[get].querySelector(".absent").click();
+
+                                                        }
+                                                        else if (String(find) >= 50 && String(find) <= 60) {
+                                                            //console.log(find);
+                                                            get = find - 3;
+                                                            //console.log(get);
+                                                            for (let i = 0; i < buttonArray.length; i++) {
+                                                                if (buttonArray[i] === buttonArray[get]) {
+                                                                    buttonArray[i] = "";
+                                                                    break;
+                                                                }
+                                                            }
+                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                            await allButtons[get].querySelector(".absent").click();
+
+                                                        }
+                                                        else {
+                                                            window.alert("There are no students in this number");
+                                                        }
+                                                    }
+                                                    else if (String(format).slice(5).startsWith("3")) {
+                                                        find = String(format).slice(7);
+                                                        var late = 57;
+
+                                                        get = late + (Number(find));
+                                                        //console.log(get);
+                                                        for (let i = 0; i < buttonArray.length; i++) {
+                                                            if (buttonArray[i] === buttonArray[get]) {
+                                                                buttonArray[i] = "";
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                        await allButtons[get].querySelector(".absent").click();
+
+                                                    }
+                                                    else if (String(format).slice(5).startsWith("7")) {
+                                                        get = 63;
+                                                        for (let i = 0; i < buttonArray.length; i++) {
+                                                            if (buttonArray[i] === buttonArray[get]) {
+                                                                buttonArray[i] = "";
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                        await allButtons[get].querySelector(".absent").click();
+
+                                                    }
+                                                    //await markAttendance(format, "Absent");
+                                                    //console.log(event.target.parentElement.querySelector(".allStudents").children[].querySelectorAll(".rollNo"));
+
+                                                }
+                                                setTimeout(() => {
+                                                    presentFunction();
+                                                }, 3000);
+
+                                                presentFunction = async () => {
+                                                    for (i = 0; i < buttonArray.length; i++) {
+                                                        if (buttonArray[i] == "") {
+
+                                                        }
+                                                        else {
+                                                            await buttonArray[i].querySelector(".present").click();
+                                                        }
+                                                    }
+                                                }
+                                                TodayAttedance = {
+                                                    courseName: courseName,
+                                                    semester: semester,
+                                                    hourDuration: hourDuration,
+                                                    periodTiming: periodTiming,
+                                                    date: `${date} /${month + 1}/${year}`,
+                                                    time: `${hours}:${minutes} ${meritiam}`,
+                                                    absentStudents: AbsentTodayName,
+                                                    AbsentStudentsCount: AbsentTodayName.length,
+
+                                                }
+                                                pushPerformance(staffId, TodayAttedance);
+                                                console.log(TodayAttedance);
+                                            }
+                                            else {
+                                                presentFun = async () => {
+                                                    for (i = 0; i < buttonArray.length; i++) {
+                                                        if (buttonArray[i] == "") {
+
+                                                        }
+                                                        else {
+                                                            await buttonArray[i].querySelector(".present").click();
+                                                        }
+                                                    }
+                                                }
+                                                presentFun();
+                                                async function sendWhatsAppPresent() {
+
+                                                    function checkFunc() {
+                                                        if (whatsappDatas.length == 0) {
+                                                            let partTime1 = '';
+                                                            partTime1 += "All students are present on " + `${date} /${month + 1}/${year} % 0a ${hours}:${minutes} ${ampm} `;
+                                                            let message = "All students are present on " + `${correntTime} `;
+                                                            async function whatsAppMessage() {
+                                                                let phone = '+919486500899';
+                                                                let url = "https://wa.me/" + phone + "?text="
+                                                                    + partTime1;
+                                                                await window.open(url, "_blank");
+                                                                partTime1 = "";
+                                                            }
+                                                            async function sendTelegram() {
+                                                                function sendMessage() {
+                                                                    //const message = document.getElementById('msg').value;
+
+                                                                    fetch('/send-to-telegram', {
+                                                                        method: 'POST',
+                                                                        headers: {
+                                                                            'Content-Type': 'application/json',
+                                                                        },
+                                                                        body: JSON.stringify({ message })
+                                                                    })
+                                                                        .then((response) => {
+                                                                            response.json();
+                                                                            console.log(response);
+                                                                        })
+                                                                        .then(data => {
+                                                                            console.log(data);
+                                                                            alert('Message sent to Telegram successfully!');
+                                                                        })
+                                                                        .catch(error => {
+                                                                            console.error('Error:', error);
+                                                                            alert('An error occurred.');
+                                                                        });
+                                                                }
+                                                                sendMessage();
+                                                            }
+                                                            sendTelegram();
+                                                            //whatsAppMessage();
+                                                        }
+
+                                                    }
+                                                    checkFunc();
+                                                }
+                                                sendWhatsAppPresent();
+                                            }
+
+                                        }
+
+                                        catch (err) {
+                                            console.log(err);
+                                            window.alert(`ERROR: ${err} `);
+                                        }
+                                        finally {
+                                            async function sendWhatsApp() {
+                                                //console.log("Entered");
+
+                                                function Batch1() {
+                                                    //console.log(whatsappDatas.length);
+                                                    if (whatsappDatas.length > 0) {
+                                                        let partTime1 = '';
+                                                        let message = '';
+                                                        for (let i = 0; i < whatsappDatas.length; i++) {
+                                                            partTime1 += whatsappDatas[i];
+                                                            message += whatsappDatas[i];
+
+                                                        }
+                                                        message += `\n\n${correntTime} `;
+
+                                                        async function whatsAppMessage() {
+                                                            let phone = '+919486500899';
+                                                            let url = "https://wa.me/" + phone + "?text="
+                                                                + partTime1 + `${correntTime} `;
+                                                            await window.open(url, "_blank");
+                                                            partTime1 = "";
+                                                        }
+                                                        async function sendTelegram1() {
+                                                            function sendMessage2() {
+                                                                //const message = document.getElementById('msg').value;
+
+                                                                fetch('/send-to-telegram', {
+                                                                    method: 'POST',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                    },
+                                                                    body: JSON.stringify({ message })
+                                                                })
+                                                                    .then((response) => {
+                                                                        response.json();
+                                                                        console.log(response);
+                                                                    })
+                                                                    .then(data => {
+                                                                        //console.log(data);
+                                                                        alert('Message sent to Telegram successfully!');
+                                                                    })
+                                                                    .catch(error => {
+                                                                        console.error('Error:', error);
+                                                                        alert('An error occurred.');
+                                                                    });
+                                                            }
+                                                            sendMessage2();
+                                                        }
+                                                        sendTelegram1();
+                                                        //whatsAppMessage();
+                                                    }
+
+                                                }
+
+                                                Batch1();
+                                            }
+                                            sendWhatsApp();
+
+                                        }
+                                        setTimeout(() => {
+                                            showCse();
+                                        }, 5000);
                                     }
-                                }
-                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                await allButtons[get].querySelector(".absent").click();
+                                }, 100);
 
-                            }
-                            else if (String(find) >= 50 && String(find) <= 60) {
-                                //console.log(find);
-                                get = find - 3;
-                                //console.log(get);
-                                for (let i = 0; i < buttonArray.length; i++) {
-                                    if (buttonArray[i] === buttonArray[get]) {
-                                        buttonArray[i] = "";
-                                        break;
-                                    }
-                                }
-                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                await allButtons[get].querySelector(".absent").click();
 
-                            }
-                            else {
-                                window.alert("There are no students in this number");
                             }
                         }
-                        else if (String(format).slice(5).startsWith("3")) {
-                            find = String(format).slice(7);
-                            var late = 57;
 
-                            get = late + (Number(find));
-                            //console.log(get);
-                            for (let i = 0; i < buttonArray.length; i++) {
-                                if (buttonArray[i] === buttonArray[get]) {
-                                    buttonArray[i] = "";
-                                    break;
-                                }
-                            }
-
-                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                            await allButtons[get].querySelector(".absent").click();
-
-                        }
-                        else if (String(format).slice(5).startsWith("7")) {
-                            get = 63;
-                            for (let i = 0; i < buttonArray.length; i++) {
-                                if (buttonArray[i] === buttonArray[get]) {
-                                    buttonArray[i] = "";
-                                    break;
-                                }
-                            }
-
-                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                            await allButtons[get].querySelector(".absent").click();
-
-                        }
-                        //await markAttendance(format, "Absent");
-                        //console.log(event.target.parentElement.querySelector(".allStudents").children[].querySelectorAll(".rollNo"));
-
-                    }
-                    setTimeout(() => {
-                        presentFunction();
-                    }, 3000);
-
-                    presentFunction = async () => {
-                        for (i = 0; i < buttonArray.length; i++) {
-                            if (buttonArray[i] == "") {
-
-                            }
-                            else {
-                                await buttonArray[i].querySelector(".present").click();
-                            }
-                        }
                     }
                 }
-                else {
-                    presentFun = async () => {
-                        for (i = 0; i < buttonArray.length; i++) {
-                            if (buttonArray[i] == "") {
-
-                            }
-                            else {
-                                await buttonArray[i].querySelector(".present").click();
-                            }
-                        }
-                    }
-                    presentFun();
-                    async function sendWhatsAppPresent() {
-
-                        function checkFunc() {
-                            if (whatsappDatas.length == 0) {
-                                let partTime1 = '';
-                                partTime1 += "All students are present on " + `${date}/${month + 1}/${year} %0a ${hours}:${minutes} ${ampm}`;
-                                let message = "All students are present on " + `${correntTime}`;
-                                async function whatsAppMessage() {
-                                    let phone = '+919486500899';
-                                    let url = "https://wa.me/" + phone + "?text="
-                                        + partTime1;
-                                    await window.open(url, "_blank");
-                                    partTime1 = "";
-                                }
-                                async function sendTelegram() {
-                                    function sendMessage() {
-                                        //const message = document.getElementById('msg').value;
-
-                                        fetch('/send-to-telegram', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                            },
-                                            body: JSON.stringify({ message })
-                                        })
-                                            .then((response) => {
-                                                response.json();
-                                                console.log(response);
-                                            })
-                                            .then(data => {
-                                                console.log(data);
-                                                alert('Message sent to Telegram successfully!');
-                                            })
-                                            .catch(error => {
-                                                console.error('Error:', error);
-                                                alert('An error occurred.');
-                                            });
-                                    }
-                                    sendMessage();
-                                }
-                                sendTelegram();
-                                //whatsAppMessage();
-                            }
-
-                        }
-                        checkFunc();
-                    }
-                    sendWhatsAppPresent();
+                if (checkStaff) {
+                    window.alert("Invalid Staff ID or Staff Name");
+                    document.getElementById("StaffLogintable").style.display = "block";
+                    document.querySelector("#mainpopupStaff").style.display = "block";
                 }
-
-            }
-
-            catch (err) {
-                console.log(err);
-                window.alert(`ERROR: ${err}`);
-            }
-            finally {
-                async function sendWhatsApp() {
-                    //console.log("Entered");
-
-                    function Batch1() {
-                        //console.log(whatsappDatas.length);
-                        if (whatsappDatas.length > 0) {
-                            let partTime1 = '';
-                            let message = '';
-                            for (let i = 0; i < whatsappDatas.length; i++) {
-                                partTime1 += whatsappDatas[i];
-                                message += whatsappDatas[i];
-
-                            }
-                            message += `\n\n${correntTime}`;
-
-                            async function whatsAppMessage() {
-                                let phone = '+919486500899';
-                                let url = "https://wa.me/" + phone + "?text="
-                                    + partTime1 + `${correntTime}`;
-                                await window.open(url, "_blank");
-                                partTime1 = "";
-                            }
-                            async function sendTelegram1() {
-                                function sendMessage2() {
-                                    //const message = document.getElementById('msg').value;
-
-                                    fetch('/send-to-telegram', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                        },
-                                        body: JSON.stringify({ message })
-                                    })
-                                        .then((response) => {
-                                            response.json();
-                                            console.log(response);
-                                        })
-                                        .then(data => {
-                                            //console.log(data);
-                                            alert('Message sent to Telegram successfully!');
-                                        })
-                                        .catch(error => {
-                                            console.error('Error:', error);
-                                            alert('An error occurred.');
-                                        });
-                                }
-                                sendMessage2();
-                            }
-                            sendTelegram1();
-                            //whatsAppMessage();
-                        }
-
-                    }
-
-                    Batch1();
-                }
-                sendWhatsApp();
-
             }
         }
+        showSemesterCourses = () => {
+            setTimeout(() => {
+                const semester = document.getElementById("semester").value;
+                const thirdSemCourse = document.getElementById("thirdSemCourse");
+                const fourthSemCourse = document.getElementById("fourthSemCourse");
+                if (semester === "3") {
+                    thirdSemCourse.style.display = "block";
+                    fourthSemCourse.style.display = "none";
+                }
+                else if (semester === "4") {
+                    thirdSemCourse.style.display = "none";
+                    fourthSemCourse.style.display = "block";
+                }
+            }, 100);
+        }
+        showPeriodTiming = () => {
+
+            const hourDurationSelect = document.getElementById("hourDurationSelect");
+            const periodTiming = document.getElementById("periodTiming");
+
+
+            if (hourDurationSelect.value == "1" && RailTime < "10:15") {
+
+                periodTiming.value = "9:25 AM to 10:15 AM";
+            }
+            else if (hourDurationSelect.value == "1" && RailTime >= "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "10:15 AM to 11:05 AM";
+            }
+            else if (hourDurationSelect.value == "1" && RailTime >= "11:05" && RailTime < "12:10") {
+
+                periodTiming.value = "11:20 AM to 12:10 PM";
+            }
+            else if (hourDurationSelect.value == "1" && RailTime >= "12:10" && RailTime < "13:40") {
+
+                periodTiming.value = "12:10 PM to 1:00 PM";
+            }
+            else if (hourDurationSelect.value == "1" && RailTime >= "13:40" && RailTime < "14:30") {
+
+                periodTiming.value = "1:40 PM to 2:30 PM";
+            }
+            else if (hourDurationSelect.value == "1" && RailTime >= "14:30" && RailTime < "15:20") {
+
+                periodTiming.value = "2:30 PM to 3:20 PM";
+            }
+            else if (hourDurationSelect.value == "1" && RailTime >= "15:20" && RailTime < "16:10") {
+
+                periodTiming.value = "3:20 PM to 4:10 PM";
+            }
+            else if (hourDurationSelect.value == "2" && RailTime < "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "9:25 AM to 11:05 AM";
+            }
+            else if (hourDurationSelect.value == "2" && RailTime >= "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "10:15 AM to 12:10 PM";
+            }
+            else if (hourDurationSelect.value == "2" && RailTime >= "11:05" && RailTime < "12:10") {
+
+                periodTiming.value = "11:20 AM to 1:00 PM";
+            }
+            else if (hourDurationSelect.value == "2" && RailTime >= "12:10" && RailTime < "13:40") {
+
+                periodTiming.value = "12:10 PM to 2:30 PM";
+            }
+            else if (hourDurationSelect.value == "2" && RailTime >= "13:40" && RailTime < "14:30") {
+
+                periodTiming.value = "1:40 PM to 3:20 PM";
+
+            }
+            else if (hourDurationSelect.value == "2" && RailTime >= "14:30" && RailTime < "15:20") {
+
+                periodTiming.value = "2:30 PM to 4:10 PM";
+
+            }
+            else if (hourDurationSelect.value == "3" && RailTime < "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "9:25 AM to 12:10 PM";
+            }
+            else if (hourDurationSelect.value == "3" && RailTime >= "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "10:15 AM to 1:00 PM";
+            }
+            else if (hourDurationSelect.value == "3" && RailTime >= "11:05" && RailTime < "12:10") {
+
+                periodTiming.value = "11:20 AM to 2:30 PM";
+            }
+            else if (hourDurationSelect.value == "3" && RailTime >= "12:10" && RailTime < "13:40") {
+
+                periodTiming.value = "12:10 PM to 3:20 PM";
+            }
+            else if (hourDurationSelect.value == "3" && RailTime >= "13:40" && RailTime < "14:30") {
+
+                periodTiming.value = "1:40 PM to 4:10 PM";
+            }
+            else if (hourDurationSelect.value == "4" && RailTime < "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "9:25 AM to 1:00 PM";
+            }
+            else if (hourDurationSelect.value == "4" && RailTime >= "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "10:15 AM to 2:30 PM";
+            }
+            else if (hourDurationSelect.value == "4" && RailTime >= "11:05" && RailTime < "12:10") {
+
+                periodTiming.value = "11:20 AM to 3:20 PM";
+            }
+            else if (hourDurationSelect.value == "4" && RailTime >= "12:10" && RailTime < "13:40") {
+
+                periodTiming.value = "12:10 PM to 4:10 PM";
+            }
+            else if (hourDurationSelect.value == "5" && RailTime < "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "9:25 AM to 2:30 PM";
+
+            }
+            else if (hourDurationSelect.value == "5" && RailTime >= "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "10:15 AM to 3:20 PM";
+            }
+            else if (hourDurationSelect.value == "5" && RailTime >= "11:05" && RailTime < "12:10") {
+
+                periodTiming.value = "11:20 AM to 4:10 PM";
+            }
+            else if (hourDurationSelect.value == "6" && RailTime < "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "9:25 AM to 3:20 PM";
+            }
+            else if (hourDurationSelect.value == "6" && RailTime >= "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "10:15 AM to 4:10 PM";
+            }
+            else if (hourDurationSelect.value == "7" && RailTime < "10:15" && RailTime < "11:05") {
+
+                periodTiming.value = "9:25 AM to 4:10 PM";
+            }
+
+        }
+
+        //let saveAbsentData = [];
+        //const AbsentIs = window.prompt("Enter the  Number of Students Absent:");
+
     }
     let totalReset = true;
     reviewBtn.onclick = async (event) => {
@@ -1423,198 +2227,233 @@ function showCse2() {
         document.getElementById("noBtn").onclick = () => {
             mainPopup.style.display = "none";
         }
-        document.getElementById("yesBtn").onclick = () => {
+        document.getElementById("yesBtn").onclick = async () => {
+            if (true) {
 
-            mainPopup.style.display = "none";
-            document.getElementById("Processing").style.display = "block";
-            async function fetchStudentsCount() {
-                try {
-                    const response = await fetch(`${APIURL}/count`);
-                    console.log(response);
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                document.querySelector("#mainpopupStaff").style.display = "block";
+                document.getElementById("StaffLoginBtn").onclick = async () => {
+                    let data = await getAllStaff();
+                    const staffName = document.getElementById("staffName");
+                    const staffId = document.getElementById("staffId");
+
+                    if (staffName.value == "" || staffId.value == "") {
+                        window.alert("Enter the staff Name and staff ID");
+                        return;
                     }
-                    const data = await response.json();
-                    COunt = data.count;
-                    console.log(`Total students: ${data.count}`);
-                } catch (error) {
-                    console.error('Error fetching student count:', error);
-                }
-            }
+                    else {
 
-            async function fetchStudents() {
-
-                try {
-                    const response = await fetch(APIURL);
-                    const students = await response.json();
-
-                    //console.log(students);
-                    //console.log(COunt);
-
-                    //console.log(event.target.parentElement.querySelector(".allStudents").children);
-                    //console.log(event.target.parentElement.querySelectorAll(".student"));
-                    const allStudents = event.target.parentElement.querySelector(".allStudents").children;
-
-                    //console.log(allStudents);
-                    const table = document.getElementById("table");
-                    //console.log(students);
-                    /*
-                    let orderDatas = [];
-                    let NameOrder = [];
-                    for (let i = 0; i < COunt; i++) {
-                        //NameOrder.push(students[i].name);
-                        orderDatas.push(students[i].rollno);
-
-                        if (students[i].name == "Artheeswari") {
-                            NameOrder[60] = "Artheeswari";
-                        }
-
-                        else if (students[i].name == "Balakrishnan") {
-                            NameOrder[61] = "Balakrishnan";
-                        }
-
-                        else if (students[i].name == "Chinnadurai") {
-                            NameOrder[62] = "Chinnadurai";
-                        }
-
-                        else if (students[i].name == "MohammedMunaf") {
-                            NameOrder[63] = "MohammedMunaf";
-                        }
-
-                        else if (students[i].name == "StellaPersiya") {
-                            NameOrder[64] = "StellaPersiya";
-                        }
-
-                        else if (students[i].name == "ObedRajaSingh") {
-                            NameOrder[65] = "ObedRajaSingh";
-                        }
-                        else {
-                            NameOrder[i] = students[i].name;
-
-                        }
-                    }
-
-                    orderDatas = orderDatas.sort();
-                    NameOrder = NameOrder.slice(0 , 61).sort();
-
-                    console.log(NameOrder);
-                    //NameOrder = NameOrder.sort();
-                    */
-                    let lowPercentage = [];
-                    document.getElementById("mainpopupTable").style.display = "block";
-                    for (let i = 0; i < COunt - 1; i++) {
-
-                        let percentage = ((students[i].attendance / TWKDYS) * 100).toFixed(2);
-
-                        //console.log(typeof percentage);
-                        const NewTr = document.createElement("tr");
-                        const NewTd = document.createElement("td");
-                        const NewTd3 = document.createElement("td");
-                        const NewTd1 = document.createElement("td");
-                        const NewTd2 = document.createElement("td");
-
-
-                        if (Number(percentage) < 75) {
-                            NewTr.style.backgroundColor = "rgb(226, 144, 144)";
-                            lowPercentage.push(`Name:${students[i].name} \n RollNo:${students[i].rollno} \n Percentage:${percentage}% \n \n`);
-
-                        }
-                        else {
-                            NewTr.style.backgroundColor = "rgb(117, 184, 122)";
-                        }
-
-                        NewTd3.textContent = i + 1;
-                        NewTd.textContent = students[i].name;
-                        NewTd1.textContent = students[i].rollno;
-                        NewTd2.textContent = `${percentage}%`;
-
-                        NewTr.append(NewTd3, NewTd, NewTd1, NewTd2);
-                        table.append(NewTr);
-
-                        /*console.log(allStudents[i]);
-                        Newh4 = document.createElement("h4");
-                        let percentage = ((students[i].attendance / TWKDYS) * 100).toFixed(2);
-                        //console.log(percentage);
-                        Newh4.style.color = "blue";
-                        Newh4.innerHTML = `${students[i].name} Attendance Percentage = ${percentage}%`;
-                        allStudents[i].append(Newh4);*/
-                        //console.log(Newdiv.textContent);
-                        let RollNo = event.target.parentElement.getElementsByClassName("student")[i].getElementsByClassName("rollNo")[0].textContent.split(":")[1];
-                        //console.log(RollNo);
-                        await markAttendance(RollNo, "Reset");
-                        if (totalReset) {
-                            await markAttendance(951323, "Reset");
-                            totalReset = false;
-                        }
-                    }
-                    document.getElementById("Processing").style.display = "none";
-
-                    document.getElementById("closeTable").onclick = () => {
-                        document.getElementById("mainpopupTable").style.display = "none";
-                    }
-
-                    if (lowPercentage.length > 0) {
-
-                        //console.log("Entered");
-                        function lowPercentageInform() {
-                            //console.log(whatsappDatas.length);
-                            if (lowPercentage.length > 0) {
-                                let partTime1 = '';
-                                let message = '';
-                                for (i = 0; i < lowPercentage.length; i++) {
-                                    partTime1 += lowPercentage[i];
-                                    message += lowPercentage[i];
-
-                                }
-                                async function sendTelegram2() {
-                                    function sendMessage1() {
-                                        //const message = document.getElementById('msg').value;
-
-                                        fetch('/send-to-telegram', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                            },
-                                            body: JSON.stringify({ message })
-                                        })
-                                            .then((response) => {
-                                                response.json();
-                                                console.log(response);
-                                            })
-                                            .then(data => {
-                                                console.log(data);
-                                                console.log('Message sent to Telegram successfully!');
-                                            })
-                                            .catch(error => {
-                                                console.error('Error:', error);
-                                                alert('An error occurred.Contact Selva');
-                                            });
+                        let checkstaff = true;
+                        for (i = 0; i < data.length; i++) {
+                            if (data[i].staffName == staffName.value && data[i].staffId == staffId.value) {
+                                document.querySelector("#mainpopupStaff").style.display = "none";
+                                checkstaff = false;
+                                mainPopup.style.display = "none";
+                                document.getElementById("Processing").style.display = "block";
+                                async function fetchStudentsCount() {
+                                    try {
+                                        const response = await fetch(`${APIURL}/count`);
+                                        console.log(response);
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                        const data = await response.json();
+                                        COunt = data.count;
+                                        console.log(`Total students: ${data.count}`);
+                                    } catch (error) {
+                                        console.error('Error fetching student count:', error);
                                     }
-                                    sendMessage1();
                                 }
 
-                                async function whatsAppPercentage() {
-                                    let phone = '+919486500899';
-                                    let url = "https://wa.me/" + phone + "?text="
-                                        + partTime1;
-                                    await window.open(url, "_blank");
-                                    partTime1 = "";
+                                async function fetchStudents() {
+
+                                    try {
+                                        const response = await fetch(APIURL);
+                                        const students = await response.json();
+                                        //console.log(students);
+                                        //console.log(COunt);
+                                        //console.log(event.target.parentElement.querySelector(".allStudents").children);
+                                        //console.log(event.target.parentElement.querySelectorAll(".student"));
+                                        const allStudents = event.target.parentElement.querySelector(".allStudents").children;
+
+                                        //console.log(allStudents);
+                                        const table = document.getElementById("table");
+                                        //console.log(students);
+                                        /*
+                                        let orderDatas = [];
+                                        let NameOrder = [];
+                                        for (let i = 0; i < COunt; i++) {
+                                            //NameOrder.push(students[i].name);
+                                            orderDatas.push(students[i].rollno);
+                            
+                                            if (students[i].name == "Artheeswari") {
+                                                NameOrder[60] = "Artheeswari";
+                                            }
+                            
+                                            else if (students[i].name == "Balakrishnan") {
+                                                NameOrder[61] = "Balakrishnan";
+                                            }
+                            
+                                            else if (students[i].name == "Chinnadurai") {
+                                                NameOrder[62] = "Chinnadurai";
+                                            }
+                            
+                                            else if (students[i].name == "MohammedMunaf") {
+                                                NameOrder[63] = "MohammedMunaf";
+                                            }
+                            
+                                            else if (students[i].name == "StellaPersiya") {
+                                                NameOrder[64] = "StellaPersiya";
+                                            }
+                            
+                                            else if (students[i].name == "ObedRajaSingh") {
+                                                NameOrder[65] = "ObedRajaSingh";
+                                            }
+                                            else {
+                                                NameOrder[i] = students[i].name;
+                            
+                                            }
+                                        }
+                            
+                                        orderDatas = orderDatas.sort();
+                                        NameOrder = NameOrder.slice(0 , 61).sort();
+                            
+                                        console.log(NameOrder);
+                                        //NameOrder = NameOrder.sort();
+                                        */
+                                        let lowPercentage = [];
+                                        document.getElementById("mainpopupTable").style.display = "block";
+                                        document.getElementById("closeTable").style.display = "none";
+
+                                        for (let i = 0; i < COunt - 1; i++) {
+                                            if (students[i].name == "TWD") {
+
+                                            }
+                                            else {
+                                                //console.log(students[i].attendance);
+                                                let percentageRaw = (students[i].attendance / TWKDYS) * 100;
+                                                let percentage = isNaN(percentageRaw) ? "0" : percentageRaw.toFixed(2);
+                                                //console.log(students[i].attendance);
+                                                //console.log(percentage, (students[i].attendance / TWKDYS) * 100);
+                                                const NewTr = document.createElement("tr");
+                                                const NewTd = document.createElement("td");
+                                                const NewTd3 = document.createElement("td");
+                                                const NewTd1 = document.createElement("td");
+                                                const NewTd2 = document.createElement("td");
+
+
+                                                if (Number(percentage) < 75) {
+                                                    NewTr.style.backgroundColor = "rgb(226, 144, 144)";
+                                                    lowPercentage.push(`Name:${students[i].name} \n RollNo:${students[i].rollno} \n Percentage:${percentage}% \n \n`);
+
+                                                }
+                                                else {
+                                                    NewTr.style.backgroundColor = "rgb(117, 184, 122)";
+                                                }
+
+                                                NewTd3.textContent = i + 1;
+                                                NewTd.textContent = students[i].name;
+                                                NewTd1.textContent = students[i].rollno;
+                                                NewTd2.textContent = `${percentage}%`;
+
+                                                NewTr.append(NewTd3, NewTd, NewTd1, NewTd2);
+                                                table.append(NewTr);
+
+                                                /*console.log(allStudents[i]);
+                                                Newh4 = document.createElement("h4");
+                                                let percentage = ((students[i].attendance / TWKDYS) * 100).toFixed(2);
+                                                //console.log(percentage);
+                                                Newh4.style.color = "blue";
+                                                Newh4.innerHTML = `${students[i].name} Attendance Percentage = ${percentage}%`;
+                                                allStudents[i].append(Newh4);*/
+                                                //console.log(Newdiv.textContent);
+                                                let RollNo = event.target.parentElement.getElementsByClassName("student")[i].getElementsByClassName("rollNo")[0].textContent.split(":")[1];
+                                                //console.log(RollNo);
+                                                await markAttendance(RollNo, "Reset");
+                                                if (totalReset) {
+                                                    await markAttendance(951323, "Reset");
+                                                    totalReset = false;
+                                                }
+                                            }
+                                        }
+                                        document.getElementById("closeTable").style.display = "block";
+                                        document.getElementById("Processing").style.display = "none";
+
+                                        document.getElementById("closeTable").onclick = () => {
+                                            document.getElementById("mainpopupTable").style.display = "none";
+                                            document.getElementById("table").innerHTML = "";
+
+                                        }
+
+                                        if (lowPercentage.length > 0) {
+
+                                            //console.log("Entered");
+                                            function lowPercentageInform() {
+                                                //console.log(whatsappDatas.length);
+                                                if (lowPercentage.length > 0) {
+                                                    let partTime1 = '';
+                                                    let message = '';
+                                                    for (i = 0; i < lowPercentage.length; i++) {
+                                                        partTime1 += lowPercentage[i];
+                                                        message += lowPercentage[i];
+
+                                                    }
+                                                    async function sendTelegram2() {
+                                                        function sendMessage1() {
+                                                            //const message = document.getElementById('msg').value;
+
+                                                            fetch('/send-to-telegram', {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                },
+                                                                body: JSON.stringify({ message })
+                                                            })
+                                                                .then((response) => {
+                                                                    response.json();
+                                                                    console.log(response);
+                                                                })
+                                                                .then(data => {
+                                                                    //console.log(data);
+                                                                    console.log('Message sent to Telegram successfully!');
+                                                                })
+                                                                .catch(error => {
+                                                                    console.error('Error:', error);
+                                                                    alert('An error occurred.Contact Selva');
+                                                                });
+                                                        }
+                                                        sendMessage1();
+                                                    }
+
+                                                    async function whatsAppPercentage() {
+                                                        let phone = '+919486500899';
+                                                        let url = "https://wa.me/" + phone + "?text="
+                                                            + partTime1;
+                                                        await window.open(url, "_blank");
+                                                        partTime1 = "";
+                                                    }
+                                                    sendTelegram2();
+                                                    //whatsAppPercentage();
+                                                }
+                                            }
+                                            lowPercentageInform();
+                                        }
+                                    }
+                                    catch (error) {
+                                        console.error('Error fetching students:', error);
+                                    }
                                 }
-                                sendTelegram2();
-                                //whatsAppPercentage();
+                                fetchStudentsCount();
+                                setTimeout(() => {
+                                    fetchStudents();
+                                }, 2000);
                             }
                         }
-                        lowPercentageInform();
+                        if (checkstaff) {
+                            window.alert("Invalid Staff Name or Staff Id");
+                        }
                     }
                 }
-                catch (error) {
-                    console.error('Error fetching students:', error);
-                }
             }
-            fetchStudentsCount();
-            setTimeout(() => {
-                fetchStudents();
-            }, 2000);
         }
     }
 
@@ -1645,7 +2484,7 @@ function showCse2() {
                 decision = 0;
                 historyDecision = `${status} on ${date}`;
             } else if (status === "Present") {
-                decision = 1;
+                decision = 0.1428571428571;
                 historyDecision = ""; // No history entry for "Present"
             } else if (status === "Reset") {
                 decision = 0;
@@ -2297,7 +3136,7 @@ function showCse3() {
             alert("Please enter the number of students absent");
             return;
         }
-        if(AbsentIs.includes("@#$%^&*(abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ)){")) {
+        if (AbsentIs.includes("@#$%^&*(abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ)){")) {
             alert("invaild data");
             return;
         }
@@ -2314,7 +3153,7 @@ function showCse3() {
                             //console.log("Worked");
                             format = Number(`22104${getAbsentIsNumber}`);
                             for (let i = 0; i < buttonArray.length; i++) {
-                                if( buttonArray[i] == "") {
+                                if (buttonArray[i] == "") {
 
                                 }
                                 else if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
@@ -2330,7 +3169,7 @@ function showCse3() {
                                     buttonArray[i].querySelector(".result").style.color = "red";
                                     buttonArray[i] = "";
 
-                                    
+
                                 }
 
                             }
@@ -2345,7 +3184,7 @@ function showCse3() {
                                     buttonArray[i].querySelector(".result").textContent = "Absent";
                                     buttonArray[i].querySelector(".result").style.color = "red";
                                     buttonArray[i] = "";
-                                    
+
                                 }
 
                             }
@@ -2361,7 +3200,7 @@ function showCse3() {
                                     buttonArray[i].querySelector(".result").textContent = "Absent";
                                     buttonArray[i].querySelector(".result").style.color = "red";
                                     buttonArray[i] = "";
-                                    
+
                                 }
 
                             }
@@ -2376,7 +3215,7 @@ function showCse3() {
                                     buttonArray[i].querySelector(".result").textContent = "Absent";
                                     buttonArray[i].querySelector(".result").style.color = "red";
                                     buttonArray[i] = "";
-                                    
+
                                 }
                             }
 
@@ -2551,6 +3390,7 @@ function showCse3() {
 
                     let lowPercentage = [];
                     document.getElementById("mainpopupTable").style.display = "block";
+                    document.getElementById("closeTable").style.display = "none";
                     for (let i = 0; i < COunt - 1; i++) {
 
                         let percentage = ((students[i].attendance / TWKDYS) * 100).toFixed(2);
@@ -2600,6 +3440,8 @@ function showCse3() {
 
                     document.getElementById("closeTable").onclick = () => {
                         document.getElementById("mainpopupTable").style.display = "none";
+                        document.getElementById("table").innerHTML = "";
+
                     }
 
                     if (lowPercentage.length > 0) {

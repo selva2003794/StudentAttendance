@@ -25,6 +25,41 @@ mongoose.connect(MONGO_URL, {
     console.log("Error connecting to MongoDB:", error);
   });
 
+
+const StaffCollection = mongoose.model("AllStaff", {
+  staffName: {
+    type: String,
+    required: true
+  },
+  staffId: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  Email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  Department: {
+    type: String,
+    required: true
+  },
+  Designation: {
+    type: String,
+    required: true
+  },
+  Performance : {
+    type: Array,
+    default: [],
+  },
+  TotalTeachingHours : {
+    type : Number,
+    default : 0,
+  }
+
+})
+
 const collection = mongoose.model('3rd_year', {
   name: {
     type: String,
@@ -496,6 +531,117 @@ const data = [
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+
+
+// Route to fetch all staff records
+app.get('/api/staff', async (req, res) => {
+  try {
+    const staffRecords = await StaffCollection.find(); // Fetch all records from the AllStaff collection
+    res.json(staffRecords); // Send the records as a JSON response
+  } catch (error) {
+    console.error('Error fetching staff records:', error);
+    res.status(500).json({ message: 'Failed to fetch staff records' });
+  }
+});
+
+// Route to add a new staff record
+app.post('/api/staff', async (req, res) => {
+  const { staffName, staffId, Email, Department, Designation } = req.body
+  const newStaff = new StaffCollection({
+    staffName,
+    staffId,
+    Email,
+    Department,
+    Designation
+  });
+  try {
+    const savedStaff = await newStaff.save(); // Save the new staff record to the database
+    res.status(201).json(savedStaff); // Send the saved record as a JSON response
+  }
+  catch (error) {
+    console.error('Error adding staff record:', error);
+    res.status(400).json({ message: 'Failed to add staff record' });
+
+  }
+});
+
+// Route to fetch a single staff record by staffId
+app.get('/api/staff/:staffId', async (req, res) => {
+  try {
+    const staffId = req.params.staffId; // Get the staffId from the request parameters
+    const staff = await StaffCollection.findOne({ staffId: staffId }); // Find the staff record by staffId
+    if (!staff) {
+      return res.status(404).json({ message: 'Staff not found' }); // If no record found, return 404
+    }
+    res.json(staff); // Send the found record as a JSON response
+  }
+  catch (error) {
+    console.error('Error fetching staff record:', error);
+    res.status(500).json({ message: 'Failed to fetch staff record' }); // If an error occurs, return 500
+  }
+});
+
+// Route to update a staff record by staffId
+app.put('/api/staff/:staffId', async (req, res) => {
+  try {
+    const staffId = req.params.staffId; // Get the staffId from the request parameters
+    const updatedData = req.body; // Get the updated data from the request body
+    
+    const updatedStaff = await StaffCollection.findOneAndUpdate(
+      { staffId: staffId }, // Find the record by staffId
+      updatedData, // Update with the new data
+      { new: true } // Return the updated record
+    );
+    if (!updatedStaff) {
+      return res.status(404).json({ message: 'Staff not found' }); // If no record found, return 404
+    }
+    res.json(updatedStaff); // Send the updated record as a JSON response
+  }
+  catch (err) {
+    console.error('Error updating staff record:', err);
+    res.status(500).json({ message: 'Failed to update staff record' }); //
+
+  }
+})
+
+// Route to push a new object into the Performance array of a staff record
+app.put('/api/staff/:staffId/performance', async (req, res) => {
+  try {
+    const staffId = req.params.staffId;
+    const performanceObj = req.body; // The object to push
+
+    const updatedStaff = await StaffCollection.findOneAndUpdate(
+      { staffId: staffId },
+      { $push: { Performance: performanceObj } },
+      { new: true }
+    );
+    if (!updatedStaff) {
+      return res.status(404).json({ message: 'Staff not found' });
+    }
+    res.json(updatedStaff);
+  } catch (err) {
+    console.error('Error updating staff performance:', err);
+    res.status(500).json({ message: 'Failed to update staff performance' });
+  }
+});
+
+// Route to delete a staff record by staffId
+app.delete('/api/staff/:staffId', async (req, res) => {
+  try {
+    const staffId = req.params.staffId; // Get the staffId from the request parameters
+    const deletedStaff = await StaffCollection.findOneAndDelete({ staffId: staffId }); // Find and delete the record by staffId
+  if (!deletedStaff) {
+      return res.status(404).json({ message: 'Staff not found' }); // If no record found, return 404
+    }
+    res.json({ message: 'Staff record deleted successfully' }); // Send a success message as a JSON response
+
+  }
+  catch(err) {
+    console.error('Error deleting staff record:', err);
+    res.status(500).json({ message: 'Failed to delete staff record' }); // If an error occurs, return 500
+  }
+});
+
 
 
 // Route to fetch all records from the 3rd_year collection

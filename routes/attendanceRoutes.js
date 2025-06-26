@@ -80,6 +80,11 @@ router.put('/:rollno', async (req, res) => {
         //console.log(attendance.count);
         //console.log(attendance);
         //console.log(attendance.TotalWorkDays);
+        console.log(req.body.name, req.body.rollno);
+        if(req.body.name && req.body.rollno) {
+            attendance.name = req.body.name;
+            attendance.rollno = req.body.rollno;
+        }
         if(req.params.rollno == 951323 && req.body.historyDecision == "Reset") {
             attendance.TotalWorkDays = 0;
         }

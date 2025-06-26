@@ -21,7 +21,7 @@ body {
 #Back {
     padding : 10px 15px;
     margin:10px;
-    font-size: 1.2em;
+    font-size: 1.4em;
     font-weight: bold;
     border : none;
     border-radius : 10px;
@@ -30,9 +30,10 @@ body {
     margin-left:8%;
     background-color: rgb(255, 0, 0);
     position : sticky;
-    top:5%;
-
+    top:1%;
 }
+
+
 #students {
     text-align: center;
     display: flex;
@@ -122,10 +123,20 @@ body {
     color : white;
 
 }
+input , select {
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 8px;
+    margin: 5px;
+    width: 85%;
+    text-align: center;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 10px;
+}
 
-#mainPopup , #mainpopupTable{
+#mainPopup , #mainpopupTable , #mainAddPopup , #mainpopupStaff {
     min-width: 100%;
-    min-height :600vh;
+    min-height :1000vh;
     width : auto;
     height : auto;
     position: absolute;
@@ -151,10 +162,10 @@ body {
     padding:10px;
     border-radius: 10px;
     margin: auto;
-    margin-top: 8%;
+    margin-top: 12%;
     z-index:6;
     position :sticky;
-    top:8%;
+    top:12%;
 }
 
 #popup table button {
@@ -313,7 +324,6 @@ body {
 }
 #cancelBtn {
     background-color: red;
-
 }
 
 .student .result {
