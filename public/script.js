@@ -1,19 +1,23 @@
-const time = new Date();
-const year = time.getFullYear();
-const date = time.getDate();
-const month = time.getMonth();
-let hours = time.getHours();
-const meritiam = hours >= 12 ? "PM" : "AM";
+function Timefunction() {
+    time = new Date();
+    year = time.getFullYear();
+    date = time.getDate();
+    month = time.getMonth();
+    hours = time.getHours();
+    meritiam = hours >= 12 ? "PM" : "AM";
 
-hours = hours.toString().padStart(2, "0");
-const minutes = time.getMinutes().toString().padStart(2, "0");
+    hours = hours.toString().padStart(2, "0");
+    minutes = time.getMinutes().toString().padStart(2, "0");
 
-RailTime = `${hours}:${minutes}`;
-hours = hours % 12 || 12;
-let timeDate = `${date}/${month + 1}/${year}`;
-let Time = `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${meritiam}`;
+    RailTime = `${hours}:${minutes}`;
+    hours = hours % 12 || 12;
+    timeDate = `${date}/${month + 1}/${year}`;
+    Time = `${hours}:${minutes} ${meritiam}`;
+    GoodTime = meritiam == "AM" ? "Good Morning🌅" : "Good Afternoon☀️" || RailTime >= "16:00" ? "Good Evening🌇" : "Good Afternoon☀️";
+}
+Timefunction();
+setInterval(Timefunction, 1000);
 
-const GoodTime = meritiam == "AM" ? "Good Morning🌅" : "Good Afternoon☀️" || RailTime >= "16:00" ? "Good Evening🌇" : "Good Afternoon☀️";
 document.getElementById("Time").textContent = `${GoodTime}`;
 document.getElementById("Date").textContent = `Today is ${timeDate}`;
 
@@ -1166,7 +1170,10 @@ async function CheckStaffLogin() {
                 </tr>
                 <tr>
                     <td><label>TotalTeachingHours: </label></td>
-                    <td><input type="number" disabled readonly value="${staff.TotalTeachingHours}"></td>
+                    <td><input type="number" disabled readonly value="${Array.isArray(staff.Performance) && staff.Performance.length > 0
+                        ? staff.Performance.reduce((sum, perf) => sum + Number(perf.hourDuration || 0), 0)
+                        : "0"
+                    }"></td>
                 </tr>
             </table>
             <hr>
@@ -1319,18 +1326,74 @@ NonestaffPerformPOPUP = () => {
     document.getElementById("mainpopupTable").style.display = "none";
 }
 
-function showCse() {
+async function showCse() {
     document.getElementById("bodyDiv").innerHTML = "";
     document.getElementById("bodyDiv").innerHTML = `
-        <button id="Back" onclick="showDept()"><i class="fa-solid fa-chevron-left"></i></i></button>
-        <div id="classes">
+<div style="display:none;" id="mainpopupStaff">
+    <button id="Back" onclick="showDept()"><i class="fa-solid fa-chevron-left"></i></button>
+    <div id="popup">
+        <h1 id="heading">Staff Details</h1>
+        <table id="StaffLogintable" border="0">
+        <tr>
+        <td><label for="staffName">Staff Name:</label></td><td><input type="text" placeholder="Staff Name" id="staffName" style="border:1px solid border-radius:4px"></td>
+        </tr>
+        <tr>
+        <td><label for="staffId">Staff ID:</label></td><td><input type="text" placeholder="Staff ID" id="staffId" style="border:1px solid border-radius:4px" ></td>
+        </tr>
+        <tr>
+        <td><button class="LoginBtn" id="StaffLoginBtnInDept" >Login</button></td>
+        </tr>
+        </table>
+    <div>
+</div>`;
+    document.getElementById("mainpopupStaff").style.display = "block";
+    document.getElementById("StaffLoginBtnInDept").onclick = async () => {
+        let staff = await getAllStaff();
+        //console.log(staff);
+        const staffName = document.getElementById("staffName");
+        const staffId = document.getElementById("staffId");
+        if (staffName.value == "" || staffName.value == null || staffId.value == "" || staffId.value == null) {
+            window.alert("Enter the staffName and staffId");
+        }
+        else {
+            let check = true;
+            for (i = 0; i < staff.length; i++) {
+                //console.log(staffName.value, staff[i].staffName, staffId.value, staff[i].staffId)
+                if (staffName.value.trim() == staff[i].staffName && staffId.value.trim() == staff[i].staffId) {
+                    check = false;
+                    if (staff[i].Department == "CSE") {
+                        document.getElementById("bodyDiv").innerHTML = "";
+                        document.getElementById("bodyDiv").innerHTML = `
+                            <button id="Back" onclick="showDept()"><i class="fa-solid fa-chevron-left"></i></i></button>
+                            <div id="classes">
+                            <a ><div id="1year" class="class" onclick="showCse1()"><h1>1 year</h1></div></a>
+                            <a ><div id="2year" class="class" onclick="showCse2()"><h1>2 year</h1></div></a>
+                            <a ><div id="3year" class="class" onclick="showCse3()"><h1>3 year</h1></div></a>
+                            <a><div id="4year" class="class" onclick="showCse4()"><h1>4 year</h1></div></a>
+                            </div>`;
+                    }
+                    else {
+                        window.alert("You cannot enter this department");
+                    }
+
+                }
+            }
+            if (check) {
+                window.alert("Invaild staffName or staffId");
+            }
+        }
+
+    }
+    document.title = "CSE Classes";
+}
+/*
+<button id="Back" onclick="showDept()"><i class="fa-solid fa-chevron-left"></i></i></button>
+<div id="classes">
 <a ><div id="1year" class="class" onclick="showCse1()"><h1>1 year</h1></div></a>
 <a ><div id="2year" class="class" onclick="showCse2()"><h1>2 year</h1></div></a>
 <a ><div id="3year" class="class" onclick="showCse3()"><h1>3 year</h1></div></a>
 <a><div id="4year" class="class" onclick="showCse4()"><h1>4 year</h1></div></a>
-</div>`;
-    document.title = "CSE Classes";
-}
+</div>*/
 //SHOW CSE1
 function showCse1() {
 
@@ -1589,9 +1652,20 @@ async function showCse2() {
 <button id="shortCut">Put Attendance</button>
 <button id="reviewBtn">Get Percentage</button>
 <div id="students" class="allStudents">
+
 </div>
 </div> `;
+    /*     <div class="student">
+            <img src="male.jpg" alt="Davidsolomonraj" width="200" height="200">
+            <h2>Name: Davidsolomonraj</h2>
+            <p class="rollNo">Roll No: 22104007</p>
+            <button class="present">Present</button>
+            <button class="absent">Absent</button>
+            <p class="result"></p>
+        </div> */
     let data = await getAllStudent();
+    // Sort by rollno (ascending)
+    data.sort((a, b) => Number(a.rollno) - Number(b.rollno));
     const AllStudents = document.querySelector(".allStudents");
     data.forEach(student => {
         if (student.name == "TWD") { }
@@ -1599,15 +1673,16 @@ async function showCse2() {
             StudentDiv = document.createElement("div");
             StudentDiv.classList = "student";
             StudentDiv.innerHTML = `
-        <img src="male.jpg" alt="${student.name}" width="200px" height="200px" >
-        <h2>Name: ${student.name}</h2>
-        <p class="rollNo">Roll No: ${student.rollno}</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        `;
+    <img src="male.jpg" alt="${student.name}" width="200px" height="200px" >
+    <h2>Name: ${student.name}</h2>
+    <p class="rollNo">Roll No: ${student.rollno}</p>
+    <button class="present">Present</button>
+    <button class="absent">Absent</button>
+    <p class="result"></p>
+    `;
             AllStudents.appendChild(StudentDiv);
         }
-    })
+    });
 
     document.title = "CSE 2-Year";
     const reviewBtn = document.getElementById("reviewBtn");
@@ -1639,7 +1714,7 @@ async function showCse2() {
             event.target.parentElement.getElementsByClassName("result")[0].textContent = "Present";
             event.target.parentElement.getElementsByClassName("result")[0].style.color = "green";
 
-            let timeDate = `${date} /${month + 1}/${year} % 0a ${hours}:${minutes} `;
+            timeDate = `${date} /${month + 1}/${year} % 0a ${hours}:${minutes} `;
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
             //console.log(rollNo);
@@ -1657,17 +1732,19 @@ async function showCse2() {
         button.addEventListener("click", (event) => {
             //event.target.parentElement.getElementsByClassName("present")[0].innerHTML = "<del>Present</del>";
             event.target.style.display = "none";
+            console.log(event.target.parentElement.getElementsByClassName("result")[0].textContent);
             event.target.parentElement.getElementsByClassName("present")[0].style.display = "none";
             event.target.parentElement.getElementsByClassName("result")[0].textContent = "Absent";
+
             event.target.parentElement.getElementsByClassName("result")[0].style.color = "red";
-            let timeDate = `${date} /${month + 1}/${year} `;
+            timeDate = `${date} /${month + 1}/${year} `;
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
             const name = event.target.parentElement.getElementsByTagName("h2")[0].textContent.split(":")[1].trim();
 
             //console.log(String(rollNo).slice(5));
             whatsappDatas.push(`Name: ${name} \n RollNo: ${rollNo} \n   Absent on ${correntTime} \n  `);
-            AbsentTodayName.push(`Name : ${name} , RollNo: ${rollNo}`);
+            AbsentTodayName.push(`Name : ${name} , RollNo: ${rollNo}\n`);
 
             //console.log(rollNo);
             //whatsappDate.push(`Name: ${ name } % 0a RollNo: ${ rollNo } % 0a Absent on ${ timeDate } `);
@@ -1682,7 +1759,7 @@ async function showCse2() {
     const AllButtons = document.querySelectorAll(".allStudents button");
     //console.log(AllButtons);
     AllButtons.forEach(button => {
-        button.style.display = "none";
+        button.style.visibility = "hidden";
     });
 
     //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; // If running on the same domain
@@ -1707,6 +1784,7 @@ async function showCse2() {
 
 
         document.querySelector("#StaffLoginBtn").onclick = async () => {
+
             let data = await getAllStaff();
             //console.log(data);
             const staffName = document.getElementById("staffName").value.trim();
@@ -1730,7 +1808,10 @@ async function showCse2() {
 
 
                         document.querySelector("#SubmitStaffDatas").onclick = async () => {
-                            const staffName = document.getElementById("Staffname").value;
+                            let CseStaffs = [];
+                            let Staffs = await getAllStaff();
+                            //console.log(Staffs);
+                            const staffName = document.getElementById("Staffname").value.trim();
                             const courseName = document.getElementById("thirdSemCourse").value == "Selected" ? document.getElementById("fourthSemCourse").value : document.getElementById("thirdSemCourse").value;
                             const semester = document.getElementById("semester").value;
                             const hourDuration = document.getElementById("hourDurationSelect").value;
@@ -1740,196 +1821,542 @@ async function showCse2() {
                                 window.alert("Please fill all the fields");
                                 return;
                             }
+
                             else {
-                                AllButtons.forEach(async button => {
-                                    button.style.display = "block";
-                                });
-                                //console.log(staffName, staffId, subject, semester, hourDuration, periodTiming);
-                                //await saveAttendance(staffName, staffId, subject, semester, hourDuration, periodTiming);
-                                document.querySelector("#mainpopupStaff").style.display = "none";
-                                setTimeout(async () => {
-
-                                    const AbsentIs = window.prompt("Enter the  Number of Students Absent:");
-
-                                    if (AbsentIs == "" || AbsentIs == null) {
-                                        window.alert("invalid input");
-                                    }
-                                    else {
-                                        try {
-                                            if (AbsentIs > 0) {
-                                                for (i = 0; i < AbsentIs; i++) {
-                                                    const getAbsentIsNumber = window.prompt("Enter the Absent Students Number one-by-one(23104---):");
-
-                                                    if (getAbsentIsNumber.startsWith("23104")) {
-                                                        format = Number(getAbsentIsNumber);
-                                                        //saveAbsentData.push(format);
-                                                    }
-                                                    else {
-                                                        format = Number(`23104${getAbsentIsNumber} `);
-                                                        //saveAbsentData.push(format);
-                                                    }
-                                                    //console.log(String(format).slice(5));
-
-                                                    if (String(format).slice(5).startsWith("0")) {
-                                                        find = String(format).slice(6);
-                                                        if (String(find).startsWith("0")) {
-                                                            console.log(find);
-                                                            get = find.slice(1);
-                                                            console.log(get);
-
-                                                            for (let i = 0; i < buttonArray.length; i++) {
-                                                                if (buttonArray[i] === buttonArray[get - 1]) {
-                                                                    buttonArray[i] = "";
-                                                                    break;
-                                                                }
-                                                            }
-
-                                                            /*let NewArray = buttonArray.filter(button => {
-                                                                console.log(button.querySelector(".rollNo").textContent !== buttonArray[get - 1].querySelector(".rollNo").textContent);
-                                                            });
-                                                            console.log(NewArray);*/
-
-                                                            await allButtons[get - 1].querySelector(".absent").click();
-
-                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get - 1]);
-                                                        }
-                                                        else if (String(find) >= 10 && String(find) <= 24) {
-                                                            console.log(find);
-                                                            get = find - 1;
-                                                            //console.log(get);
-                                                            for (let i = 0; i < buttonArray.length; i++) {
-                                                                if (buttonArray[i] === buttonArray[get]) {
-                                                                    buttonArray[i] = "";
-                                                                    break;
-                                                                }
-                                                            }
-
-                                                            await allButtons[get].querySelector(".absent").click();
-
-                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                        }
-                                                        else if (String(find) >= 26 && String(find) <= 48) {
-                                                            //console.log(find);
-                                                            get = find - 2;
-                                                            //console.log(get);
-                                                            for (let i = 0; i < buttonArray.length; i++) {
-                                                                if (buttonArray[i] === buttonArray[get]) {
-                                                                    buttonArray[i] = "";
-                                                                    break;
-                                                                }
-                                                            }
-                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                            await allButtons[get].querySelector(".absent").click();
-
-                                                        }
-                                                        else if (String(find) >= 50 && String(find) <= 60) {
-                                                            //console.log(find);
-                                                            get = find - 3;
-                                                            //console.log(get);
-                                                            for (let i = 0; i < buttonArray.length; i++) {
-                                                                if (buttonArray[i] === buttonArray[get]) {
-                                                                    buttonArray[i] = "";
-                                                                    break;
-                                                                }
-                                                            }
-                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                            await allButtons[get].querySelector(".absent").click();
-
-                                                        }
-                                                        else {
-                                                            window.alert("There are no students in this number");
-                                                        }
-                                                    }
-                                                    else if (String(format).slice(5).startsWith("3")) {
-                                                        find = String(format).slice(7);
-                                                        var late = 57;
-
-                                                        get = late + (Number(find));
-                                                        //console.log(get);
-                                                        for (let i = 0; i < buttonArray.length; i++) {
-                                                            if (buttonArray[i] === buttonArray[get]) {
-                                                                buttonArray[i] = "";
-                                                                break;
-                                                            }
-                                                        }
-
-                                                        //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                        await allButtons[get].querySelector(".absent").click();
-
-                                                    }
-                                                    else if (String(format).slice(5).startsWith("7")) {
-                                                        get = 63;
-                                                        for (let i = 0; i < buttonArray.length; i++) {
-                                                            if (buttonArray[i] === buttonArray[get]) {
-                                                                buttonArray[i] = "";
-                                                                break;
-                                                            }
-                                                        }
-
-                                                        //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                        await allButtons[get].querySelector(".absent").click();
-
-                                                    }
-                                                    //await markAttendance(format, "Absent");
-                                                    //console.log(event.target.parentElement.querySelector(".allStudents").children[].querySelectorAll(".rollNo"));
-
-                                                }
+                                let check = true;
+                                CseStaffs = Staffs.filter(staff => {
+                                    return staff.Department == "CSE";
+                                })
+                                //console.log(CseStaffs);
+                                for (i = 0; i < CseStaffs.length; i++) {
+                                    for (j = 0; j < CseStaffs[i].Performance.length; j++) {
+                                        //console.log(CseStaffs[i].Performance[j].date, timeDate);
+                                        if (CseStaffs[i].Performance[j].date == timeDate) {
+                                            if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 10:15 AM" && RailTime < "10:15") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st period";
                                                 setTimeout(() => {
-                                                    presentFunction();
-                                                }, 3000);
-
-                                                presentFunction = async () => {
-                                                    for (i = 0; i < buttonArray.length; i++) {
-                                                        if (buttonArray[i] == "") {
-
-                                                        }
-                                                        else {
-                                                            await buttonArray[i].querySelector(".present").click();
-                                                        }
-                                                    }
-                                                }
-                                                TodayAttedance = {
-                                                    courseName: courseName,
-                                                    semester: semester,
-                                                    hourDuration: hourDuration,
-                                                    periodTiming: periodTiming,
-                                                    date: `${date} /${month + 1}/${year}`,
-                                                    time: `${hours}:${minutes} ${meritiam}`,
-                                                    absentStudents: AbsentTodayName,
-                                                    AbsentStudentsCount: AbsentTodayName.length,
-
-                                                }
-                                                pushPerformance(staffId, TodayAttedance);
-                                                console.log(TodayAttedance);
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
                                             }
-                                            else {
-                                                presentFun = async () => {
-                                                    for (i = 0; i < buttonArray.length; i++) {
-                                                        if (buttonArray[i] == "") {
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 11:05 AM" && RailTime >= "10:15" && RailTime < "11:05") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd period";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 12:10 PM" && RailTime >= "11:05" && RailTime < "12:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd period";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "12:10 PM to 1:00 PM" && RailTime >= "12:10" && RailTime < "13:40") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 4th period";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "1:40 PM to 2:30 PM" && RailTime >= "13:40" && RailTime < "14:30") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 5th period";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "2:30 PM to 3:20 PM" && RailTime >= "14:30" && RailTime < "15:20") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 6th period";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "3:20 PM to 4:10 PM" && RailTime >= "15:20" && RailTime < "16:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 7th period";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 11:05 AM" && RailTime < "10:15" && RailTime < "11:05") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st and 2nd periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 12:10 PM" && RailTime >= "10:15" && RailTime < "12:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd and 3rd periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 1:00 PM" && RailTime >= "11:05" && RailTime < "13:00") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd and 4th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "12:10 PM to 2:30 PM" && RailTime >= "12:10" && RailTime < "14:30") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 4th and 5th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "1:40 PM to 3:20 PM" && RailTime >= "13:40" && RailTime < "15:20") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 5th and 6th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "2:30 PM to 4:10 PM" && RailTime >= "14:30" && RailTime < "16:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 6th and 7th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 12:10 PM" && RailTime < "10:15" && RailTime < "12:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st,2nd and 3rd periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 1:00 PM" && RailTime >= "10:15" && RailTime < "13:00") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd,3rd and 4th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 2:30 PM" && RailTime >= "11:05" && RailTime < "14:30") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd,4th and 5th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "12:10 PM to 3:20 PM" && RailTime >= "12:10" && RailTime < "15:20") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 4th,5th and 6th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "1:40 PM to 4:10 PM" && RailTime >= "13:40" && RailTime < "16:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 5th,6th and 7th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 1:00 PM" && RailTime < "10:15" && RailTime < "13:00") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st,2nd,3rd and 4th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 2:30 PM" && RailTime >= "10:15" && RailTime < "14:30") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd,3rd,4th and 5th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 3:20 PM" && RailTime >= "11:05" && RailTime < "15:20") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd,4th,5th and 6th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "12:10 PM to 4:10 PM" && RailTime >= "12:10" && RailTime < "16:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 4th,5th,6th and 7th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 2:30 PM" && RailTime < "10:15" && RailTime < "14:30") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st,2nd,3rd,4th and 5th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 3:20 PM" && RailTime >= "10:15" && RailTime < "15:20") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd,3rd,4th,5th and 6th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 4:10 PM" && RailTime >= "11:05" && RailTime < "16:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd,4th,5th,6th and 7th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 3:20 PM" && RailTime < "10:15" && RailTime < "15:20") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st,2nd,3rd,4th,5th and 6th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 4:10 PM" && RailTime >= "10:15" && RailTime < "16:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd,3rd,4th,5th,6th and 7th periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
 
+                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 4:10 PM" && RailTime < "10:15" && RailTime <= "16:10") {
+                                                document.getElementById("wait").style.display = "block";
+                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in All periods";
+                                                setTimeout(() => {
+                                                    document.getElementById("wait").style.display = "none";
+                                                    document.getElementById("waitMeg").textContent = "";
+                                                }, 4000);
+                                                check = false;
+                                            }
+
+                                        }
+                                    }
+                                }
+                                if (check) {
+                                    AllButtons.forEach(async button => {
+                                        button.style.visibility = "visible";
+                                    });
+                                    //console.log(staffName, staffId, subject, semester, hourDuration, periodTiming);
+                                    //await saveAttendance(staffName, staffId, subject, semester, hourDuration, periodTiming);
+                                    document.querySelector("#mainpopupStaff").style.display = "none";
+                                    setTimeout(async () => {
+
+                                        const AbsentIs = window.prompt("Enter the  Number of Students Absent:");
+
+                                        if (AbsentIs == "" || AbsentIs == null) {
+                                            window.alert("invalid input");
+                                        }
+                                        else {
+                                            try {
+                                                if (AbsentIs > 0) {
+                                                    for (i = 0; i < AbsentIs; i++) {
+                                                        const getAbsentIsNumber = window.prompt("Enter the Absent Students Number one-by-one(23104---):");
+
+                                                        if (getAbsentIsNumber.startsWith("23104")) {
+                                                            format = Number(getAbsentIsNumber);
+                                                            //saveAbsentData.push(format);
                                                         }
                                                         else {
-                                                            await buttonArray[i].querySelector(".present").click();
+                                                            format = Number(`23104${getAbsentIsNumber} `);
+                                                            //saveAbsentData.push(format);
+                                                        }
+                                                        //console.log(String(format).slice(5));
+
+                                                        if (String(format).slice(5).startsWith("0")) {
+                                                            find = String(format).slice(6);
+                                                            if (String(find).startsWith("0")) {
+                                                                console.log(find);
+                                                                get = find.slice(1);
+                                                                console.log(get);
+
+                                                                for (let i = 0; i < buttonArray.length; i++) {
+                                                                    if (buttonArray[i] === buttonArray[get - 1]) {
+                                                                        buttonArray[i] = "";
+                                                                        break;
+                                                                    }
+                                                                }
+
+                                                                /*let NewArray = buttonArray.filter(button => {
+                                                                    console.log(button.querySelector(".rollNo").textContent !== buttonArray[get - 1].querySelector(".rollNo").textContent);
+                                                                });
+                                                                console.log(NewArray);*/
+
+                                                                await allButtons[get - 1].querySelector(".absent").click();
+
+                                                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get - 1]);
+                                                            }
+                                                            else if (String(find) >= 10 && String(find) <= 24) {
+                                                                console.log(find);
+                                                                get = find - 1;
+                                                                //console.log(get);
+                                                                for (let i = 0; i < buttonArray.length; i++) {
+                                                                    if (buttonArray[i] === buttonArray[get]) {
+                                                                        buttonArray[i] = "";
+                                                                        break;
+                                                                    }
+                                                                }
+
+                                                                await allButtons[get].querySelector(".absent").click();
+
+                                                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                            }
+                                                            else if (String(find) >= 26 && String(find) <= 48) {
+                                                                //console.log(find);
+                                                                get = find - 2;
+                                                                //console.log(get);
+                                                                for (let i = 0; i < buttonArray.length; i++) {
+                                                                    if (buttonArray[i] === buttonArray[get]) {
+                                                                        buttonArray[i] = "";
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                                await allButtons[get].querySelector(".absent").click();
+
+                                                            }
+                                                            else if (String(find) >= 50 && String(find) <= 60) {
+                                                                //console.log(find);
+                                                                get = find - 3;
+                                                                //console.log(get);
+                                                                for (let i = 0; i < buttonArray.length; i++) {
+                                                                    if (buttonArray[i] === buttonArray[get]) {
+                                                                        buttonArray[i] = "";
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                                await allButtons[get].querySelector(".absent").click();
+
+                                                            }
+                                                            else {
+                                                                window.alert("There are no students in this number");
+                                                            }
+                                                        }
+                                                        else if (String(format).slice(5).startsWith("3")) {
+                                                            find = String(format).slice(7);
+                                                            var late = 57;
+
+                                                            get = late + (Number(find));
+                                                            //console.log(get);
+                                                            for (let i = 0; i < buttonArray.length; i++) {
+                                                                if (buttonArray[i] === buttonArray[get]) {
+                                                                    buttonArray[i] = "";
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                            await allButtons[get].querySelector(".absent").click();
+
+                                                        }
+                                                        else if (String(format).slice(5).startsWith("7")) {
+                                                            get = 63;
+                                                            for (let i = 0; i < buttonArray.length; i++) {
+                                                                if (buttonArray[i] === buttonArray[get]) {
+                                                                    buttonArray[i] = "";
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
+                                                            await allButtons[get].querySelector(".absent").click();
+
+                                                        }
+                                                        //await markAttendance(format, "Absent");
+                                                        //console.log(event.target.parentElement.querySelector(".allStudents").children[].querySelectorAll(".rollNo"));
+
+                                                    }
+                                                    setTimeout(() => {
+                                                        presentFunction();
+                                                    }, 3000);
+
+                                                    presentFunction = async () => {
+                                                        for (i = 0; i < buttonArray.length; i++) {
+                                                            if (buttonArray[i] == "") {
+
+                                                            }
+                                                            else {
+                                                                await buttonArray[i].querySelector(".present").click();
+                                                            }
                                                         }
                                                     }
-                                                }
-                                                presentFun();
-                                                async function sendWhatsAppPresent() {
+                                                    TodayAttedance = {
+                                                        courseName: courseName,
+                                                        semester: semester,
+                                                        hourDuration: hourDuration,
+                                                        periodTiming: periodTiming,
+                                                        date: `${date}/${month + 1}/${year}`,
+                                                        time: `${hours}:${minutes} ${meritiam}`,
+                                                        absentStudents: AbsentTodayName,
+                                                        AbsentStudentsCount: AbsentTodayName.length,
 
-                                                    function checkFunc() {
-                                                        if (whatsappDatas.length == 0) {
+                                                    }
+                                                    pushPerformance(staffId, TodayAttedance);
+                                                    console.log(TodayAttedance);
+                                                }
+                                                else {
+                                                    TodayAttedance = {
+                                                        courseName: courseName,
+                                                        semester: semester,
+                                                        hourDuration: hourDuration,
+                                                        periodTiming: periodTiming,
+                                                        date: `${date} /${month + 1}/${year}`,
+                                                        time: `${hours}:${minutes} ${meritiam}`,
+                                                        absentStudents: AbsentTodayName,
+                                                        AbsentStudentsCount: AbsentTodayName.length,
+
+                                                    }
+                                                    pushPerformance(staffId, TodayAttedance);
+                                                    console.log(TodayAttedance);
+                                                    presentFun = async () => {
+                                                        for (i = 0; i < buttonArray.length; i++) {
+                                                            if (buttonArray[i] == "") {
+
+                                                            }
+                                                            else {
+                                                                await buttonArray[i].querySelector(".present").click();
+                                                            }
+                                                        }
+                                                    }
+                                                    presentFun();
+                                                    async function sendWhatsAppPresent() {
+
+                                                        function checkFunc() {
+                                                            if (whatsappDatas.length == 0) {
+                                                                let partTime1 = '';
+                                                                partTime1 += "All students are present on " + `${date} /${month + 1}/${year} % 0a ${hours}:${minutes} ${ampm} `;
+                                                                let message = "All students are present on " + `${correntTime} `;
+                                                                async function whatsAppMessage() {
+                                                                    let phone = '+919486500899';
+                                                                    let url = "https://wa.me/" + phone + "?text="
+                                                                        + partTime1;
+                                                                    await window.open(url, "_blank");
+                                                                    partTime1 = "";
+                                                                }
+                                                                async function sendTelegram() {
+                                                                    function sendMessage() {
+                                                                        //const message = document.getElementById('msg').value;
+
+                                                                        fetch('/send-to-telegram', {
+                                                                            method: 'POST',
+                                                                            headers: {
+                                                                                'Content-Type': 'application/json',
+                                                                            },
+                                                                            body: JSON.stringify({ message })
+                                                                        })
+                                                                            .then((response) => {
+                                                                                response.json();
+                                                                                console.log(response);
+                                                                            })
+                                                                            .then(data => {
+                                                                                console.log(data);
+                                                                                alert('Message sent to Telegram successfully!');
+                                                                            })
+                                                                            .catch(error => {
+                                                                                console.error('Error:', error);
+                                                                                alert('An error occurred.');
+                                                                            });
+                                                                    }
+                                                                    sendMessage();
+                                                                }
+                                                                sendTelegram();
+                                                                //whatsAppMessage();
+                                                            }
+
+                                                        }
+                                                        checkFunc();
+                                                    }
+                                                    sendWhatsAppPresent();
+                                                }
+
+                                            }
+
+                                            catch (err) {
+                                                console.log(err);
+                                                window.alert(`ERROR: ${err} `);
+                                            }
+                                            finally {
+                                                async function sendWhatsApp() {
+                                                    //console.log("Entered");
+
+                                                    function Batch1() {
+                                                        //console.log(whatsappDatas.length);
+                                                        if (whatsappDatas.length > 0) {
                                                             let partTime1 = '';
-                                                            partTime1 += "All students are present on " + `${date} /${month + 1}/${year} % 0a ${hours}:${minutes} ${ampm} `;
-                                                            let message = "All students are present on " + `${correntTime} `;
+                                                            let message = '';
+                                                            for (let i = 0; i < whatsappDatas.length; i++) {
+                                                                partTime1 += whatsappDatas[i];
+                                                                message += whatsappDatas[i];
+
+                                                            }
+                                                            message += `\n\n${correntTime} `;
+
                                                             async function whatsAppMessage() {
                                                                 let phone = '+919486500899';
                                                                 let url = "https://wa.me/" + phone + "?text="
-                                                                    + partTime1;
+                                                                    + partTime1 + `${correntTime} `;
                                                                 await window.open(url, "_blank");
                                                                 partTime1 = "";
                                                             }
-                                                            async function sendTelegram() {
-                                                                function sendMessage() {
+                                                            async function sendTelegram1() {
+                                                                function sendMessage2() {
                                                                     //const message = document.getElementById('msg').value;
 
                                                                     fetch('/send-to-telegram', {
@@ -1944,7 +2371,7 @@ async function showCse2() {
                                                                             console.log(response);
                                                                         })
                                                                         .then(data => {
-                                                                            console.log(data);
+                                                                            //console.log(data);
                                                                             alert('Message sent to Telegram successfully!');
                                                                         })
                                                                         .catch(error => {
@@ -1952,100 +2379,36 @@ async function showCse2() {
                                                                             alert('An error occurred.');
                                                                         });
                                                                 }
-                                                                sendMessage();
+                                                                sendMessage2();
                                                             }
-                                                            sendTelegram();
+                                                            sendTelegram1();
                                                             //whatsAppMessage();
                                                         }
 
                                                     }
-                                                    checkFunc();
+
+                                                    Batch1();
                                                 }
-                                                sendWhatsAppPresent();
+                                                sendWhatsApp();
+
                                             }
-
+                                            setTimeout(() => {
+                                                showDept();
+                                            }, 5000);
                                         }
-
-                                        catch (err) {
-                                            console.log(err);
-                                            window.alert(`ERROR: ${err} `);
-                                        }
-                                        finally {
-                                            async function sendWhatsApp() {
-                                                //console.log("Entered");
-
-                                                function Batch1() {
-                                                    //console.log(whatsappDatas.length);
-                                                    if (whatsappDatas.length > 0) {
-                                                        let partTime1 = '';
-                                                        let message = '';
-                                                        for (let i = 0; i < whatsappDatas.length; i++) {
-                                                            partTime1 += whatsappDatas[i];
-                                                            message += whatsappDatas[i];
-
-                                                        }
-                                                        message += `\n\n${correntTime} `;
-
-                                                        async function whatsAppMessage() {
-                                                            let phone = '+919486500899';
-                                                            let url = "https://wa.me/" + phone + "?text="
-                                                                + partTime1 + `${correntTime} `;
-                                                            await window.open(url, "_blank");
-                                                            partTime1 = "";
-                                                        }
-                                                        async function sendTelegram1() {
-                                                            function sendMessage2() {
-                                                                //const message = document.getElementById('msg').value;
-
-                                                                fetch('/send-to-telegram', {
-                                                                    method: 'POST',
-                                                                    headers: {
-                                                                        'Content-Type': 'application/json',
-                                                                    },
-                                                                    body: JSON.stringify({ message })
-                                                                })
-                                                                    .then((response) => {
-                                                                        response.json();
-                                                                        console.log(response);
-                                                                    })
-                                                                    .then(data => {
-                                                                        //console.log(data);
-                                                                        alert('Message sent to Telegram successfully!');
-                                                                    })
-                                                                    .catch(error => {
-                                                                        console.error('Error:', error);
-                                                                        alert('An error occurred.');
-                                                                    });
-                                                            }
-                                                            sendMessage2();
-                                                        }
-                                                        sendTelegram1();
-                                                        //whatsAppMessage();
-                                                    }
-
-                                                }
-
-                                                Batch1();
-                                            }
-                                            sendWhatsApp();
-
-                                        }
-                                        setTimeout(() => {
-                                            showCse();
-                                        }, 5000);
-                                    }
-                                }, 100);
+                                    }, 100);
 
 
+                                }
                             }
-                        }
 
+                        }
                     }
-                }
-                if (checkStaff) {
-                    window.alert("Invalid Staff ID or Staff Name");
-                    document.getElementById("StaffLogintable").style.display = "block";
-                    document.querySelector("#mainpopupStaff").style.display = "block";
+                    if (checkStaff) {
+                        window.alert("Invalid Staff ID or Staff Name");
+                        document.getElementById("StaffLogintable").style.display = "block";
+                        document.querySelector("#mainpopupStaff").style.display = "block";
+                    }
                 }
             }
         }
@@ -2102,86 +2465,86 @@ async function showCse2() {
 
                 periodTiming.value = "9:25 AM to 11:05 AM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "2" && RailTime >= "10:15" && RailTime < "12:10") {
 
                 periodTiming.value = "10:15 AM to 12:10 PM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "11:05" && RailTime < "12:10") {
+            else if (hourDurationSelect.value == "2" && RailTime >= "11:05" && RailTime < "13:00") {
 
                 periodTiming.value = "11:20 AM to 1:00 PM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "12:10" && RailTime < "13:40") {
+            else if (hourDurationSelect.value == "2" && RailTime >= "12:10" && RailTime < "14:30") {
 
                 periodTiming.value = "12:10 PM to 2:30 PM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "13:40" && RailTime < "14:30") {
+            else if (hourDurationSelect.value == "2" && RailTime >= "13:40" && RailTime < "15:20") {
 
                 periodTiming.value = "1:40 PM to 3:20 PM";
 
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "14:30" && RailTime < "15:20") {
+            else if (hourDurationSelect.value == "2" && RailTime >= "14:30" && RailTime < "16:10") {
 
                 periodTiming.value = "2:30 PM to 4:10 PM";
 
             }
-            else if (hourDurationSelect.value == "3" && RailTime < "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "3" && RailTime < "10:15" && RailTime < "12:10") {
 
                 periodTiming.value = "9:25 AM to 12:10 PM";
             }
-            else if (hourDurationSelect.value == "3" && RailTime >= "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "3" && RailTime >= "10:15" && RailTime < "13:00") {
 
                 periodTiming.value = "10:15 AM to 1:00 PM";
             }
-            else if (hourDurationSelect.value == "3" && RailTime >= "11:05" && RailTime < "12:10") {
+            else if (hourDurationSelect.value == "3" && RailTime >= "11:05" && RailTime < "14:30") {
 
                 periodTiming.value = "11:20 AM to 2:30 PM";
             }
-            else if (hourDurationSelect.value == "3" && RailTime >= "12:10" && RailTime < "13:40") {
+            else if (hourDurationSelect.value == "3" && RailTime >= "12:10" && RailTime < "15:20") {
 
                 periodTiming.value = "12:10 PM to 3:20 PM";
             }
-            else if (hourDurationSelect.value == "3" && RailTime >= "13:40" && RailTime < "14:30") {
+            else if (hourDurationSelect.value == "3" && RailTime >= "13:40" && RailTime < "16:10") {
 
                 periodTiming.value = "1:40 PM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "4" && RailTime < "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "4" && RailTime < "10:15" && RailTime < "13:00") {
 
                 periodTiming.value = "9:25 AM to 1:00 PM";
             }
-            else if (hourDurationSelect.value == "4" && RailTime >= "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "4" && RailTime >= "10:15" && RailTime < "14:30") {
 
                 periodTiming.value = "10:15 AM to 2:30 PM";
             }
-            else if (hourDurationSelect.value == "4" && RailTime >= "11:05" && RailTime < "12:10") {
+            else if (hourDurationSelect.value == "4" && RailTime >= "11:05" && RailTime < "15:20") {
 
                 periodTiming.value = "11:20 AM to 3:20 PM";
             }
-            else if (hourDurationSelect.value == "4" && RailTime >= "12:10" && RailTime < "13:40") {
+            else if (hourDurationSelect.value == "4" && RailTime >= "12:10" && RailTime < "16:10") {
 
                 periodTiming.value = "12:10 PM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "5" && RailTime < "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "5" && RailTime < "10:15" && RailTime < "14:30") {
 
                 periodTiming.value = "9:25 AM to 2:30 PM";
 
             }
-            else if (hourDurationSelect.value == "5" && RailTime >= "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "5" && RailTime >= "10:15" && RailTime < "15:20") {
 
                 periodTiming.value = "10:15 AM to 3:20 PM";
             }
-            else if (hourDurationSelect.value == "5" && RailTime >= "11:05" && RailTime < "12:10") {
+            else if (hourDurationSelect.value == "5" && RailTime >= "11:05" && RailTime < "16:10") {
 
                 periodTiming.value = "11:20 AM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "6" && RailTime < "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "6" && RailTime < "10:15" && RailTime < "15:20") {
 
                 periodTiming.value = "9:25 AM to 3:20 PM";
             }
-            else if (hourDurationSelect.value == "6" && RailTime >= "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "6" && RailTime >= "10:15" && RailTime < "16:10") {
 
                 periodTiming.value = "10:15 AM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "7" && RailTime < "10:15" && RailTime < "11:05") {
+            else if (hourDurationSelect.value == "7" && RailTime < "10:15" && RailTime < "16:10") {
 
                 periodTiming.value = "9:25 AM to 4:10 PM";
             }
@@ -2269,6 +2632,7 @@ async function showCse2() {
                                     try {
                                         const response = await fetch(APIURL);
                                         const students = await response.json();
+                                        students.sort((a, b) => Number(a.rollno) - Number(b.rollno));
                                         //console.log(students);
                                         //console.log(COunt);
                                         //console.log(event.target.parentElement.querySelector(".allStudents").children);
@@ -2323,6 +2687,7 @@ async function showCse2() {
                                         let lowPercentage = [];
                                         document.getElementById("mainpopupTable").style.display = "block";
                                         document.getElementById("closeTable").style.display = "none";
+                                        document.getElementById("Back").style.visibility = "hidden";
 
                                         for (let i = 0; i < COunt - 1; i++) {
                                             if (students[i].name == "TWD") {
@@ -2380,6 +2745,7 @@ async function showCse2() {
 
                                         document.getElementById("closeTable").onclick = () => {
                                             document.getElementById("mainpopupTable").style.display = "none";
+                                            document.getElementById("Back").style.visibility = "visible";
                                             document.getElementById("table").innerHTML = "";
 
                                         }

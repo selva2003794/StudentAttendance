@@ -684,9 +684,9 @@ app.get('/api/3rd_year/:rollno', async (req, res) => {
 app.put('/api/3rd_year/:rollno', async (req, res) => {
   try {
     const attendance = await collection.findOne({ rollno: req.params.rollno });
-    console.log(attendance);
-    console.log(req.params.rollno);
-    console.log(req.body.attendance);
+    //console.log(attendance);
+    //console.log(req.params.rollno);
+    //console.log(req.body.attendance);
 
     if (!attendance) {
       return res.status(404).json({ message: 'Student not found' });
