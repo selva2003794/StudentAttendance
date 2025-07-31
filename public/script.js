@@ -1,3 +1,61 @@
+function StartTime() {
+    const TIME = new Date();
+    const Hours = TIME.getHours();
+    const Minutes = TIME.getMinutes();
+    const Seconds = TIME.getSeconds();
+    const Milliseconds = TIME.getMilliseconds();
+    formattedTime = `${Hours}:${Minutes}:${Seconds}:${Milliseconds}`;
+
+}
+StartTime();
+//setInterval(StartTime , 1000);
+let STAFF_API_URL = "";
+let STUDENT_API_URL = "";
+Admin = "";
+
+async function fetchRandom(callback) {
+    const response = await fetch(`/api/random`);
+    const data = await response.json();
+    console.log(data.randomString);
+    randomString = data.randomString;
+    if (callback) callback();
+}
+fetchRandom(RandomStart);
+
+async function RandomStart() {
+
+    async function fetchApiConfig() {
+        const response = await fetch(`/1yF1t6U9iN/3rH1u5T1C4S6eK9sN7L/${randomString}`);
+        const config = await response.json();
+        STAFF_API_URL = config.STAFF_API_URL;
+        STUDENT_API_URL = config.STUDENT_API_URL;
+        Admin = config.Admin;
+    }
+
+    await fetchApiConfig();
+
+    console.log(STAFF_API_URL, STUDENT_API_URL, Admin);
+}
+
+
+
+async function Start() {
+
+    async function fetchApiConfig() {
+        const response = await fetch(`/1yF1t6U9iN/3rH1u5T1C4S6eK9sN7L/${formattedTime}`);
+        const config = await response.json();
+        STAFF_API_URL = config.STAFF_API_URL;
+        STUDENT_API_URL = config.STUDENT_API_URL;
+        Admin = config.Admin;
+    }
+
+    await fetchApiConfig();
+
+    console.log(STAFF_API_URL, STUDENT_API_URL, Admin);
+}
+Start();
+
+
 function Timefunction() {
     time = new Date();
     year = time.getFullYear();
@@ -13,10 +71,20 @@ function Timefunction() {
     hours = hours % 12 || 12;
     timeDate = `${date}/${month + 1}/${year}`;
     Time = `${hours}:${minutes} ${meritiam}`;
-    GoodTime = meritiam == "AM" ? "Good Morning🌅" : "Good Afternoon☀️" || RailTime >= "16:00" ? "Good Evening🌇" : "Good Afternoon☀️";
+    //GoodTime = meritiam == "AM" ? "Good Morning🌅" : "Good Afternoon☀️" || RailTime >= "16:00" ? "Good Evening🌇" : "Good Afternoon☀️";
+    if (meritiam == "AM") {
+        GoodTime = "Good Morning🌅";
+    }
+    else if (meritiam == "PM" && hours < 4) {
+        GoodTime = "Good Afternoon☀️";
+    }
+    else if (meritiam == "PM" && hours >= 4) {
+        GoodTime = "Good Evening🌇";
+    }
 }
+
 Timefunction();
-setInterval(Timefunction, 1000);
+setInterval(Timefunction, 60000);
 
 document.getElementById("Time").textContent = `${GoodTime}`;
 document.getElementById("Date").textContent = `Today is ${timeDate}`;
@@ -61,16 +129,24 @@ const loginStudents = () => {
         <table>
             <tr>
                 <td colspan="2">
-                    <h2>Login for Students</h2>
+                    <h2>Login for Get Percentage</h2>
                 </td>
             </tr>
             <tr>
-                <td><label for="username">UserName:</label></td>
-                <td><input type="text" id="username"></td>
+                <td><label for="staffName">Staff Name:</label></td>
+                <td><input type="text" id="staffName"></td>
             </tr>
             <tr>
-                <td><label for="password">Password:</label></td>
-                <td><input type="password" id="password"></td>
+                <td><label for="staffId">Staff ID:</label></td>
+                <td><input type="text" id="staffId"></td>
+            </tr>
+            <tr>
+                <td><label for="dept">Dept:</label></td>
+                <td><input type="text" id="dept"></td>
+            </tr>
+            <tr>
+                <td><label for="year">Year:</label></td>
+                <td><input type="number" id="year" min="1" max="4"></td>
             </tr>
             <tr>
                 <td><button id="loginBtn" onclick="showLoginStudents()">Login</button></td>
@@ -109,144 +185,150 @@ const loginStaff = () => {
 </div>`;
 }
 
-class studentsLogin {
-    static objCount = 0;
-    static allObjects = [];
 
-    constructor(UserName, RollNo) {
-        this.UserName = UserName;
-        this.RollNo = RollNo;
-        studentsLogin.objCount++;
-        studentsLogin.allObjects.push(this);
-    }
 
-}
-
-const Aarthese = new studentsLogin("Aarthese", 23104001);
-const Abina = new studentsLogin("Abina", 23104002);
-const Abinaya = new studentsLogin("Abinaya", 23104003);
-const Abirami = new studentsLogin("Abirami", 23104004);
-const Abisha = new studentsLogin("Abisha", 23104005);
-const Abishamary = new studentsLogin("Abishamary", 23104006);
-const Abisheka = new studentsLogin("Abisheka", 23104007);
-const Akshayalakshmi = new studentsLogin("Akshayalakshmi", 23104008);
-const Arumugavel = new studentsLogin("Arumugavel", 23104009);
-const Arunkumar = new studentsLogin("ArunKumar", 23104010);
-const Ashokraja = new studentsLogin("Ashokraja", 23104011);
-const Baras = new studentsLogin("Baras", 23104012);
-const BavaniC = new studentsLogin("BavaniC", 23104013);
-const BavaniS = new studentsLogin("BavaniS", 23104014);
-const Bern = new studentsLogin("Bern", 23104015);
-const Chinnathambi = new studentsLogin("Chinnathambi", 23104016);
-const Esakkisorna = new studentsLogin("Esakkisorna", 23104017);
-const Giftyhepzipal = new studentsLogin("Giftyhepzipal", 23104018);
-const Heavencyrose = new studentsLogin("Heavencyrose", 23104019);
-const Irudayajency = new studentsLogin("Irudayajency", 23104020);
-const Jensha = new studentsLogin("Jensha", 23104021);
-const Jesuagnel = new studentsLogin("Jesuagnel", 23104022);
-const Johnimmanuel = new studentsLogin("Johnimmanuel", 23104023);
-const Johnrabeender = new studentsLogin("Johnrabeender", 23104024);
-const Kamalieswari = new studentsLogin("Kamalieswari", 23104026);
-const Karthiga = new studentsLogin("Karthiga", 23104027);
-const Keerthana = new studentsLogin("Keerthana", 23104028);
-const Lingapabitha = new studentsLogin("Lingapabitha", 23104029);
-const Mariyappan = new studentsLogin("Mariyappan", 23104030);
-const Meehaebanesar = new studentsLogin("Meehaebanesar", 23104031);
-const Mohamedbahrudeen = new studentsLogin("Mohamedbahrudeen", 23104032);
-const Muthuesakkiammal = new studentsLogin("Muthuesakkiammal", 23104033);
-const Muthukrishnan = new studentsLogin("Muthukrishnan", 23104034);
-const Pattuperumal = new studentsLogin("Pattuperumal", 23104035);
-const Pooja = new studentsLogin("Pooja", 23104036);
-const Priya = new studentsLogin("Priya", 23104037);
-const Priyadharshini = new studentsLogin("Priyadharshini", 23104038);
-const RajeshKumar = new studentsLogin("Rajeshkumar", 23104039);
-const Rakeshpraveen = new studentsLogin("Rakeshpraveen", 23104040);
-const Sampeter = new studentsLogin("Sampeter", 23104041);
-const Santhiyagusabin = new studentsLogin("Santhiyagusabin", 23104042);
-const Selvaallsiya = new studentsLogin("Selvaallsiya", 23104043);
-const Selvakumar = new studentsLogin("Selvakumar", 23104044);
-const Selvapriya = new studentsLogin("Selvapriya", 23104045);
-const Selvarathiakshal = new studentsLogin("Selvarathiakshal", 23104046);
-const Sherinsamika = new studentsLogin("Sherinsamika", 23104047);
-const Sipi = new studentsLogin("Sipi", 23104048);
-const Srimithuna = new studentsLogin("Srimithuna", 23104050);
-const Subashrackshan = new studentsLogin("Subashrackshan", 23104051);
-const Suganthi = new studentsLogin("Suganthi", 23104052);
-const Suryakala = new studentsLogin("Suryakala", 23104053);
-const Sushmitha = new studentsLogin("Sushmitha", 23104054);
-const Suviseshgiftson = new studentsLogin("Suviseshgiftson", 23104055);
-const Swathi = new studentsLogin("Swathi", 23104056);
-const Sweetyesther = new studentsLogin("Sweetyesther", 23104057);
-const Udhayakumar = new studentsLogin("Udhayakumar", 23104058);
-const Vignesh = new studentsLogin("Vignesh", 23104059);
-const Willingsraja = new studentsLogin("Willingsraja", 23104060);
-const Artheeswari = new studentsLogin("Artheeswari", 23104301);
-const Balakrishnan = new studentsLogin("Balakrishnan", 23104302);
-const Chinnadurai = new studentsLogin("Chinnadurai", 23104303);
-const Mohammedmunaf = new studentsLogin("Mohammedmunaf", 23104304);
-const Stellapersiya = new studentsLogin("Stellapersiya", 23104305);
-const Obedrajasingh = new studentsLogin("Obedrajasingh", 23104701);
 
 //console.log(studentsLogin.allObjects);
 
 
-function showLoginStudents() {
+async function showLoginStudents() {
+    try {
+        let data = await getAllStaff();
+        //console.log(data);
+        let students = await getAllStudent();
+        students.sort((a, b) => a.rollno - b.rollno);
+        let yearANDDeptStudents = [];
 
-    const userName = document.getElementById("username");
-    const password = document.getElementById("password");
-    if (userName.value == "" || userName.value == null || password.value == "" || password.value == null) {
-        window.alert("Enter UserName and Password");
-    }
+        const staffName = document.getElementById("staffName");
+        const staffId = document.getElementById("staffId");
+        const dept = document.getElementById("dept");
+        const year = document.getElementById("year");
 
-    else if (Boolean(userName.value.trim()) && Boolean(password.value)) {
-        let Checking = true;
-        for (let i = 0; i < studentsLogin.allObjects.length; i++) {
-            if (userName.value.trim() == studentsLogin.allObjects[i].UserName && password.value == studentsLogin.allObjects[i].RollNo) {
-                document.getElementById("bodyDiv").innerHTML = "";
-                document.getElementById("bodyDiv").innerHTML = `
-                <div id="mainPopup">
-                    <div id="popup">
-                        
-                        <div>
-                          <h2>${studentsLogin.allObjects[i].UserName}</h2>
-                          <h2>Roll No: ${studentsLogin.allObjects[i].RollNo}</h2>
-                          <h2 id="percentage">Your Percentage: </h2>
-                        </div>
-                        <button id="close">Close</button>
-                    </div>
-                </div>
-                <div id="waitPopup">
-                    <div id="wait">
-                        <h2 id="waitMeg">Waiting For Processing...</h2>
-                    </div>
-
-                </div>
-                <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
-                <h1>Welcome to JACSICE</h1>
-                <h2>${studentsLogin.allObjects[i].UserName}</h2>                 
-                <div id="studentsPage">
-                    
-                <div id="Access">
-                 <div>
-                   <i class="fa-solid fa-percent fonts"></i>
-                   <h2>Get Percentage</h2>
-                   <button id="GetPercentageBtn" onclick="getPercentage(${userName.value.trim()} ,${Number(password.value)})">Get</button>
-                 </div>
-                </div>
-                </div>`;
-                Checking = false;
-                break;
+        for (i = 0; i < students.length; i++) {
+            if (students[i].Department == dept.value.trim() && students[i].Year == year.value.trim()) {
+                yearANDDeptStudents.push(students[i]);
+                //console.log(yearANDDeptStudents);
             }
         }
-        if (Checking) {
-            window.alert("invalid username or password");
+        if (staffName.value == "" || staffName.value == null || staffId.value == "" || staffId.value == null || dept.value == "" || dept.value == null || year.value == "" || year.value == null) {
+            window.alert("Enter Staff Name and Staff ID");
         }
 
+        else if (Boolean(staffName.value.trim()) && Boolean(staffId.value)) {
+            let Checking = true;
+            for (i = 0; i < data.length; i++) {
+                if (staffName.value.trim() == data[i].staffName && staffId.value.trim() == data[i].staffId && dept.value.trim() == data[i].Department) {
+                    Checking = false;
+
+                    document.getElementById("bodyDiv").innerHTML = "";
+                    document.getElementById("bodyDiv").innerHTML = `
+                <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+                
+                <h1>Welcome ${staffName.value.trim()}!</h1>
+                <p>Department is ${dept.value.trim()}</p>
+                <p>Year is ${year.value.trim()}</p>
+                <div id="main">
+                <div id="Access">
+                    <div>
+                        <i class="fa-solid fa-percentage fonts"></i>
+                        <h1>Get Percentage</h1>
+                        <button class="LoginBtn" id="getviewPercentage">Get</button>
+                    </div>
+                </div>
+                </div>
+
+                `;
+                }
+            }
+
+            document.getElementById("getviewPercentage").onclick = () => {
+                GetViewPercentage(yearANDDeptStudents, dept.value.trim(), year.value.trim());
+            };
+        }
     }
+    catch (err) {
+        document.getElementById("wait").style.display = "block";
+        document.getElementById("wait").style.backgroundColor = "red";
+        document.getElementById("waitMeg").textContent = `ERROR :${err}`;
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+            document.getElementById("waitMeg").textContent = ``;
+        }, 3000);
+    }
+
 }
 
-const showLoginAdmin = () => {
 
+const GetViewPercentage = (students, dept, year) => {
+    document.getElementById("bodyDiv").innerHTML = "";
+    document.getElementById("bodyDiv").innerHTML = `
+    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <div>
+    <h1>Dept :${dept}<br>Year :${year}</h1>
+    <br>
+    <table id="PercentTable" border="1">
+    <tr>
+        <th>Roll No</th>
+        <th>Total Absent Days</th>
+        <th>AbsentDate</th>
+        <th>Percentage</th>
+    </tr>
+    </table>
+
+    </div>
+    `;
+    const APIURL = STUDENT_API_URL; //Students Api
+    async function fetchTotalWorkDays(rollno) {
+
+        try {
+            const response = await fetch(`${APIURL}/${rollno}`);
+            const TotalWorkDays = await response.json();
+            return TotalWorkingDays = TotalWorkDays.TotalWorkDays;
+        }
+        catch (error) {
+            console.error('Error fetching TotalWorkDays:', error);
+        }
+        //console.log(TotalWorkingDays);
+    }
+    let TotalWorkDay = fetchTotalWorkDays(951323);
+
+    let StudentCount = students.length;
+    //console.log(StudentCount);
+    //console.log(students);
+    let table = document.getElementById("PercentTable");
+
+    for (let i = 0; i < StudentCount; i++) {
+        if (students[i].name == "TWD") { }
+        else {
+
+            let percentageRaw = (students[i].attendance / TotalWorkDay) * 100;
+            let percentage = isNaN(percentageRaw) ? "0" : percentageRaw.toFixed(2);
+
+            const NewTr = document.createElement("tr");
+            const NewTd = document.createElement("td");
+            const NewTd1 = document.createElement("td");
+            const NewTd2 = document.createElement("td");
+            const NewTd4 = document.createElement("td");
+
+            if (Number(percentage) < 75) {
+                NewTr.style.backgroundColor = "rgb(226, 144, 144)";
+            }
+            else {
+                NewTr.style.backgroundColor = "rgb(117, 184, 122)";
+            }
+
+            NewTd.textContent = students[i].rollno;
+            NewTd1.textContent = students[i].history.length;
+            NewTd2.textContent = students[i].history.length > 0 ? students[i].history.map((date) => {
+                return date;
+            }) : 0;
+            NewTd4.textContent = `${percentage}%`;
+            NewTr.append(NewTd, NewTd1, NewTd2, NewTd4);
+            table.append(NewTr);
+        }
+    }
+}
+const showLoginAdmin = () => {
     const userName = document.getElementById("username");
     const password = document.getElementById("password");
     if (userName.value == "" || userName.value == null || password.value == "" || password.value == null) {
@@ -256,8 +338,7 @@ const showLoginAdmin = () => {
     else if (userName.value.trim() == "Admin" && password.value == "12345") {
         showloginAdmin = () => {
             document.getElementById("bodyDiv").innerHTML = "";
-            document.getElementById("bodyDiv").innerHTML = `
-        <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+            document.getElementById("bodyDiv").innerHTML = `        <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></button>
         <h1>Welcome to JACSICE</h1>
         <div id="AdminMain">
             <h2>${GoodTime}</h2>
@@ -272,7 +353,7 @@ const showLoginAdmin = () => {
                     <div>
                         <i class="fa-solid fa-user-shield fonts"></i>
                         <h2>Staff</h2>
-                        <button class="LoginBtn" onclick="showAllStaff()">Show Staff</button>
+                        <button class="LoginBtn" onclick="AdminStaffDept()">Show Staff</button>
                     </div>
                 </div>
             </div>`;
@@ -301,16 +382,33 @@ function AdminDept() {
     document.title = "Departments";
 }
 
+function AdminStaffDept() {
+    document.getElementById("bodyDiv").innerHTML = "";
+    //console.log(document.getElementById("bodyDiv"));
+
+    document.getElementById("bodyDiv").innerHTML = `
+    <button id="Back" onclick="showloginAdmin()"><i class="fa-solid fa-chevron-left"></i></i></button>
+    <div id="depts">
+<a><div class="dept" onclick="showAllStaff()"><h1>All Staffs</h1></div></a>
+<a ><div id="cse" class="dept" onclick="showStaffByDept('CSE')"><h1>CSE</h1></div></a>
+<a ><div id="ece" class="dept" onclick="showStaffByDept('ECE')"><h1>ECE</h1></div></a>
+<a ><div id="mech" class="dept" onclick="showStaffByDept('MECH')"><h1>MECH</h1></div></a>
+<a ><div id="ai" class="dept" onclick="showStaffByDept('AI')"><h1>AI</h1></div></a>
+<a ><div id="id" class="dept" onclick="showStaffByDept('IT')"><h1>IT</h1></div></a>
+</div>`;
+    document.title = "Departments";
+}
+
 function AdminCse() {
     document.getElementById("bodyDiv").innerHTML = "";
     document.getElementById("bodyDiv").innerHTML = `
-        <button id="Back" onclick="AdminDept()"><i class="fa-solid fa-chevron-left"></i></i></button>
-        <div id="classes">
-<a ><div id="1year" class="class" onclick=""><h1>1 year</h1></div></a>
-<a ><div id="2year" class="class" onclick="AdminCse2()"><h1>2 year</h1></div></a>
-<a ><div id="3year" class="class" onclick=""><h1>3 year</h1></div></a>
-<a><div id="4year" class="class" onclick=""><h1>4 year</h1></div></a>
-</div>`;
+                    <button id="Back" onclick="AdminDept()"><i class="fa-solid fa-chevron-left"></i></button>
+                        <div id="classes">
+                            <a ><div id="1year" class="class" onclick=""><h1>1 year</h1></div></a>
+                            <a ><div id="2year" class="class" onclick="AdminCse2()"><h1>2 year</h1></div></a>
+                            <a ><div id="3year" class="class" onclick=""><h1>3 year</h1></div></a>
+                            <a><div id="4year" class="class" onclick=""><h1>4 year</h1></div></a>
+                        </div>`;
     document.title = "CSE Classes";
 }
 
@@ -321,7 +419,7 @@ async function AdminCse2() {
     //console.log(document.getElementById("bodyDiv"));
     document.getElementById("bodyDiv").innerHTML = `
 
-<button id="Back" onclick="AdminCse()"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button id="Back" onclick="AdminCse()"><i class="fa-solid fa-chevron-left"></i></button>
     <div style="display:none;" id="mainAddPopup">
         <button id="Back" class="StaffBack"><i class="fa-solid fa-chevron-left"></i></button>
     <div id="popup">
@@ -334,8 +432,12 @@ async function AdminCse2() {
             <tr>
                 <td><label for="rollno">Roll No: </label></td><td><input type="number" placeholder="Roll No" required id="rollno"></td>
             </tr>
-
-
+            <tr>
+                <td><label for="year">Year: </label></td><td><input type="number" placeholder="Year" required id="year"></td>
+            </tr>
+            <tr>
+                <td><label for="dept">Dept: </label></td><td><input type="text" placeholder="Department" required id="dept"></td>
+            </tr>
             <tr>
                 <td colspan="2"><button type="button" id="LoginBtn" onclick="AddStudent()">Add Student</button></td>
 
@@ -352,25 +454,50 @@ async function AdminCse2() {
     <button id="AddStaff" onclick="ShowStudentPOPUP()">+</button>
 </div>`;
     document.title = "CSE 2-YEAR";
+
     const AllStudents = document.querySelector(".allStudents");
-    data.forEach(student => {
-        if (student.name == "TWD") {
-        }
-        else {
-            StudentDiv = document.createElement("div");
-            StudentDiv.classList = "student";
-            StudentDiv.innerHTML = `
-        <img src="male.jpg" alt="${student.name}" width="200px" height="200px" >
+    if (data) {
+
+        data.sort((a, b) => Number(a.rollno) - Number(b.rollno));
+        let check = false;
+        data.forEach(student => {
+            if (student.name == "TWD") {
+            }
+            else if (student.Department == "CSE" && student.Year == 2) {
+                check = true;
+                StudentDiv = document.createElement("div");
+                StudentDiv.classList = "student";
+                StudentDiv.innerHTML = `
+                    <img src="male.jpg" alt="${student.name}" width="200px" height="200px">
         <h2><strong>Name: </strong> ${student.name}</h2>
         <p><strong>Roll No: </strong> ${student.rollno}</p>
+        <p><strong>Year : </strong> ${student.Year}</p>
         <h3>History</h3>
+        ${Array.isArray(student.history) && student.history.length > 0 ? student.history.map(item =>
+                    `<p>${item}</p>`
+                ) : `<p>No history</p>`
+                    }
         <button id="updateBtn" onclick="updateStudentPOPUP(event)">update</button>
         <button id="deleteBtn" onclick="deleteStudent('${student.rollno}')">Delete</button>
+                `;
+                AllStudents.appendChild(StudentDiv);
 
-        `;
-            AllStudents.appendChild(StudentDiv);
+            }
+        })
+        //Buttons = document.querySelectorAll("#updateBtn");
+
+        /*         Buttons.forEach(button => {
+                    button.click();
+                    document.querySelector("#UpdateStudentBtn").click();
+        
+                }) */
+
+
+        if (!check) {
+            AllStudents.append("No Students found");
         }
-    })
+    }
+
 }
 
 ShowStudentPOPUP = () => {
@@ -385,7 +512,7 @@ ShowStudentPOPUP = () => {
 
 updateStudentPOPUP = (event) => {
     document.getElementById("mainAddPopup").style.display = "block";
-    document.getElementById("Title").textContent = "Update Staff";
+    document.getElementById("Title").textContent = "Update Student";
     document.querySelector(".StaffBack").onclick = () => {
         document.getElementById("mainAddPopup").style.display = "none";
     }
@@ -394,16 +521,26 @@ updateStudentPOPUP = (event) => {
 
     const StudentName = document.getElementById("StudentName");
     const RollNo = document.getElementById("rollno");
+    const dept = document.getElementById("dept");
+    const year = document.getElementById("year");
+    event.target.parentElement.querySelectorAll("p").forEach(p => {
+        studentYear = p.textContent;
+        //console.log(studentYear);
+        if (studentYear.startsWith("Year")) {
+            year.value = studentYear.split(":")[1].trim();
+        }
+    });
+    dept.value = "CSE";
     event.target.parentElement.querySelectorAll("p").forEach(p => {
         studentRollNo = p.textContent;
-        console.log(studentRollNo);
+        //console.log(studentRollNo);
         if (studentRollNo.startsWith("Roll No")) {
             RollNo.value = studentRollNo.split(":")[1].trim();
         }
     });
     event.target.parentElement.querySelectorAll("h2").forEach(h2 => {
         studentName = h2.textContent;
-        console.log(studentName);
+        //console.log(studentName);
         if (studentName.startsWith("Name")) {
             StudentName.value = studentName.split(":")[1].trim();
         }
@@ -413,17 +550,19 @@ updateStudentPOPUP = (event) => {
 function UpdateStudentInBase() {
     const StudentName = document.getElementById("StudentName");
     const RollNo = document.getElementById("rollno");
-    console.log(StudentName.value, RollNo.value);
+    const year = document.getElementById("year");
+    //console.log(StudentName.value, RollNo.value, year.value);
     let datas = {
         name: StudentName.value,
         rollno: RollNo.value,
+        Year: year.value,
     }
     updateStudent(RollNo.value, datas);
 
 }
 
 async function updateStudent(rollno, updatedData) {
-    const APIURL = `/api/students/${rollno} `;
+    const APIURL = `${STUDENT_API_URL}/${rollno}`;
     try {
         const response = await fetch(APIURL, {
             method: "PUT",
@@ -435,7 +574,7 @@ async function updateStudent(rollno, updatedData) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("Student updated:", data);
+        //console.log("Student updated:", data);
 
         document.getElementById("mainAddPopup").style.display = "none";
         document.getElementById("waitMeg").textContent = "Student Updated Successfully";
@@ -458,7 +597,7 @@ async function updateStudent(rollno, updatedData) {
 }
 
 async function deleteStudent(rollno) {
-    const APIURL = `/api/students/${rollno} `;
+    const APIURL = `${STUDENT_API_URL}/${rollno}`;
     try {
         const response = await fetch(APIURL, {
             method: "DELETE",
@@ -469,7 +608,7 @@ async function deleteStudent(rollno) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("Student deleted:", data);
+        //console.log("Student deleted:", data);
         document.getElementById("waitMeg").textContent = "Student Deleted";
         document.getElementById("wait").style.display = "block";
         document.getElementById("wait").style.backgroundColor = "red";
@@ -513,9 +652,9 @@ async function AddNewStudent(name, rollno) {
     history = [];
     TotalWorkDays = 0;
 
-    const APIURL = '/api/students';
+    const APIURL = `${STUDENT_API_URL}`;
     try {
-        const response = await fetch('/api/students', {
+        const response = await fetch(APIURL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, rollno, attendance, history, TotalWorkDays })
@@ -548,7 +687,7 @@ async function AddNewStudent(name, rollno) {
 }
 
 async function getAllStudent() {
-    const APIURL = '/api/students';
+    const APIURL = STUDENT_API_URL;
     try {
         const response = await fetch(APIURL);
         if (!response.ok) {
@@ -574,14 +713,15 @@ async function showAllStaff() {
 
     document.getElementById("bodyDiv").innerHTML = "";
     document.getElementById("bodyDiv").innerHTML = `
-        <div id="wait" style = "display:none;">
-            <h2 id="waitMeg"></h2>
-    </div >
-        <button id="Back" onclick="showloginAdmin()"><i class="fa-solid fa-chevron-left"></i></i></button >
+
+                    <div id="wait" style="display:none;">
+                        <h2 id="waitMeg"></h2>
+    </div>
+                    <button id="Back" onclick="showloginAdmin()"><i class="fa-solid fa-chevron-left"></i></button>
     <div style="display:none;" id="mainAddPopup">
-        <button id="Back" class="StaffBack" ><i class="fa-solid fa-chevron-left"></i></button>
+        <button id="Back" class="StaffBack"><i class="fa-solid fa-chevron-left"></i></button>
     <div id="popup">
-    <form>
+    <form id="StaffAddForm">
         <h1 id="Title">Add Staff</h1>
         <table>
             <tr>
@@ -638,25 +778,232 @@ async function showAllStaff() {
 
     document.title = "All Staffs";
     const staffs = document.getElementById("staffs");
-    data.forEach(staff => {
-        staffDiv = document.createElement("div");
-        staffDiv.id = "staffMember";
-        staffDiv.innerHTML = `
-        <img src="male.jpg" alt="${staff.staffName}" width="200px" height="200px" >
+    if (data) {
+
+        data.sort((a, b) => a.staffName.localeCompare(b.staffName));
+        data.forEach(staff => {
+            staffDiv = document.createElement("div");
+            let Perform = staff.Performance;
+            staffDiv.id = "staffMember";
+            staffDiv.innerHTML = `
+                    <img src="male.jpg" alt="${staff.staffName}" width="200px" height="200px">
         <p><strong>Staff Name:</strong> ${staff.staffName}</p>
-        <p><strong>Staff ID:</strong> ${staff.staffId}</p>
+        <p id="staffId"><strong>Staff ID:</strong> ${staff.staffId}</p>
         <p><strong>Email:</strong><br> ${staff.Email}</p>        
         <p><strong>Department:</strong> ${staff.Department}</p>
         <p><strong>Designation:</strong> ${staff.Designation}</p>
         <button id="updateBtn" onclick="UpdateStaffPOPUP(event)">update</button>
         <button id="deleteBtn" onclick="deleteStaff('${staff.staffId}')">Delete</button>
+        <button id="performBtn">Performance</button>
 
+                `;
+            staffs.appendChild(staffDiv);
+            const performBtn = staffDiv.querySelector("#performBtn");
+            performBtn.addEventListener("click", (event) => {
+                AdminPerform(event, Perform, staff.staffId);
+            });
+        })
+    }
+    else {
+        document.getElementById("wait").style.display = "block";
+        document.getElmentById("waitMeg").textContent = "Internal Server Error";
+        document.getElementById("wait").style.backgroundColor = "red";
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+
+        }, 3000);
+    }
+}
+
+async function showStaffByDept(dept) {
+    document.title = `${dept} Staffs`;
+    await getAllStaff();
+    //console.log(data);
+
+    document.getElementById("bodyDiv").innerHTML = "";
+    document.getElementById("bodyDiv").innerHTML = `
+
+                    <div id="wait" style="display:none;">
+                        <h2 id="waitMeg"></h2>
+    </div>
+                    <button id="Back" onclick="showloginAdmin()"><i class="fa-solid fa-chevron-left"></i></button>
+    <div style="display:none;" id="mainAddPopup">
+        <button id="Back" class="StaffBack"><i class="fa-solid fa-chevron-left"></i></button>
+    <div id="popup">
+    <form id="StaffAddForm">
+        <h1 id="Title">Add Staff</h1>
+        <table>
+            <tr>
+                <td><label for="StaffName">Staff Name: </label></td><td><input type="text" placeholder="Staff Name" required id="StaffName"></td>
+            </tr>
+            <tr>
+                <td><label for="StaffID">Staff ID: </label></td><td><input type="text" placeholder="Staff ID" required id="StaffID"></td>
+            </tr>
+            <tr>
+                <td><label for="Email">Staff Email: </label></td><td><input type="email" placeholder="Staff mail" required id="Email"></td>
+            </tr>
+            <tr>
+                <td><label for="Department">Department: </label></td>
+                <td>
+                    <select id="Department" required>
+                        <option value="" disabled selected>Select Department</option>
+                        <option value=${dept}>${dept}</option>
+    
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Designation">Designation: </label></td>
+                <td>
+                    <select id="Designation" required>
+                        <option value="" disabled selected>Select Designation</option>
+                        <option value="Professor">Professor</option>
+                        <option value="Assistant Professor">Assistant Professor</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="button" id="LoginBtn" onclick="AddStaff()">Add Staff</button></td>
+
+            </tr>
+            <tr>
+                <td colspan="2"><button type="button" id="UpdateStaffBtn" style="display:none"  onclick="UpdateStaffInBase()">Update Staff</button></td>            
+            </tr>
+        </table>
+    </form>
+
+    </div>
+</div>
+    <h1>${dept} Staffs🧑‍🏫</h1>
+    <div id="AllStaff">
+        <div id="staffs">
+        </div>
+        <button id="AddStaff" onclick="ShowPOPUP()">+</button>
+
+    </div>`;
+
+
+    const staffs = document.getElementById("staffs");
+    data.sort((a, b) => a.staffName.localeCompare(b.staffName));
+    data = data.filter(staff => staff.Department === dept);
+    console.log(data.length);
+    if (data) {
+
+        data.forEach(staff => {
+            staffDiv = document.createElement("div");
+            let Perform = staff.Performance;
+            staffDiv.id = "staffMember";
+            staffDiv.innerHTML = `
+                    <img src="male.jpg" alt="${staff.staffName}" width="200px" height="200px">
+        <p><strong>Staff Name:</strong> ${staff.staffName}</p>
+        <p id="staffId"><strong>Staff ID:</strong> ${staff.staffId}</p>
+        <p><strong>Email:</strong><br> ${staff.Email}</p>        
+        <p><strong>Department:</strong> ${staff.Department}</p>
+        <p><strong>Designation:</strong> ${staff.Designation}</p>
+        <button id="updateBtn" onclick="UpdateStaffPOPUP(event)">update</button>
+        <button id="deleteBtn" onclick="deleteStaff('${staff.staffId}')">Delete</button>
+        <button id="performBtn">Performance</button>
+
+                `;
+            staffs.appendChild(staffDiv);
+            const performBtn = staffDiv.querySelector("#performBtn");
+            performBtn.addEventListener("click", (event) => {
+                AdminPerform(event, Perform, staff.staffId);
+            });
+        })
+    }
+    else if(data.length == 0) {
+        staffs.append("<h1>No Staffs found in this Department</h1>");
+    }
+    else {
+        document.getElementById("wait").style.display = "block";
+        document.getElmentById("waitMeg").textContent = "Internal Server Error";
+        document.getElementById("wait").style.backgroundColor = "red";
+        setTimeout(() => {
+            document.getElementById("wait").style.display = "none";
+
+        }, 3000);
+    }
+
+}
+
+
+ClearBtn = (StaffId) => {
+    let datas = {
+        Performance: [],
+    }
+    //console.log(datas, StaffId);
+    updateStaff(StaffId, datas);
+}
+
+AdminPerform = (event, Performance, StaffId) => {
+    //console.log("Hello");
+    //console.log(Performance);
+
+    event.target.parentElement.innerHTML += `
+                    <hr>
+        <br>
+        <button id="ClearBtn">Clear Record</button><br>
+            
+
+            ${Performance.length > 0
+            ? Performance.map(perf => `
+                
+        <table border="1" id="PerformanceTable">
+            <tr>
+                <td class="TD">Course<br>Name:</td><td>${perf.courseName}</td>
+            </tr>
+            <tr>
+                <td  class="TD">Sem:</td><td>${perf.semester}</td>
+            </tr>
+            <tr>
+                <td class="TD">hour<br>Duration:</td><td>${perf.hourDuration}</td>
+            </tr>
+            <tr>
+                <td  class="TD">Period<br>Timing:</td><td>${perf.periodTiming}</td>
+            </tr>
+            <tr>
+                <td class="TD">Date:</td><td>${perf.date}</td>
+            </tr>
+            <tr>
+                <td class="TD">Time:</td><td>${perf.time}</td>
+            </tr>
+            <tr>
+                <td class="TD">Absent<br>Students:</td>
+                <td>
+                    <ul>
+                        ${Array.isArray(perf.absentStudents) && perf.absentStudents.length > 0
+                    ? perf.absentStudents.map(student => `<li>${student}</li>`).join('')
+                    : '<li>None</li>'
+                }
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="TD">Absent<br>Students<br>Count:</td><td>${perf.AbsentStudentsCount}</td>
+            </tr>
+        </table>
+        <hr>
+        <br>
+    `).join('')
+            : '<p>No performance records found.</p>'
+        }
+
+            
     `;
-        staffs.appendChild(staffDiv);
-    })
+    const performClearBtn = document.querySelector("#ClearBtn");
+    Performance.length > 0 ? performClearBtn.style.display = "block" : performClearBtn.style.display = "none";
+
+    //console.log(performClearBtn);
+    performClearBtn.addEventListener("click", () => {
+        //console.log("Hei")
+        ClearBtn(StaffId);
+    });
+
 }
 
 UpdateStaffPOPUP = (event) => {
+    document.getElementById("StaffAddForm").reset();
 
     document.getElementById("mainAddPopup").style.display = "block";
     document.getElementById("Title").textContent = "Update Staff";
@@ -698,19 +1045,21 @@ function UpdateStaffInBase() {
         Department: Department.value,
         Designation: Designation.value
     }
-    console.log(datas, StaffID.value);
+    //console.log(datas, StaffID.value);
+    document.getElementById("StaffAddForm").reset();
     updateStaff(StaffID.value, datas);
 
 }
 
 ShowPOPUP = () => {
+    document.getElementById("StaffAddForm").reset();
+    document.getElementById("Title").textContent = "Add Staff";
     document.getElementById("mainAddPopup").style.display = "block";
     document.querySelector(".StaffBack").onclick = () => {
         document.getElementById("mainAddPopup").style.display = "none";
     }
     document.getElementById("UpdateStaffBtn").style.display = "none";
     document.getElementById("LoginBtn").style.display = "block";
-
 }
 
 function AddStaff() {
@@ -725,7 +1074,7 @@ function AddStaff() {
         window.alert("Enter all the fields");
     }
     else {
-        console.log(StaffName.value, StaffID.value, Email.value, Department.value, Designation.value);
+        //console.log(StaffName.value, StaffID.value, Email.value, Department.value, Designation.value);
         // Add code to save staff details
         AddNewStaff(StaffName.value.trim(), StaffID.value.trim(), Email.value.trim(), Department.value, Designation.value);
         // After saving, you can close the popup
@@ -735,7 +1084,7 @@ function AddStaff() {
 }
 
 async function getAllStaff() {
-    const APIURL = `/api/staff`;
+    const APIURL = STAFF_API_URL; //staff Api
     try {
         const response = await fetch(APIURL);
         if (!response.ok) {
@@ -762,9 +1111,9 @@ async function AddNewStaff(staffName, staffId, Email, Department, Designation) {
         return;
     }
 
-    const APIURL = `/api/staff`;
+    const APIURL = STAFF_API_URL; //staff Api
     try {
-        const response = await fetch('/api/staff', {
+        const response = await fetch(APIURL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ staffName, staffId, Email, Department, Designation })
@@ -774,7 +1123,7 @@ async function AddNewStaff(staffName, staffId, Email, Department, Designation) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("New staff added:", data);
+        //console.log("New staff added:", data);
         document.getElementById("waitMeg").textContent = "Staff Added Successfully";
         document.getElementById("wait").style.backgroundColor = "rgb(0, 255, 0)";
         document.getElementById("wait").style.display = "block";
@@ -797,7 +1146,7 @@ async function AddNewStaff(staffName, staffId, Email, Department, Designation) {
 }
 
 async function deleteStaff(staffID) {
-    const APIURL = `/api/staff/${staffID} `;
+    const APIURL = `${STAFF_API_URL}/${staffID}`;
     try {
         const response = await fetch(APIURL, {
             method: "DELETE",
@@ -808,7 +1157,7 @@ async function deleteStaff(staffID) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("Staff deleted:", data);
+        //console.log("Staff deleted:", data);
         document.getElementById("waitMeg").textContent = "Staff Deleted";
         document.getElementById("wait").style.display = "block";
         document.getElementById("wait").style.backgroundColor = "red";
@@ -825,7 +1174,7 @@ async function deleteStaff(staffID) {
 }
 
 async function findSingleStaff(staffID) {
-    const APIURL = `/api/staff/${staffID} `;
+    const APIURL = `${STAFF_API_URL}/${staffID}`;
     try {
         const response = await fetch(APIURL, {
             method: "GET",
@@ -846,7 +1195,7 @@ async function findSingleStaff(staffID) {
     }
 }
 async function updateStaff(staffID, updatedData) {
-    const APIURL = `/api/staff/${staffID} `;
+    const APIURL = `${STAFF_API_URL}/${staffID}`;
     try {
         const response = await fetch(APIURL, {
             method: "PUT",
@@ -858,7 +1207,7 @@ async function updateStaff(staffID, updatedData) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("Staff updated:", data);
+        //console.log("Staff updated:", data);
 
         document.getElementById("mainAddPopup").style.display = "none";
         document.getElementById("waitMeg").textContent = "Staff Updated Successfully";
@@ -880,10 +1229,10 @@ async function updateStaff(staffID, updatedData) {
     }
 }
 
-// Example usage: pushPerformance('STAFF123', { date: '2025-06-25', score: 98, remarks: 'Great job' })
+// Example usage: pushPerformance('STAFF123', {date: '2025-06-25', score: 98, remarks: 'Great job' })
 async function pushPerformance(staffId, performanceObj) {
     try {
-        const response = await fetch(`/api/staff/${staffId}/performance`, {
+        const response = await fetch(`${STAFF_API_URL}/${staffId}/performance`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -895,7 +1244,7 @@ async function pushPerformance(staffId, performanceObj) {
             throw new Error(errorData.message || 'Failed to update performance');
         }
         const updatedStaff = await response.json();
-        console.log('Performance updated:', updatedStaff);
+        //console.log('Performance updated:', updatedStaff);
         return updatedStaff;
     } catch (error) {
         console.error('Error:', error);
@@ -905,7 +1254,7 @@ async function pushPerformance(staffId, performanceObj) {
 
 async function TotalWorkedDays(rollno) {
     //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; 
-    const APIURL = `/api/students`;
+    const APIURL = STUDENT_API_URL;
     try {
         const response = await fetch(`${APIURL}/${rollno}`, {
             method: "PUT",
@@ -934,9 +1283,9 @@ function getPercentage(username, rollno) {
         document.getElementById("mainPopup").style.display = "none";
     }
 
-    const APIURL = `/api/students`;
-    console.log(username.UserName, rollno);
-    console.log("Worked");
+    const APIURL = STUDENT_API_URL;
+    //console.log(username.UserName, rollno);
+    //console.log("Worked");
     let StudentAttendance = 0;
     let TotalWorkingDays = 0;
     async function fetchStudents() {
@@ -950,7 +1299,7 @@ function getPercentage(username, rollno) {
         catch (error) {
             console.error('Error fetching students:', error);
         }
-        console.log(StudentAttendance);
+        //console.log(StudentAttendance);
     }
 
 
@@ -964,7 +1313,7 @@ function getPercentage(username, rollno) {
         catch (error) {
             console.error('Error fetching TotalWorkDays:', error);
         }
-        console.log(TotalWorkingDays);
+        //console.log(TotalWorkingDays);
     }
     fetchStudents();
     fetchTotalWorkDays(951323);
@@ -993,36 +1342,36 @@ function showLoginStaff() {
         document.getElementById("bodyDiv").innerHTML = "";
         document.getElementById("bodyDiv").innerHTML =
             `<div style="display:none;" id="mainpopupTable">
-    <button id="Back" onclick="NonestaffPerformPOPUP()"><i class="fa-solid fa-chevron-left"></i></button>
-    <div id="popup">
-        <table id="table" border="0">
-            <tr>
-                <td><label for="StaffName">Staff Name: </label></td><td><input type="text" placeholder="Staff Name" required id="StaffName"></td>
-            </tr>
-            <tr>
-                <td><label for="StaffID">Staff ID: </label></td><td><input type="text" placeholder="Staff ID" required id="StaffID"></td>
-            </tr>
-            <tr>
-                <td><button class="LoginBtn" onclick="CheckStaffLogin()">Login</button></td>
-            </tr>
-        </table>
-    </div>
-</div>
-    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
-    <h1>Staff Details</h1>
-    <div id="StaffChoice">
-        <div class="Choice">
-        <i class="fa-regular fa-clipboard fonts"></i>
-        <h1>Attendance</h1>
-        <button id="StaffChoiceBtn" class="LoginBtn" onclick="showDept()">Login</button>
-        </div>
-        <div class="Choice">
-        <i class="fa-solid fa-user fonts"></i>
-        <h1>My Profile</h1>
-        <button  class="LoginBtn" onclick="ShowstaffPerformPOPUP()">Login</button>
-        </div>
-    </div>
-    `;
+                                <button id="Back" onclick="NonestaffPerformPOPUP()"><i class="fa-solid fa-chevron-left"></i></button>
+                                <div id="popup">
+                                    <table id="table" border="0">
+                                        <tr>
+                                            <td><label for="StaffName">Staff Name: </label></td><td><input type="text" placeholder="Staff Name" required id="StaffName"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="StaffID">Staff ID: </label></td><td><input type="text" placeholder="Staff ID" required id="StaffID"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="LoginBtn" onclick="CheckStaffLogin()">Login</button></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+                        <h1>Staff Details</h1>
+                        <div id="StaffChoice">
+                            <div class="Choice">
+                                <i class="fa-regular fa-clipboard fonts"></i>
+                                <h1>Attendance</h1>
+                                <button id="StaffChoiceBtn" class="LoginBtn" onclick="showDept()">Login</button>
+                            </div>
+                            <div class="Choice">
+                                <i class="fa-solid fa-user fonts"></i>
+                                <h1>My Profile</h1>
+                                <button class="LoginBtn" onclick="ShowstaffPerformPOPUP()">Login</button>
+                            </div>
+                        </div>
+                        `;
         document.title = "Staff Choice";
 
 
@@ -1039,30 +1388,30 @@ function showLoginStaff() {
 function homePage() {
     document.getElementById("bodyDiv").innerHTML = "";
     document.getElementById("bodyDiv").innerHTML = `
-    <div>
-    <h1>Attendance</h1>
-    <h2 id="Time">${GoodTime}</h2>
-    <h2 id="Date">${timeDate}</h2>
-    <div id="firstmain">
+                        <div>
+                            <h1>Attendance</h1>
+                            <h2 id="Time">${GoodTime}</h2>
+                            <h2 id="Date">Today is ${timeDate}</h2>
+                            <div id="firstmain">
 
-        <div id="staff">
-            <i class="fa-solid fa-person-chalkboard fonts"></i>
-            <h1>Staff</h1>
-            <button id="loginStaff" onclick="loginStaff()">Login</button>
-        </div>
-        <div id="students1">
-            <i class="fa-solid fa-graduation-cap fonts"></i>
-            <h1>Students</h1>
-            <button id="loginStudents" onclick="loginStudents()">Login</button>
-        </div>
-        <div id="Admin">
-            <i class="fa-solid fa-user-shield fonts"></i>
-            <h1>Admin</h1>
-            <button id="loginAdmin" onclick="loginAdmin()">Login</button>
-        </div>
-    </div>
-</div>
-    `;
+                                <div id="staff">
+                                    <i class="fa-solid fa-person-chalkboard fonts"></i>
+                                    <h1>Staff</h1>
+                                    <button id="loginStaff" onclick="loginStaff()">Login</button>
+                                </div>
+                                <div id="students1">
+                                    <i class="fa-solid fa-graduation-cap fonts"></i>
+                                    <h1>Students</h1>
+                                    <button id="loginStudents" onclick="loginStudents()">Login</button>
+                                </div>
+                                <div id="Admin">
+                                    <i class="fa-solid fa-user-shield fonts"></i>
+                                    <h1>Admin</h1>
+                                    <button id="loginAdmin" onclick="loginAdmin()">Login</button>
+                                </div>
+                            </div>
+                        </div>
+                        `;
     document.title = "Attendance";
 
 }
@@ -1071,14 +1420,14 @@ function showDept() {
     //console.log(document.getElementById("bodyDiv"));
 
     document.getElementById("bodyDiv").innerHTML = `
-    <button id="Back" onclick="showStaffChoice()"><i class="fa-solid fa-chevron-left"></i></i></button>
-    <div id="depts">
-<a ><div id="cse" class="dept" onclick="showCse()"><h1>CSE</h1></div></a>
-<a href="ececlass.html"><div id="ece" class="dept"><h1>ECE</h1></div></a>
-<a href="mechclass.html"><div id="mech" class="dept"><h1>MECH</h1></div></a>
-<a href="aiclass.html"><div id="ai" class="dept"><h1>AI</h1></div></a>
-<a href="itclass.html"> <div id="id" class="dept"><h1>IT</h1></div></a>
-</div>`;
+                    <button id="Back" onclick="showStaffChoice()"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div id="depts">
+                        <a ><div id="cse" class="dept" onclick="showCse()"><h1>CSE</h1></div></a>
+                        <a href="ececlass.html"><div id="ece" class="dept"><h1>ECE</h1></div></a>
+                        <a href="mechclass.html"><div id="mech" class="dept"><h1>MECH</h1></div></a>
+                        <a href="aiclass.html"><div id="ai" class="dept"><h1>AI</h1></div></a>
+                        <a href="itclass.html"> <div id="id" class="dept"><h1>IT</h1></div></a>
+                    </div>`;
     document.title = "Departments";
 }
 function showStaffChoice() {
@@ -1099,8 +1448,8 @@ function showStaffChoice() {
             </tr>
         </table>
     </div>
-</div>
-    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button>
+</div >
+    <button id="Back" onclick="homePage()"><i class="fa-solid fa-chevron-left"></i></i></button >
     <h1>Staff Details</h1>
     <div id="StaffChoice">
         <div class="Choice">
@@ -1114,7 +1463,7 @@ function showStaffChoice() {
         <button  class="LoginBtn" onclick="ShowstaffPerformPOPUP()">Login</button>
         </div>
     </div>
-    `;
+                `;
     document.title = "Staff Details";
 }
 
@@ -1136,8 +1485,8 @@ async function CheckStaffLogin() {
                 document.getElementById("bodyDiv").innerHTML = "";
                 document.getElementById("bodyDiv").innerHTML =
 
-                    `<button id="Back" onclick="showStaffChoice()"><i class="fa-solid fa-chevron-left"></i></i></button>
-        <div >
+                    `<button id="Back" onclick="showStaffChoice()"><i class="fa-solid fa-chevron-left"></i></button>
+        <div>
         <h1 style="text-align:center">My Profile</h1><hr><br>
 
         <div>
@@ -1388,42 +1737,42 @@ async function showCse() {
 }
 /*
 <button id="Back" onclick="showDept()"><i class="fa-solid fa-chevron-left"></i></i></button>
-<div id="classes">
-<a ><div id="1year" class="class" onclick="showCse1()"><h1>1 year</h1></div></a>
-<a ><div id="2year" class="class" onclick="showCse2()"><h1>2 year</h1></div></a>
-<a ><div id="3year" class="class" onclick="showCse3()"><h1>3 year</h1></div></a>
-<a><div id="4year" class="class" onclick="showCse4()"><h1>4 year</h1></div></a>
-</div>*/
+                                    <div id="classes">
+                                        <a ><div id="1year" class="class" onclick="showCse1()"><h1>1 year</h1></div></a>
+                                        <a ><div id="2year" class="class" onclick="showCse2()"><h1>2 year</h1></div></a>
+                                        <a ><div id="3year" class="class" onclick="showCse3()"><h1>3 year</h1></div></a>
+                                        <a><div id="4year" class="class" onclick="showCse4()"><h1>4 year</h1></div></a>
+                                    </div>*/
 //SHOW CSE1
 function showCse1() {
 
     document.getElementById("bodyDiv").innerHTML = "";
     //console.log(document.getElementById("bodyDiv"));
     document.getElementById("bodyDiv").innerHTML = `
-    <button id="Back" onclick="showCse()"><i class="fa-solid fa-chevron-left"></i></i></button>
-    <div id="main1">
-<button id="reviewBtn">Review</button>
-<div id="students">
+                                    <button id="Back" onclick="showCse()"><i class="fa-solid fa-chevron-left"></i></i></button>
+                                    <div id="main1">
+                                        <button id="reviewBtn">Review</button>
+                                        <div id="students">
 
-    <div class="student">
-        <img src="male.jpg" alt="Aarthese" width="200" height="200">
-        <h2>Name: Aarthese</h2>
-        <p class="rollNo">Roll No: 1</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Aarav" width="200" height="200">
-        <h2>Name: Aarav</h2>
-        <p class="rollNo">Roll No: 2</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
+                                            <div class="student">
+                                                <img src="male.jpg" alt="Aarthese" width="200" height="200">
+                                                    <h2>Name: Aarthese</h2>
+                                                    <p class="rollNo">Roll No: 1</p>
+                                                    <button class="present">Present</button>
+                                                    <button class="absent">Absent</button>
+                                                    <p class="result"></p>
+                                            </div>
+                                            <div class="student">
+                                                <img src="male.jpg" alt="Aarav" width="200" height="200">
+                                                    <h2>Name: Aarav</h2>
+                                                    <p class="rollNo">Roll No: 2</p>
+                                                    <button class="present">Present</button>
+                                                    <button class="absent">Absent</button>
+                                                    <p class="result"></p>
+                                            </div>
 
-</div>
-</div>`;
+                                        </div>
+                                    </div>`;
     document.title = "CSE 1-Year";
     const presentBtn = document.getElementsByClassName("present");
     const absentBtn = document.getElementsByClassName("absent");
@@ -1444,7 +1793,7 @@ function showCse1() {
             event.target.parentElement.getElementsByClassName("result")[0].textContent = "Present";
             event.target.parentElement.getElementsByClassName("result")[0].style.color = "green";
 
-            let timeDate = `${date}/${month + 1}/${year} %0a ${hours}:${minutes}`;
+            timeDate = `${date} /${month + 1}/${year} `;
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
             //console.log(rollNo);
@@ -1461,7 +1810,7 @@ function showCse1() {
             event.target.parentElement.getElementsByClassName("present")[0].style.display = "none";
             event.target.parentElement.getElementsByClassName("result")[0].textContent = "Absent";
             event.target.parentElement.getElementsByClassName("result")[0].style.color = "red";
-            let timeDate = `${date}/${month + 1}/${year} %0a ${hours}:${minutes}`;
+            timeDate = `${date} /${month + 1}/${year} `;
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
             markAttendance(rollNo, "Absent");
@@ -1470,7 +1819,7 @@ function showCse1() {
         });
     });
 
-    const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; // If running on the same domain
+    const APIURL = STUDENT_API_URL; // If running on the same domain
 
 
     // Fetch and display the count of students
@@ -1528,121 +1877,121 @@ async function showCse2() {
     document.getElementById("bodyDiv").innerHTML = "";
     //console.log(document.getElementById("bodyDiv"));
     document.getElementById("bodyDiv").innerHTML = `
-<div id="mainPopup">
-    <div id="altPopup">
-                    
-    </div>
-</div>
-<div id="main1">
-<div style="display:none;" id="mainpopupTable">
-    <button id="Back" onclick="${() => { document.getElementById("mainpopupTable").style.display = "none" }}"><i class="fa-solid fa-chevron-left"></i></button>
-    <div id="popup">
-        <button id="closeTable">Close</button>
+                                    <div id="mainPopup">
+                                        <div id="altPopup">
 
-        <table id="table" border="0">
-            <tr>
-            <th>S.No</th>
-            <th>Name</th>
-            <th>Roll No</th>
-            <th>Percentage</th>
-            </tr>
-        </table>
-    </div>
-</div>
-<div style="display:none;" id="mainpopupStaff">
-    <button id="Back" onclick="showCse2()"><i class="fa-solid fa-chevron-left"></i></button>
-    <div id="popup">
-        <h1 id="heading">Staff Details</h1>
-        <table id="StaffLogintable" border="0">
-        <tr>
-        <td><label for="staffName">Staff Name:</label></td><td><input type="text" placeholder="Staff Name" id="staffName" style="border:1px solid border-radius:4px"></td>
-        </tr>
-        <tr>
-        <td><label for="staffId">Staff ID:</label></td><td><input type="text" placeholder="Staff ID" id="staffId" style="border:1px solid border-radius:4px" ></td>
-        </tr>
-        <tr>
-        <td><button class="LoginBtn" id="StaffLoginBtn">Login</button></td>
-        </tr>
-        </table>
+                                        </div>
+                                    </div>
+                                    <div id="main1">
+                                        <div style="display:none;" id="mainpopupTable">
+                                            <button id="Back" onclick="${() => { document.getElementById(" mainpopupTable").style.display = "none" }}"><i class="fa-solid fa-chevron-left"></i></button>
+                                        <div id="popup">
+                                            <button id="closeTable">Close</button>
 
-        <table id="staffTable" style="display:none">
-        <tr>
-            <td><label>Date :</label></td><td>${timeDate}</td>
-        </tr>
-        <tr>
-            <td><label>Time :</label></td><td>${Time}</td>
-        </tr>        
-        <tr>
-            <td><label for="Staffname">Staff Name :</label></td>
-            <td><input id="Staffname" type="text" disabled readonly></td>
-        </tr>
-        <tr>
-            <td><label for="semester">Semester :</label></td>
-            <td>
-                <select id=semester onchange="showSemesterCourses()">
-                    <option value="Selected" disabled selected>Select Semester</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Course Name :</label></td>
-            <td>
-                <select id="thirdSemCourse" style="display:none">
-                    <option value="Selected" disabled selected>Select Course</option>
-                    <option value="DPCO">DPCO</option>
-                    <option value="DM">DM</option>
-                    <option value="FDS">FDS</option>
-                    <option value="OOP">OOP</option>
-                    <option value="DS">DS</option>
-                    <option value="DPCO_Lab">DPCO_Lab</option>
-                    <option value="FDS_Lab">FDS_Lab</option>
-                    <option value="OOP_Lab">OOP_Lab</option>
-                    <option value="DS_Lab">DS_Lab</option>
-                </select>
-                <select id="fourthSemCourse" style="display:none">
-                    <option value="Selected" disabled selected>Select Course</option>
-                    <option value="ESS">ESS</option>
-                    <option value="AIML">AIML</option>
-                    <option value="DBMS">DBMS</option>
-                    <option value="TOC">TOC</option>
-                    <option value="IOS">IOS</option>
-                    <option value="ALGM">ALGM</option>
-                    <option value="DBMS_Lab">DBMS_Lab</option>
-                    <option value="IOS_Lab">IOS_Lab</option>
-                    <option value="ALGM_Lab">ALGM_Lab</option>
-                    <option value="AIML_Lab">AIML_Lab</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label for="hourDurationSelect">Select Hour Duration :</label></td>
-            <td>
-                <select id="hourDurationSelect" onchange="showPeriodTiming()">
-                    <option value="Selected" disabled selected>Select Hour Duration</option>
-                    <option value="7" style="display : ${RailTime < "10:15" ? "block" : "none"}">7</option>
-                    <option value="6" style="display : ${RailTime < "11:05" ? "block" : "none"}">6</option>
-                    <option value="5" style="display : ${RailTime < "12:10" ? "block" : "none"}">5</option>
-                    <option value="4" style="display : ${RailTime < "13:00" ? "block" : "none"}">4</option>
-                    <option value="3" style="display : ${RailTime < "14:30" ? "block" : "none"}">3</option>
-                    <option value="2" style="display : ${RailTime < "15:20" ? "block" : "none"}">2</option>
-                    <option value="1" style="display : ${RailTime < "16:00" ? "block" : "none"}">1</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Your Period timing:</label></td>
-            <td><input type="text" id="periodTiming" disabled readonly placeholder="Period Timing" style="font-weight:bold"></td>
-        </tr>
-        <tr>
-            <td><button id="SubmitStaffDatas">submit</button></td>
-        </tr>
+                                            <table id="table" border="0">
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Name</th>
+                                                    <th>Roll No</th>
+                                                    <th>Percentage</th>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div style="display:none;" id="mainpopupStaff">
+                                        <button id="Back" onclick="showCse2()"><i class="fa-solid fa-chevron-left"></i></button>
+                                        <div id="popup">
+                                            <h1 id="heading">Staff Details</h1>
+                                            <table id="StaffLogintable" border="0">
+                                                <tr>
+                                                    <td><label for="staffName">Staff Name:</label></td><td><input type="text" placeholder="Staff Name" id="staffName" style="border:1px solid border-radius:4px"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="staffId">Staff ID:</label></td><td><input type="text" placeholder="Staff ID" id="staffId" style="border:1px solid border-radius:4px" ></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><button class="LoginBtn" id="StaffLoginBtn">Login</button></td>
+                                                </tr>
+                                            </table>
 
-        </tr>
-    </table>
-    </div>
-</div>
+                                            <table id="staffTable" style="display:none">
+                                                <tr>
+                                                    <td><label>Date :</label></td><td>${timeDate}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label>Time :</label></td><td>${Time}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="Staffname">Staff Name :</label></td>
+                                                    <td><input id="Staffname" type="text" disabled readonly></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="semester">Semester :</label></td>
+                                                    <td>
+                                                        <select id=semester onchange="showSemesterCourses()">
+                                                            <option value="Selected" disabled selected>Select Semester</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label>Course Name :</label></td>
+                                                    <td>
+                                                        <select id="thirdSemCourse" style="display:none">
+                                                            <option value="Selected" disabled selected>Select Course</option>
+                                                            <option value="DPCO">DPCO</option>
+                                                            <option value="DM">DM</option>
+                                                            <option value="FDS">FDS</option>
+                                                            <option value="OOP">OOP</option>
+                                                            <option value="DS">DS</option>
+                                                            <option value="DPCO_Lab">DPCO_Lab</option>
+                                                            <option value="FDS_Lab">FDS_Lab</option>
+                                                            <option value="OOP_Lab">OOP_Lab</option>
+                                                            <option value="DS_Lab">DS_Lab</option>
+                                                        </select>
+                                                        <select id="fourthSemCourse" style="display:none">
+                                                            <option value="Selected" disabled selected>Select Course</option>
+                                                            <option value="ESS">ESS</option>
+                                                            <option value="AIML">AIML</option>
+                                                            <option value="DBMS">DBMS</option>
+                                                            <option value="TOC">TOC</option>
+                                                            <option value="IOS">IOS</option>
+                                                            <option value="ALGM">ALGM</option>
+                                                            <option value="DBMS_Lab">DBMS_Lab</option>
+                                                            <option value="IOS_Lab">IOS_Lab</option>
+                                                            <option value="ALGM_Lab">ALGM_Lab</option>
+                                                            <option value="AIML_Lab">AIML_Lab</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="hourDurationSelect">Select Hour Duration :</label></td>
+                                                    <td>
+                                                        <select id="hourDurationSelect" onchange="showPeriodTiming()">
+                                                            <option value="Selected" disabled selected>Select Hour Duration</option>
+                                                            <option value="7" style="display : ${RailTime < "10:15" ? "block" : "none"}">7</option>
+                                                        <option value="6" style="display : ${RailTime < "11:05" ? "block" : "none"}">6</option>
+                                                    <option value="5" style="display : ${RailTime < "12:10" ? "block" : "none"}">5</option>
+                                                <option value="4" style="display : ${RailTime < "13:00" ? "block" : "none"}">4</option>
+                                            <option value="3" style="display : ${RailTime < "14:30" ? "block" : "none"}">3</option>
+                                        <option value="2" style="display : ${RailTime < "15:20" ? "block" : "none"}">2</option>
+                                    <option value="1" style="display : ${RailTime < "16:00" ? "block" : "none"}">1</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Your Period timing:</label></td>
+                        <td><input type="text" id="periodTiming" disabled readonly placeholder="Period Timing" style="font-weight:bold"></td>
+                    </tr>
+                    <tr>
+                        <td><button id="SubmitStaffDatas">submit</button></td>
+                    </tr>
+
+        </tr >
+    </table >
+    </div >
+</div >
 
 
 <div id="Processing">
@@ -1654,7 +2003,7 @@ async function showCse2() {
 <div id="students" class="allStudents">
 
 </div>
-</div> `;
+</div > `;
     /*     <div class="student">
             <img src="male.jpg" alt="Davidsolomonraj" width="200" height="200">
             <h2>Name: Davidsolomonraj</h2>
@@ -1665,24 +2014,30 @@ async function showCse2() {
         </div> */
     let data = await getAllStudent();
     // Sort by rollno (ascending)
+    console.log(data);
     data.sort((a, b) => Number(a.rollno) - Number(b.rollno));
     const AllStudents = document.querySelector(".allStudents");
     data.forEach(student => {
         if (student.name == "TWD") { }
-        else {
+        else if (student.Department == "CSE" && student.Year == 2) {
+
             StudentDiv = document.createElement("div");
             StudentDiv.classList = "student";
             StudentDiv.innerHTML = `
-    <img src="male.jpg" alt="${student.name}" width="200px" height="200px" >
+    <img src="male.jpg" alt="${student.name}" width="200px" height="200px">
     <h2>Name: ${student.name}</h2>
     <p class="rollNo">Roll No: ${student.rollno}</p>
     <button class="present">Present</button>
     <button class="absent">Absent</button>
     <p class="result"></p>
-    `;
+                `;
             AllStudents.appendChild(StudentDiv);
         }
     });
+
+    if (AllStudents.children.length < 1) {
+        AllStudents.innerHTML = "<h2>No Students Found</h2>";
+    }
 
     document.title = "CSE 2-Year";
     const reviewBtn = document.getElementById("reviewBtn");
@@ -1714,7 +2069,7 @@ async function showCse2() {
             event.target.parentElement.getElementsByClassName("result")[0].textContent = "Present";
             event.target.parentElement.getElementsByClassName("result")[0].style.color = "green";
 
-            timeDate = `${date} /${month + 1}/${year} % 0a ${hours}:${minutes} `;
+            timeDate = `${date} /${month + 1}/${year} `;
 
             const rollNo = event.target.parentElement.getElementsByClassName("rollNo")[0].textContent.split(":")[1].trim();
             //console.log(rollNo);
@@ -1732,7 +2087,7 @@ async function showCse2() {
         button.addEventListener("click", (event) => {
             //event.target.parentElement.getElementsByClassName("present")[0].innerHTML = "<del>Present</del>";
             event.target.style.display = "none";
-            console.log(event.target.parentElement.getElementsByClassName("result")[0].textContent);
+            //console.log(event.target.parentElement.getElementsByClassName("result")[0].textContent);
             event.target.parentElement.getElementsByClassName("present")[0].style.display = "none";
             event.target.parentElement.getElementsByClassName("result")[0].textContent = "Absent";
 
@@ -1743,8 +2098,8 @@ async function showCse2() {
             const name = event.target.parentElement.getElementsByTagName("h2")[0].textContent.split(":")[1].trim();
 
             //console.log(String(rollNo).slice(5));
-            whatsappDatas.push(`Name: ${name} \n RollNo: ${rollNo} \n   Absent on ${correntTime} \n  `);
-            AbsentTodayName.push(`Name : ${name} , RollNo: ${rollNo}\n`);
+            whatsappDatas.push(`Name: ${name} \n RollNo: ${rollNo} \n\n `);
+            AbsentTodayName.push(`Name: ${name} , RollNo: ${rollNo} \n`);
 
             //console.log(rollNo);
             //whatsappDate.push(`Name: ${ name } % 0a RollNo: ${ rollNo } % 0a Absent on ${ timeDate } `);
@@ -1763,11 +2118,9 @@ async function showCse2() {
     });
 
     //const APIURL = `https://studentattendance-1-krzr.onrender.com/api/students`; // If running on the same domain
-    const APIURL = `/api/students`;
+    const APIURL = STUDENT_API_URL;
     shortCut.onclick = async (event) => {
-        var format;
-        var find;
-        var get;
+
 
         //var presentArray = ['001','002','003','004' , '005' , '006' , '007' , '008','009','010','011','012','013','014','015','016','017','018','019','020','021','022','023','024','025','026','027','028','029','030','031','032','033','034','035','036','037','038','039','040','' ];
         var allButtons = event.target.parentElement.querySelector(".allStudents").children;
@@ -1784,7 +2137,17 @@ async function showCse2() {
 
 
         document.querySelector("#StaffLoginBtn").onclick = async () => {
+            const hourDurationSelect = document.getElementById("hourDurationSelect");
+            const periodTiming = document.getElementById("periodTiming");
 
+            if (RailTime >= "13:00" && RailTime <= "13:40") {
+                periodTiming.value = "Lunch Time";
+                hourDurationSelect.disabled = true;
+            }
+            if (RailTime >= "11:05" && RailTime <= "11:20") {
+                periodTiming.value = "Interval";
+                hourDurationSelect.disabled = true;
+            }
             let data = await getAllStaff();
             //console.log(data);
             const staffName = document.getElementById("staffName").value.trim();
@@ -1806,16 +2169,16 @@ async function showCse2() {
                         document.getElementById("staffTable").style.display = "block";
                         document.getElementById("Staffname").value = data[i].staffName;
 
-
                         document.querySelector("#SubmitStaffDatas").onclick = async () => {
                             let CseStaffs = [];
+                            let finalMeg = "";
                             let Staffs = await getAllStaff();
                             //console.log(Staffs);
                             const staffName = document.getElementById("Staffname").value.trim();
                             const courseName = document.getElementById("thirdSemCourse").value == "Selected" ? document.getElementById("fourthSemCourse").value : document.getElementById("thirdSemCourse").value;
                             const semester = document.getElementById("semester").value;
                             const hourDuration = document.getElementById("hourDurationSelect").value;
-                            const periodTiming = document.getElementById("periodTiming").value;
+                            periodTiming = document.getElementById("periodTiming").value;
 
                             if (staffName === "" || courseName === "" || semester === "" || hourDuration === "" || periodTiming === "" || staffName == null || courseName == null || semester == null || hourDuration == null || periodTiming == null) {
                                 window.alert("Please fill all the fields");
@@ -1826,264 +2189,132 @@ async function showCse2() {
                                 let check = true;
                                 CseStaffs = Staffs.filter(staff => {
                                     return staff.Department == "CSE";
-                                })
-                                //console.log(CseStaffs);
+                                });
+                                let waitMeg = "";
+
+                                //console.log(CseStaffs, CseStaffs.length);
+
                                 for (i = 0; i < CseStaffs.length; i++) {
                                     for (j = 0; j < CseStaffs[i].Performance.length; j++) {
-                                        //console.log(CseStaffs[i].Performance[j].date, timeDate);
+                                        console.log(CseStaffs[i].Performance[j].date, timeDate);
+                                        console.log(periodTiming);
                                         if (CseStaffs[i].Performance[j].date == timeDate) {
-                                            if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 10:15 AM" && RailTime < "10:15") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st period";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 11:05 AM" && RailTime >= "10:15" && RailTime < "11:05") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd period";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 12:10 PM" && RailTime >= "11:05" && RailTime < "12:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd period";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "12:10 PM to 1:00 PM" && RailTime >= "12:10" && RailTime < "13:40") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 4th period";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "1:40 PM to 2:30 PM" && RailTime >= "13:40" && RailTime < "14:30") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 5th period";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "2:30 PM to 3:20 PM" && RailTime >= "14:30" && RailTime < "15:20") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 6th period";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "3:20 PM to 4:10 PM" && RailTime >= "15:20" && RailTime < "16:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 7th period";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 11:05 AM" && RailTime < "10:15" && RailTime < "11:05") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st and 2nd periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 12:10 PM" && RailTime >= "10:15" && RailTime < "12:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd and 3rd periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 1:00 PM" && RailTime >= "11:05" && RailTime < "13:00") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd and 4th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "12:10 PM to 2:30 PM" && RailTime >= "12:10" && RailTime < "14:30") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 4th and 5th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "1:40 PM to 3:20 PM" && RailTime >= "13:40" && RailTime < "15:20") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 5th and 6th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "2:30 PM to 4:10 PM" && RailTime >= "14:30" && RailTime < "16:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 6th and 7th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 12:10 PM" && RailTime < "10:15" && RailTime < "12:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st,2nd and 3rd periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 1:00 PM" && RailTime >= "10:15" && RailTime < "13:00") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd,3rd and 4th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 2:30 PM" && RailTime >= "11:05" && RailTime < "14:30") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd,4th and 5th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "12:10 PM to 3:20 PM" && RailTime >= "12:10" && RailTime < "15:20") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 4th,5th and 6th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "1:40 PM to 4:10 PM" && RailTime >= "13:40" && RailTime < "16:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 5th,6th and 7th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 1:00 PM" && RailTime < "10:15" && RailTime < "13:00") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st,2nd,3rd and 4th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 2:30 PM" && RailTime >= "10:15" && RailTime < "14:30") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd,3rd,4th and 5th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 3:20 PM" && RailTime >= "11:05" && RailTime < "15:20") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd,4th,5th and 6th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "12:10 PM to 4:10 PM" && RailTime >= "12:10" && RailTime < "16:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 4th,5th,6th and 7th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 2:30 PM" && RailTime < "10:15" && RailTime < "14:30") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st,2nd,3rd,4th and 5th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 3:20 PM" && RailTime >= "10:15" && RailTime < "15:20") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd,3rd,4th,5th and 6th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "11:20 AM to 4:10 PM" && RailTime >= "11:05" && RailTime < "16:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 3rd,4th,5th,6th and 7th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 3:20 PM" && RailTime < "10:15" && RailTime < "15:20") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 1st,2nd,3rd,4th,5th and 6th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "10:15 AM to 4:10 PM" && RailTime >= "10:15" && RailTime < "16:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in 2nd,3rd,4th,5th,6th and 7th periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
-                                                check = false;
-                                            }
 
-                                            else if (CseStaffs[i].Performance[j].periodTiming == "9:25 AM to 4:10 PM" && RailTime < "10:15" && RailTime <= "16:10") {
-                                                document.getElementById("wait").style.display = "block";
-                                                document.getElementById("waitMeg").textContent = "Attedance is already recorded in All periods";
-                                                setTimeout(() => {
-                                                    document.getElementById("wait").style.display = "none";
-                                                    document.getElementById("waitMeg").textContent = "";
-                                                }, 4000);
+                                            console.log(periodTiming);
+                                            console.log(CseStaffs[i].Performance[j].periodTiming.split("to")[0]);
+                                            if (periodTiming.startsWith(CseStaffs[i].Performance[j].periodTiming.split("to")[0])) {
+                                                console.log(CseStaffs[i].Performance[j].periodTiming);
+
                                                 check = false;
+                                                if (hourDuration == "1") {
+                                                    if (periodTiming == "9:25 AM to 10:15 AM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 1st period`;
+                                                    }
+                                                    if (periodTiming == "10:15 AM to 11:05 AM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 2nd period`;
+                                                    }
+                                                    if (periodTiming == "11:20 AM to 12:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 3rd period`;
+                                                    }
+                                                    if (periodTiming == "12:10 PM to 1:00 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 4th period`;
+                                                    }
+                                                    if (periodTiming == "1:40 PM to 2:30 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 5th period`;
+                                                    }
+                                                    if (periodTiming == "2:30 PM to 3:20 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 6th period`;
+                                                    }
+                                                    if (periodTiming == "3:20 PM to 4:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 7th period`;
+                                                    }
+                                                }
+                                                else if (hourDuration == "2") {
+                                                    if (periodTiming == "9:25 AM to 11:05 AM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 1st and 2nd periods`;
+                                                    }
+                                                    if (periodTiming == "10:15 AM to 12:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 2nd and 3rd periods`;
+                                                    }
+                                                    if (periodTiming == "11:20 AM to 1:00 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 3rd and 4th periods`;
+                                                    }
+                                                    if (periodTiming == "12:10 PM to 2:30 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 4th and 5th periods`;
+                                                    }
+                                                    if (periodTiming == "1:40 PM to 3:20 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 5th and 6th periods`;
+                                                    }
+                                                    if (periodTiming == "2:30 PM to 4:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 6th and 7th periods`;
+                                                    }
+                                                }
+                                                else if (hourDuration == "3") {
+                                                    if (periodTiming == "9:25 AM to 12:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 1st,2nd and 3rd periods`;
+                                                    }
+                                                    if (periodTiming == "10:15 AM to 1:00 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 2nd,3rd and 4th periods`;
+                                                    }
+                                                    if (periodTiming == "11:20 AM to 2:30 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 3rd,4th and 5th periods`;
+                                                    }
+                                                    if (periodTiming == "12:10 PM to 3:20 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 4th,5th and 6th periods`;
+                                                    }
+                                                    if (periodTiming == "1:40 PM to 4:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 5th,6th and 7th periods`;
+                                                    }
+                                                }
+                                                else if (hourDuration == "4") {
+                                                    if (periodTiming == "9:25 AM to 1:00 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 1st,2nd,3rd and 4th periods`;
+                                                    }
+                                                    if (periodTiming == "10:15 AM to 2:30 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 2nd,3rd,4th and 5th periods`;
+                                                    }
+                                                    if (periodTiming == "11:20 AM to 3:20 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 3rd,4th,5th and 6th periods`;
+                                                    }
+                                                    if (periodTiming == "12:10 PM to 4:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 4th,5th,6th and 7th periods`;
+                                                    }
+                                                }
+                                                else if (hourDuration == "5") {
+                                                    if (periodTiming == "9:25 AM to 2:30 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 1st,2nd,3rd,4th and 5th periods`;
+                                                    }
+                                                    if (periodTiming == "10:15 AM to 3:20 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 2nd,3rd,4th,5th and 6th periods`;
+                                                    }
+                                                    if (periodTiming == "11:20 AM to 4:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 3rd,4th,5th and 6th periods`;
+                                                    }
+                                                }
+                                                else if (hourDuration == "6") {
+
+                                                    if (periodTiming == "9:25 AM to 3:20 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 1st,2nd,3rd,4th,5th and 6th periods`;
+                                                    }
+                                                    if (periodTiming == "10:15 AM to 4:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in 2nd,3rd,4th,5th,6th and 7th periods`;
+                                                    }
+                                                }
+                                                else if (hourDuration == "7") {
+                                                    if (periodTiming == "9:25 AM to 4:10 PM") {
+                                                        waitMeg = `${CseStaffs[i].staffName} has already recorded attendance in All periods`;
+                                                    }
+                                                }
+
+                                                if (waitMeg) {
+                                                    document.getElementById("wait").style.display = "block";
+                                                    document.getElementById("waitMeg").textContent = `${waitMeg}`;
+                                                    setTimeout(() => {
+                                                        document.getElementById("wait").style.display = "none";
+                                                        document.getElementById("waitMeg").textContent = "";
+                                                    }, 4000);
+                                                    check = false;
+                                                }
                                             }
 
                                         }
@@ -2108,119 +2339,72 @@ async function showCse2() {
                                                 if (AbsentIs > 0) {
                                                     for (i = 0; i < AbsentIs; i++) {
                                                         const getAbsentIsNumber = window.prompt("Enter the Absent Students Number one-by-one(23104---):");
-
-                                                        if (getAbsentIsNumber.startsWith("23104")) {
+                                                        if (getAbsentIsNumber == "" || getAbsentIsNumber == null) {
+                                                            window.alert("invalid input");
+                                                        }
+                                                        else if (getAbsentIsNumber.startsWith("23104")) {
                                                             format = Number(getAbsentIsNumber);
                                                             //saveAbsentData.push(format);
+                                                            for (let i = 0; i < buttonArray.length; i++) {
+                                                                if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
+                                                                    buttonArray[i].querySelector(".absent").click();
+                                                                    buttonArray[i].querySelector(".absent").style.display = "none";
+                                                                    buttonArray[i].querySelector(".present").style.display = "none";
+                                                                    buttonArray[i].querySelector(".result").textContent = "Absent";
+                                                                    buttonArray[i].querySelector(".result").style.color = "red";
+                                                                    buttonArray[i] = "";
+
+                                                                }
+
+                                                            }
                                                         }
-                                                        else {
+                                                        else if (getAbsentIsNumber.startsWith("0")) {
                                                             format = Number(`23104${getAbsentIsNumber} `);
                                                             //saveAbsentData.push(format);
-                                                        }
-                                                        //console.log(String(format).slice(5));
 
-                                                        if (String(format).slice(5).startsWith("0")) {
-                                                            find = String(format).slice(6);
-                                                            if (String(find).startsWith("0")) {
-                                                                console.log(find);
-                                                                get = find.slice(1);
-                                                                console.log(get);
-
-                                                                for (let i = 0; i < buttonArray.length; i++) {
-                                                                    if (buttonArray[i] === buttonArray[get - 1]) {
-                                                                        buttonArray[i] = "";
-                                                                        break;
-                                                                    }
-                                                                }
-
-                                                                /*let NewArray = buttonArray.filter(button => {
-                                                                    console.log(button.querySelector(".rollNo").textContent !== buttonArray[get - 1].querySelector(".rollNo").textContent);
-                                                                });
-                                                                console.log(NewArray);*/
-
-                                                                await allButtons[get - 1].querySelector(".absent").click();
-
-                                                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get - 1]);
-                                                            }
-                                                            else if (String(find) >= 10 && String(find) <= 24) {
-                                                                console.log(find);
-                                                                get = find - 1;
-                                                                //console.log(get);
-                                                                for (let i = 0; i < buttonArray.length; i++) {
-                                                                    if (buttonArray[i] === buttonArray[get]) {
-                                                                        buttonArray[i] = "";
-                                                                        break;
-                                                                    }
-                                                                }
-
-                                                                await allButtons[get].querySelector(".absent").click();
-
-                                                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                            }
-                                                            else if (String(find) >= 26 && String(find) <= 48) {
-                                                                //console.log(find);
-                                                                get = find - 2;
-                                                                //console.log(get);
-                                                                for (let i = 0; i < buttonArray.length; i++) {
-                                                                    if (buttonArray[i] === buttonArray[get]) {
-                                                                        buttonArray[i] = "";
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                                await allButtons[get].querySelector(".absent").click();
-
-                                                            }
-                                                            else if (String(find) >= 50 && String(find) <= 60) {
-                                                                //console.log(find);
-                                                                get = find - 3;
-                                                                //console.log(get);
-                                                                for (let i = 0; i < buttonArray.length; i++) {
-                                                                    if (buttonArray[i] === buttonArray[get]) {
-                                                                        buttonArray[i] = "";
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                                await allButtons[get].querySelector(".absent").click();
-
-                                                            }
-                                                            else {
-                                                                window.alert("There are no students in this number");
-                                                            }
-                                                        }
-                                                        else if (String(format).slice(5).startsWith("3")) {
-                                                            find = String(format).slice(7);
-                                                            var late = 57;
-
-                                                            get = late + (Number(find));
-                                                            //console.log(get);
                                                             for (let i = 0; i < buttonArray.length; i++) {
-                                                                if (buttonArray[i] === buttonArray[get]) {
+                                                                if (buttonArray[i] == "") { }
+                                                                else if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
+                                                                    buttonArray[i].querySelector(".absent").click();
+                                                                    buttonArray[i].querySelector(".absent").style.display = "none";
+                                                                    buttonArray[i].querySelector(".present").style.display = "none";
+                                                                    buttonArray[i].querySelector(".result").textContent = "Absent";
+                                                                    buttonArray[i].querySelector(".result").style.color = "red";
                                                                     buttonArray[i] = "";
-                                                                    break;
+
                                                                 }
                                                             }
-
-                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                            await allButtons[get].querySelector(".absent").click();
-
                                                         }
-                                                        else if (String(format).slice(5).startsWith("7")) {
-                                                            get = 63;
+                                                        else if (getAbsentIsNumber.startsWith("30")) {
+                                                            format = Number(`22104${getAbsentIsNumber}`);
                                                             for (let i = 0; i < buttonArray.length; i++) {
-                                                                if (buttonArray[i] === buttonArray[get]) {
+                                                                if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == format) {
+                                                                    buttonArray[i].querySelector(".absent").click();
+                                                                    buttonArray[i].querySelector(".absent").style.display = "none";
+                                                                    buttonArray[i].querySelector(".present").style.display = "none";
+                                                                    buttonArray[i].querySelector(".result").textContent = "Absent";
+                                                                    buttonArray[i].querySelector(".result").style.color = "red";
                                                                     buttonArray[i] = "";
-                                                                    break;
+
+                                                                }
+
+                                                            }
+                                                        }
+                                                        else if (getAbsentIsNumber.startsWith("70")) {
+                                                            format = Number(`22104${getAbsentIsNumber}`);
+                                                            for (let i = 0; i < buttonArray.length; i++) {
+                                                                if (buttonArray[i].querySelector(".rollNo").textContent.split(":")[1].trim() == getAbsentIsNumber) {
+                                                                    buttonArray[i].querySelector(".absent").click();
+                                                                    buttonArray[i].querySelector(".absent").style.display = "none";
+                                                                    buttonArray[i].querySelector(".present").style.display = "none";
+                                                                    buttonArray[i].querySelector(".result").textContent = "Absent";
+                                                                    buttonArray[i].querySelector(".result").style.color = "red";
+                                                                    buttonArray[i] = "";
+
                                                                 }
                                                             }
 
-                                                            //console.log(event.target.parentElement.querySelector(".allStudents").children[get]);
-                                                            await allButtons[get].querySelector(".absent").click();
-
                                                         }
-                                                        //await markAttendance(format, "Absent");
-                                                        //console.log(event.target.parentElement.querySelector(".allStudents").children[].querySelectorAll(".rollNo"));
 
                                                     }
                                                     setTimeout(() => {
@@ -2233,7 +2417,10 @@ async function showCse2() {
 
                                                             }
                                                             else {
-                                                                await buttonArray[i].querySelector(".present").click();
+                                                                for (j = 0; j < hourDuration; j++) {
+                                                                    await buttonArray[i].querySelector(".present").click();
+                                                                }
+
                                                             }
                                                         }
                                                     }
@@ -2264,7 +2451,7 @@ async function showCse2() {
 
                                                     }
                                                     pushPerformance(staffId, TodayAttedance);
-                                                    console.log(TodayAttedance);
+                                                    //console.log(TodayAttedance);
                                                     presentFun = async () => {
                                                         for (i = 0; i < buttonArray.length; i++) {
                                                             if (buttonArray[i] == "") {
@@ -2282,7 +2469,7 @@ async function showCse2() {
                                                             if (whatsappDatas.length == 0) {
                                                                 let partTime1 = '';
                                                                 partTime1 += "All students are present on " + `${date} /${month + 1}/${year} % 0a ${hours}:${minutes} ${ampm} `;
-                                                                let message = "All students are present on " + `${correntTime} `;
+                                                                let message = "All students are present  in" + `${periodTiming} `;
                                                                 async function whatsAppMessage() {
                                                                     let phone = '+919486500899';
                                                                     let url = "https://wa.me/" + phone + "?text="
@@ -2340,13 +2527,13 @@ async function showCse2() {
                                                         //console.log(whatsappDatas.length);
                                                         if (whatsappDatas.length > 0) {
                                                             let partTime1 = '';
-                                                            let message = '';
+                                                            let message = 'ABSENTIES \n';
                                                             for (let i = 0; i < whatsappDatas.length; i++) {
                                                                 partTime1 += whatsappDatas[i];
                                                                 message += whatsappDatas[i];
 
                                                             }
-                                                            message += `\n\n${correntTime} `;
+                                                            message += `\n${periodTiming} `;
 
                                                             async function whatsAppMessage() {
                                                                 let phone = '+919486500899';
@@ -2404,11 +2591,12 @@ async function showCse2() {
 
                         }
                     }
-                    if (checkStaff) {
-                        window.alert("Invalid Staff ID or Staff Name");
-                        document.getElementById("StaffLogintable").style.display = "block";
-                        document.querySelector("#mainpopupStaff").style.display = "block";
-                    }
+
+                }
+                if (checkStaff) {
+                    window.alert("Invalid Staff ID or Staff Name");
+                    document.getElementById("StaffLogintable").style.display = "block";
+                    document.querySelector("#mainpopupStaff").style.display = "block";
                 }
             }
         }
@@ -2432,8 +2620,8 @@ async function showCse2() {
             const hourDurationSelect = document.getElementById("hourDurationSelect");
             const periodTiming = document.getElementById("periodTiming");
 
-
-            if (hourDurationSelect.value == "1" && RailTime < "10:15") {
+            hourDurationSelect.disabled = false;
+            if (hourDurationSelect.value == "1" && RailTime < "10:15" && RailTime >= "9:25") {
 
                 periodTiming.value = "9:25 AM to 10:15 AM";
             }
@@ -2441,14 +2629,15 @@ async function showCse2() {
 
                 periodTiming.value = "10:15 AM to 11:05 AM";
             }
-            else if (hourDurationSelect.value == "1" && RailTime >= "11:05" && RailTime < "12:10") {
+            else if (hourDurationSelect.value == "1" && RailTime >= "11:20" && RailTime < "12:10") {
 
                 periodTiming.value = "11:20 AM to 12:10 PM";
             }
-            else if (hourDurationSelect.value == "1" && RailTime >= "12:10" && RailTime < "13:40") {
+            else if (hourDurationSelect.value == "1" && RailTime >= "12:10" && RailTime <= "13:00") {
 
                 periodTiming.value = "12:10 PM to 1:00 PM";
             }
+
             else if (hourDurationSelect.value == "1" && RailTime >= "13:40" && RailTime < "14:30") {
 
                 periodTiming.value = "1:40 PM to 2:30 PM";
@@ -2461,90 +2650,90 @@ async function showCse2() {
 
                 periodTiming.value = "3:20 PM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime < "10:15" && RailTime < "11:05") {
+            if (hourDurationSelect.value == "2" && RailTime < "11:05" && RailTime >= "9:25") {
 
                 periodTiming.value = "9:25 AM to 11:05 AM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "10:15" && RailTime < "12:10") {
+            if (hourDurationSelect.value == "2" && RailTime >= "10:15" && RailTime < "12:10") {
 
                 periodTiming.value = "10:15 AM to 12:10 PM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "11:05" && RailTime < "13:00") {
+            if (hourDurationSelect.value == "2" && RailTime >= "11:20" && RailTime < "13:00") {
 
                 periodTiming.value = "11:20 AM to 1:00 PM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "12:10" && RailTime < "14:30") {
+            if (hourDurationSelect.value == "2" && RailTime >= "12:10" && RailTime < "14:30") {
 
                 periodTiming.value = "12:10 PM to 2:30 PM";
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "13:40" && RailTime < "15:20") {
+            if (hourDurationSelect.value == "2" && RailTime >= "13:40" && RailTime < "15:20") {
 
                 periodTiming.value = "1:40 PM to 3:20 PM";
 
             }
-            else if (hourDurationSelect.value == "2" && RailTime >= "14:30" && RailTime < "16:10") {
+            if (hourDurationSelect.value == "2" && RailTime >= "14:30" && RailTime < "16:10") {
 
                 periodTiming.value = "2:30 PM to 4:10 PM";
 
             }
-            else if (hourDurationSelect.value == "3" && RailTime < "10:15" && RailTime < "12:10") {
+            if (hourDurationSelect.value == "3" && RailTime < "10:15" && RailTime < "12:10" && RailTime >= "9:25") {
 
                 periodTiming.value = "9:25 AM to 12:10 PM";
             }
-            else if (hourDurationSelect.value == "3" && RailTime >= "10:15" && RailTime < "13:00") {
+            if (hourDurationSelect.value == "3" && RailTime >= "10:15" && RailTime < "13:00") {
 
                 periodTiming.value = "10:15 AM to 1:00 PM";
             }
-            else if (hourDurationSelect.value == "3" && RailTime >= "11:05" && RailTime < "14:30") {
+            if (hourDurationSelect.value == "3" && RailTime >= "11:20" && RailTime < "14:30") {
 
                 periodTiming.value = "11:20 AM to 2:30 PM";
             }
-            else if (hourDurationSelect.value == "3" && RailTime >= "12:10" && RailTime < "15:20") {
+            if (hourDurationSelect.value == "3" && RailTime >= "12:10" && RailTime < "15:20") {
 
                 periodTiming.value = "12:10 PM to 3:20 PM";
             }
-            else if (hourDurationSelect.value == "3" && RailTime >= "13:40" && RailTime < "16:10") {
+            if (hourDurationSelect.value == "3" && RailTime >= "13:40" && RailTime < "16:10") {
 
                 periodTiming.value = "1:40 PM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "4" && RailTime < "10:15" && RailTime < "13:00") {
+            if (hourDurationSelect.value == "4" && RailTime < "10:15" && RailTime < "13:00" && RailTime >= "9:25") {
 
                 periodTiming.value = "9:25 AM to 1:00 PM";
             }
-            else if (hourDurationSelect.value == "4" && RailTime >= "10:15" && RailTime < "14:30") {
+            if (hourDurationSelect.value == "4" && RailTime >= "10:15" && RailTime < "14:30") {
 
                 periodTiming.value = "10:15 AM to 2:30 PM";
             }
-            else if (hourDurationSelect.value == "4" && RailTime >= "11:05" && RailTime < "15:20") {
+            if (hourDurationSelect.value == "4" && RailTime >= "11:20" && RailTime < "15:20") {
 
                 periodTiming.value = "11:20 AM to 3:20 PM";
             }
-            else if (hourDurationSelect.value == "4" && RailTime >= "12:10" && RailTime < "16:10") {
+            if (hourDurationSelect.value == "4" && RailTime >= "12:10" && RailTime < "16:10") {
 
                 periodTiming.value = "12:10 PM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "5" && RailTime < "10:15" && RailTime < "14:30") {
+            if (hourDurationSelect.value == "5" && RailTime < "10:15" && RailTime < "14:30" && RailTime >= "9:25") {
 
                 periodTiming.value = "9:25 AM to 2:30 PM";
 
             }
-            else if (hourDurationSelect.value == "5" && RailTime >= "10:15" && RailTime < "15:20") {
+            if (hourDurationSelect.value == "5" && RailTime >= "10:15" && RailTime < "15:20") {
 
                 periodTiming.value = "10:15 AM to 3:20 PM";
             }
-            else if (hourDurationSelect.value == "5" && RailTime >= "11:05" && RailTime < "16:10") {
+            if (hourDurationSelect.value == "5" && RailTime >= "11:05" && RailTime < "16:10") {
 
                 periodTiming.value = "11:20 AM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "6" && RailTime < "10:15" && RailTime < "15:20") {
+            if (hourDurationSelect.value == "6" && RailTime < "10:15" && RailTime < "15:20") {
 
                 periodTiming.value = "9:25 AM to 3:20 PM";
             }
-            else if (hourDurationSelect.value == "6" && RailTime >= "10:15" && RailTime < "16:10") {
+            if (hourDurationSelect.value == "6" && RailTime >= "10:15" && RailTime < "16:10") {
 
                 periodTiming.value = "10:15 AM to 4:10 PM";
             }
-            else if (hourDurationSelect.value == "7" && RailTime < "10:15" && RailTime < "16:10") {
+            if (hourDurationSelect.value == "7" && RailTime < "10:15" && RailTime < "16:10" && RailTime >= "9:25") {
 
                 periodTiming.value = "9:25 AM to 4:10 PM";
             }
@@ -2555,9 +2744,9 @@ async function showCse2() {
         //const AbsentIs = window.prompt("Enter the  Number of Students Absent:");
 
     }
-    let totalReset = true;
-    reviewBtn.onclick = async (event) => {
 
+    reviewBtn.onclick = async (event) => {
+        let totalReset = true;
         async function fetchTotalWorkDays(rollno) {
 
             try {
@@ -2621,7 +2810,7 @@ async function showCse2() {
                                         }
                                         const data = await response.json();
                                         COunt = data.count;
-                                        console.log(`Total students: ${data.count}`);
+                                        //console.log(`Total students: ${data.count}`);
                                     } catch (error) {
                                         console.error('Error fetching student count:', error);
                                     }
@@ -2689,7 +2878,7 @@ async function showCse2() {
                                         document.getElementById("closeTable").style.display = "none";
                                         document.getElementById("Back").style.visibility = "hidden";
 
-                                        for (let i = 0; i < COunt - 1; i++) {
+                                        for (let i = 0; i < COunt; i++) {
                                             if (students[i].name == "TWD") {
 
                                             }
@@ -2848,7 +3037,7 @@ async function showCse2() {
 
             if (status === "Absent") {
                 decision = 0;
-                historyDecision = `${status} on ${date}`;
+                historyDecision = `${status} in ${periodTiming}`;
             } else if (status === "Present") {
                 decision = 0.1428571428571;
                 historyDecision = ""; // No history entry for "Present"
@@ -2917,487 +3106,6 @@ function showCse3() {
         <button class="absent">Absent</button>
         <p class="result"></p>
     </div>
-    <div class="student">
-        <img src="female.jpg" alt="Akila" width="200" height="200">
-        <h2>Name: Akila</h2>
-        <p class="rollNo">Roll No: 22104002</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Arumuganainar" width="200" height="200">
-        <h2>Name: Arumuganainar</h2>
-        <p class="rollNo">Roll No: 22104003</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Asfar" width="200" height="200">
-        <h2>Name: Asfar</h2>
-        <p class="rollNo">Roll No: 22104004</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Ashwindevashir" width="200" height="200">
-        <h2>Name: Ashwindevashir</h2>
-        <p class="rollNo">Roll No: 22104005</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Cathrinwinsmilein" width="200" height="200">
-        <h2>Name: Cathrinwinsmilein</h2>
-        <p class="rollNo">Roll No: 22104006</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Davidsolomonraj" width="200" height="200">
-        <h2>Name: Davidsolomonraj</h2>
-        <p class="rollNo">Roll No: 22104007</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Derekjebasraj" width="200" height="200">
-        <h2>Name: Derekjebasraj</h2>
-        <p class="rollNo">Roll No: 22104008</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Dharshini" width="200" height="200">
-        <h2>Name: Dharshini</h2>
-        <p class="rollNo">Roll No: 22104009</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Esakkimuthulogesh" width="200" height="200">
-        <h2>Name: Esakkimuthulogesh</h2>
-        <p class="rollNo">Roll No: 22104010</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Gerald" width="200" height="200">
-        <h2>Name: Gerald</h2>
-        <p class="rollNo">Roll No: 22104011</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Godsonazariah" width="200" height="200">
-        <h2>Name: Godsonazariah</h2>
-        <p class="rollNo">Roll No: 22104012</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Immanuel" width="200" height="200">
-        <h2>Name: Immanuel</h2>
-        <p class="rollNo">Roll No: 22104014</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Jackshiya" width="200" height="200">
-        <h2>Name: Jackshiya</h2>
-        <p class="rollNo">Roll No: 22104015</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Jayashree" width="200" height="200">
-        <h2>Name: Jayashree</h2>
-        <p class="rollNo">Roll No: 22104016</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Jencyruby" width="200" height="200">
-        <h2>Name: Jencyruby</h2>
-        <p class="rollNo">Roll No: 22104018</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Jenifar" width="200" height="200">
-        <h2>Name: Janifar</h2>
-        <p class="rollNo">Roll No: 22104019</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Jenispriya" width="200" height="200">
-        <h2>Name: Jenispriya</h2>
-        <p class="rollNo">Roll No: 22104021</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Jenitha" width="200" height="200">
-        <h2>Name: Jenitha</h2>
-        <p class="rollNo">Roll No: 22104022</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Jeyadharshini" width="200" height="200">
-        <h2>Name: Jeyadharshini</h2>
-        <p class="rollNo">Roll No: 22104023</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Keerthana" width="200" height="200">
-        <h2>Name: Keerthana</h2>
-        <p class="rollNo">Roll No: 22104025</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Kingslingibson" width="200" height="200">
-        <h2>Name: Kingslingibson</h2>
-        <p class="rollNo">Roll No: 22104026</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Kowsika" width="200" height="200">
-        <h2>Name: Kowsika</h2>
-        <p class="rollNo">Roll No: 22104027</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Lakshmi" width="200" height="200">
-        <h2>Name: Lakshmi</h2>
-        <p class="rollNo">Roll No: 22104029</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Logamanoj" width="200" height="200">
-        <h2>Name: Logamanoj</h2>
-        <p class="rollNo">Roll No: 22104030</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Mariakavin" width="200" height="200">
-        <h2>Name: Mariakavin</h2>
-        <p class="rollNo">Roll No: 22104031</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Marimuthu" width="200" height="200">
-        <h2>Name: Marimuthu</h2>
-        <p class="rollNo">Roll No: 22104032</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Maxvelyabes" width="200" height="200">
-        <h2>Name: Maxvelyabes</h2>
-        <p class="rollNo">Roll No: 22104033</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Muthulakshmi" width="200" height="200">
-        <h2>Name: Muthulakshmi</h2>
-        <p class="rollNo">Roll No: 22104034</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Muthuraja" width="200" height="200">
-        <h2>Name: Muthuraja</h2>
-        <p class="rollNo">Roll No: 22104035</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Nagalakshmi" width="200" height="200">
-        <h2>Name: Nagalakshmi</h2>
-        <p class="rollNo">Roll No: 22104036</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Nandhakumar" width="200" height="200">
-        <h2>Name: Nandhakumar</h2>
-        <p class="rollNo">Roll No: 22104037</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Petchiammal" width="200" height="200">
-        <h2>Name: Petchiammal</h2>
-        <p class="rollNo">Roll No: 22104039</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Prema" width="200" height="200">
-        <h2>Name: Prema</h2>
-        <p class="rollNo">Roll No: 22104040</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Princy" width="200" height="200">
-        <h2>Name: Princy</h2>
-        <p class="rollNo">Roll No: 22104041</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Renuka" width="200" height="200">
-        <h2>Name: Renuka</h2>
-        <p class="rollNo">Roll No: 22104042</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Sahayaabinaya" width="200" height="200">
-        <h2>Name: Sahayaabinaya</h2>
-        <p class="rollNo">Roll No: 22104043</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Samroshan" width="200" height="200">
-        <h2>Name: Samroshan</h2>
-        <p class="rollNo">Roll No: 22104044</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Santhasri" width="200" height="200">
-        <h2>Name: Santhasri</h2>
-        <p class="rollNo">Roll No: 22104045</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Santhoshraman" width="200" height="200">
-        <h2>Name: Santhoshraman</h2>
-        <p class="rollNo">Roll No: 22104046</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Saranya" width="200" height="200">
-        <h2>Name: Saranya</h2>
-        <p class="rollNo">Roll No: 22104047</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Shunmugapriya" width="200" height="200">
-        <h2>Name: Shunmugapriya</h2>
-        <p class="rollNo">Roll No: 22104048</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Shunmugasundaram" width="200" height="200">
-        <h2>Name: Shunmugasundaram</h2>
-        <p class="rollNo">Roll No: 22104049</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Sivasakthi" width="200" height="200">
-        <h2>Name: Sivasakthi</h2>
-        <p class="rollNo">Roll No: 22104050</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Solomonraja" width="200" height="200">
-        <h2>Name: Solomonraja</h2>
-        <p class="rollNo">Roll No: 22104051</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Sowmiya" width="200" height="200">
-        <h2>Name: Sowmiya</h2>
-        <p class="rollNo">Roll No: 22104052</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Steffinajesrin" width="200" height="200">
-        <h2>Name: Steffinajesrin</h2>
-        <p class="rollNo">Roll No: 22104053</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Subburaj" width="200" height="200">
-        <h2>Name: Subburaj</h2>
-        <p class="rollNo">Roll No: 22104054</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Sudharsan" width="200" height="200">
-        <h2>Name: Sudharsan</h2>
-        <p class="rollNo">Roll No: 22104055</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Sujitha" width="200" height="200">
-        <h2>Name: Sujitha</h2>
-        <p class="rollNo">Roll No: 22104056</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Sushmidha" width="200" height="200">
-        <h2>Name: Sushmidha</h2>
-        <p class="rollNo">Roll No: 22104057</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Vanitha" width="200" height="200">
-        <h2>Name: Vanitha</h2>
-        <p class="rollNo">Roll No: 22104058</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Yukeshkumar" width="200" height="200">
-        <h2>Name: Yukeshkumar</h2>
-        <p class="rollNo">Roll No: 22104060</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Abishekabraham" width="200" height="200">
-        <h2>Name: Abishekabraham</h2>
-        <p class="rollNo">Roll No: 22104301</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="JebaseelanReginald" width="200" height="200">
-        <h2>Name: JebaseelanReginald</h2>
-        <p class="rollNo">Roll No: 22104302</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Jebastin" width="200" height="200">
-        <h2>Name: Jebastin</h2>
-        <p class="rollNo">Roll No: 22104303</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Michealroshan" width="200" height="200">
-        <h2>Name: Michealroshan</h2>
-        <p class="rollNo">Roll No: 22104304</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Mosesjonesjulion" width="200" height="200">
-        <h2>Name: Mosesjonesjulion</h2>
-        <p class="rollNo">Roll No: 22104305</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Thomasedison" width="200" height="200">
-        <h2>Name: Thomasedison</h2>
-        <p class="rollNo">Roll No: 22104306</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="male.jpg" alt="Mariaaaron" width="200" height="200">
-        <h2>Name: Mariaaaron</h2>
-        <p class="rollNo">Roll No: 22104701</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-    <div class="student">
-        <img src="female.jpg" alt="Amibha" width="200" height="200">
-        <h2>Name: Amibha</h2>
-        <p class="rollNo">Roll No: 22104702</p>
-        <button class="present">Present</button>
-        <button class="absent">Absent</button>
-        <p class="result"></p>
-    </div>
-
 </div>
 </div>`;
 
@@ -3510,7 +3218,7 @@ function showCse3() {
             try {
                 if (AbsentIs > 0) {
                     for (let i = 0; i < AbsentIs; i++) {
-                        const getAbsentIsNumber = window.prompt("Enter the Absent Students Number one-by-one(23104---):");
+                        const getAbsentIsNumber = window.prompt("Enter the Absent Students Number one-by-one(22104---):");
 
                         if (getAbsentIsNumber == "" || getAbsentIsNumber == null) {
                             alert("invalid input");

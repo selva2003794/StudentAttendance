@@ -168,7 +168,7 @@ input , select {
     top:12%;
 }
 
-#popup table button {
+#popup table button , #performBtn{
     padding : 10px;
     font-size: 1.2em;
     font-weight: bold;
@@ -179,6 +179,10 @@ input , select {
 
     margin:20px;
     background-color: rgb(0, 255, 0);
+}
+#performBtn {
+    background-color:rgb(0, 229, 255);
+    margin:auto;
 }
 #popup table #selectReasons {
     width: 80%;
@@ -325,6 +329,7 @@ input , select {
 #cancelBtn {
     background-color: red;
 }
+
 
 .student .result {
     font-size: 1.5em;

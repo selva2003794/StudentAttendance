@@ -12,11 +12,51 @@ const app = express();
 app.use(cors());
 
 const PORT = 5500;
-const MONGO_URL = process.env.MONGO_URL || `mongodb+srv://selva91823:Selva91823@cluster0.sxbcw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const MONGO_URL = process.env.MONGO_URL;
+
+function TimeStart() {
+  const time = new Date();
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+  const milliseconds = time.getMilliseconds();
+
+  formattedTime = `${hours}:${minutes}:${seconds}:${milliseconds}`;
+
+}
+TimeStart();
+//setInterval(TimeStart , 1000);
+
+app.get(`/1yF1t6U9iN/3rH1u5T1C4S6eK9sN7L/${formattedTime}`, (req, res) => {
+  res.json({
+    STAFF_API_URL: "/1s9X2t0Y1aF6fKX9s16fK",
+    STUDENT_API_URL: "/api/3rd_year",
+
+    Admin : "PLQGD",
+  });
+});
+
+randomString = Math.random().toString(36).substring(2, 15);
+console.log(randomString);
+
+app.get('/api/random', (req, res) => {
+  res.json({
+    randomString: randomString,
+    message: "This is a random string generated for testing purposes."
+  })
+})
+
+
+app.get(`/1yF1t6U9iN/3rH1u5T1C4S6eK9sN7L/${randomString}`, (req, res) => {
+  res.json({
+    STAFF_API_URL: "/1s9X2t0Y1aF6fKX9s16fK",
+    STUDENT_API_URL: "/1e9X2n0Y2t1Z4SI5dJ1u4S2t0Y1s9X",
+    Admin : "PLQGD",
+  });
+});
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URL, {
-
 })
   .then(() => {
     console.log("MongoDB connected");
@@ -49,13 +89,13 @@ const StaffCollection = mongoose.model("AllStaff", {
     type: String,
     required: true
   },
-  Performance : {
+  Performance: {
     type: Array,
     default: [],
   },
-  TotalTeachingHours : {
-    type : Number,
-    default : 0,
+  TotalTeachingHours: {
+    type: Number,
+    default: 0,
   }
 
 })
@@ -83,6 +123,14 @@ const collection = mongoose.model('3rd_year', {
     default: 0,
 
   },
+  Department: {
+    type: String,
+
+  },
+  Year: {
+    type: Number,
+
+  }
 
 });
 const data = [
@@ -534,7 +582,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 // Route to fetch all staff records
-app.get('/api/staff', async (req, res) => {
+app.get('/1s9X2t0Y1aF6fKX9s16fK', async (req, res) => {
   try {
     const staffRecords = await StaffCollection.find(); // Fetch all records from the AllStaff collection
     res.json(staffRecords); // Send the records as a JSON response
@@ -545,7 +593,7 @@ app.get('/api/staff', async (req, res) => {
 });
 
 // Route to add a new staff record
-app.post('/api/staff', async (req, res) => {
+app.post('/1s9X2t0Y1aF6fKX9s16fK', async (req, res) => {
   const { staffName, staffId, Email, Department, Designation } = req.body
   const newStaff = new StaffCollection({
     staffName,
@@ -566,7 +614,7 @@ app.post('/api/staff', async (req, res) => {
 });
 
 // Route to fetch a single staff record by staffId
-app.get('/api/staff/:staffId', async (req, res) => {
+app.get('/1s9X2t0Y1aF6fKX9s16fK/:staffId', async (req, res) => {
   try {
     const staffId = req.params.staffId; // Get the staffId from the request parameters
     const staff = await StaffCollection.findOne({ staffId: staffId }); // Find the staff record by staffId
@@ -582,11 +630,11 @@ app.get('/api/staff/:staffId', async (req, res) => {
 });
 
 // Route to update a staff record by staffId
-app.put('/api/staff/:staffId', async (req, res) => {
+app.put('/1s9X2t0Y1aF6fKX9s16fK/:staffId', async (req, res) => {
   try {
     const staffId = req.params.staffId; // Get the staffId from the request parameters
     const updatedData = req.body; // Get the updated data from the request body
-    
+
     const updatedStaff = await StaffCollection.findOneAndUpdate(
       { staffId: staffId }, // Find the record by staffId
       updatedData, // Update with the new data
@@ -605,7 +653,7 @@ app.put('/api/staff/:staffId', async (req, res) => {
 })
 
 // Route to push a new object into the Performance array of a staff record
-app.put('/api/staff/:staffId/performance', async (req, res) => {
+app.put('/1s9X2t0Y1aF6fKX9s16fK/:staffId/performance', async (req, res) => {
   try {
     const staffId = req.params.staffId;
     const performanceObj = req.body; // The object to push
@@ -626,17 +674,17 @@ app.put('/api/staff/:staffId/performance', async (req, res) => {
 });
 
 // Route to delete a staff record by staffId
-app.delete('/api/staff/:staffId', async (req, res) => {
+app.delete('/1s9X2t0Y1aF6fKX9s16fK/:staffId', async (req, res) => {
   try {
     const staffId = req.params.staffId; // Get the staffId from the request parameters
     const deletedStaff = await StaffCollection.findOneAndDelete({ staffId: staffId }); // Find and delete the record by staffId
-  if (!deletedStaff) {
+    if (!deletedStaff) {
       return res.status(404).json({ message: 'Staff not found' }); // If no record found, return 404
     }
     res.json({ message: 'Staff record deleted successfully' }); // Send a success message as a JSON response
 
   }
-  catch(err) {
+  catch (err) {
     console.error('Error deleting staff record:', err);
     res.status(500).json({ message: 'Failed to delete staff record' }); // If an error occurs, return 500
   }
@@ -767,7 +815,7 @@ app.post('/send-to-telegram-3rd-year', async (req, res) => {
 
 
 // Routes
-app.use('/api/students', attendanceRoutes); // Ensure this path is correct
+app.use('/1e9X2n0Y2t1Z4SI5dJ1u4S2t0Y1s9X', attendanceRoutes); // Ensure this path is correct
 //app.use('/api/3rd_year', attendanceRoutes); // Ensure this path is correct
 
 // Start the server

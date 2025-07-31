@@ -13,16 +13,22 @@ const attendanceSchema = new mongoose.Schema({
     attendance: {
         type: Number,
         required: true,
-        
+
     },
     history: {
         type: Array,
         default: []
     },
     TotalWorkDays: {
-        type:Number,
-        default : 0,
-        
+        type: Number,
+        default: 0,
+    },
+    Department: {
+        type: String,
+    },
+    Year: {
+        type: Number,
+
     },
 });
 
